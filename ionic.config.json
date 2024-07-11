@@ -1,0 +1,8 @@
+{
+  "name": "ubernt_front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "2c4cd7e6"
+}
