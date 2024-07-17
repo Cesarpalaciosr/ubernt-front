@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-back-button slot="start"></ion-back-button>
+    <ion-title> Account </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img src="https://i.imgur.com/T3hn85p.png"></ion-img>
+
+  <div class="ion-center">
+    <ion-card shape="round">
+      <ion-card-header>
+        <ion-avatar>
+          <img src="https://i.imgur.com/s8gsz2Z.jpg" />
+        </ion-avatar>
+        <ion-card-title> {{this.alias}} </ion-card-title>
+      </ion-card-header>
+      <ion-card-content class="btnSection">
+        <ion-button shape="round" (click)="changeName()"
+          >Modify Name</ion-button
+        >
+        <ion-button shape="round" (click)="changeEmail()"
+          >Modify Email</ion-button
+        >
+        <ion-button shape="round" (click)="changePassword()"
+          >Modify Password</ion-button
+        >
+        <ion-button (click)="logout()" shape="round">Logout</ion-button>
+
+        <ion-button shape="round" color="danger" (click)="deleteAccount()"
+          >Delete Account</ion-button
+        >
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

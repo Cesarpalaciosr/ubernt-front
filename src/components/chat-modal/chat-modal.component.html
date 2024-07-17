@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="header-content">
+      <ion-buttons slot="start">
+        <ion-button (click)="closeModal()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Chat</ion-title>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img src="https://i.imgur.com/hLpfp8K.png"></ion-img>
+  <ion-list *ngIf="messages.length > 0">
+    <ion-item *ngFor="let message of messages">
+      <ion-label>
+        <h2>{{ message.sender }}</h2>
+        <p>{{ message.message }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <div #chatScroll></div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-input
+            placeholder="Type a message"
+            [(ngModel)]="message"
+            name="message"
+            color="terciary"
+          ></ion-input>
+        </ion-col>
+        <ion-col size="auto">
+          <ion-button class="custom-button"
+          (click)="sendMessage(); message = ''"
+          [disabled]="!message"
+        >
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

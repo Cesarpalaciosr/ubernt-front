@@ -1,0 +1,27 @@
+<div class="card-header">
+  <h2 class="card-title">DELETE ACCOUNT</h2>
+</div>
+
+<div class="wrapper">
+  <ion-input
+    label="Current Password:"
+    type="text"
+    [(ngModel)]="password"
+    name="password"
+    required
+  ></ion-input>
+
+  <ion-button
+    (click)="deleteAccount()"
+    color="danger"
+    expand="block"
+    [disabled]="loading"
+  >Update</ion-button>
+
+  <ion-button
+    (click)="dismissModal()"
+    color="danger"
+    expand="block"
+    fill="outline"
+  >Cancel</ion-button>
+</div>

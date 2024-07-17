@@ -1,0 +1,80 @@
+.rol-title {
+    position: absolute;
+    top: 10%;  
+    left: 50%;
+    transform: translateX(-50%);  
+    color: #fff;  
+    font-size: 3rem; 
+    font-weight: bold;  
+    text-align: center; 
+    z-index: 2;  
+    pointer-events: none;  
+}
+
+
+ion-content {
+    --background: linear-gradient(to bottom, rgb(30, 14, 72), rgb(18, 8, 43));
+    --overflow: hidden;
+    display: flex;
+    flex-direction: column;  
+    justify-content: center;  
+    align-items: center;      
+    height: 100vh;           
+    padding: 0;              
+    overflow: hidden;      
+}
+
+.ion-center {
+    display: flex;             
+    flex-direction: column;
+    align-items: center;      
+    justify-content: center; 
+    width: 100%;             
+    max-width: 90vw;         /* Limita el ancho máximo a 90% del viewport */
+    height: 100vh;           /* Asegura que ocupe el 100% de la altura del viewport */
+    padding: 16px;           /* Añadir padding para espaciado */
+    box-sizing: border-box;  /* Asegura que el padding no afecte al ancho del contenedor */
+    z-index: 1;             /* Asegura que el contenido esté sobre la ola */
+    position: absolute;     /* Asegura que el contenedor esté posicionado absolutamente */
+    top: 50%;               /* Mueve el contenedor al 50% desde la parte superior */
+    left: 50%;              /* Mueve el contenedor al 50% desde el lado izquierdo */
+    transform: translate(-50%, -50%); /* Ajusta el contenedor para que esté centrado en ambas direcciones */
+}
+
+ion-button.custom-button {
+    width: 100%;  /* Aumenta el ancho del botón */
+    max-width: 80vw; /* Limita el ancho máximo a 80% del viewport */
+    --background: linear-gradient(to bottom, #7C00FF, #9B00EE);
+    --border-radius: 50px;
+    --padding: 1.5rem 3rem;
+    --color: #fff;
+    --font-size: 1.2rem;
+    --font-weight: bold;
+    --text-align: center;
+    --box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    min-width: 250px;  /* Reducir el ancho mínimo */
+    height: 250px;
+    border: none;
+    display: flex;         /* Asegura que el contenido del botón esté centrado */
+    align-items: center;  /* Centra el contenido verticalmente */
+    justify-content: center; /* Centra el contenido horizontalmente */
+    text-align: center;   /* Asegura que el texto dentro del botón esté centrado */
+    z-index: 1;          /* Asegura que el botón esté sobre la ola */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho del botón */
+}
+
+ion-button.custom-button:hover {
+    --background: linear-gradient(to bottom, #6b00e6, #8b00d9);
+    --box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.3);
+}
+
+ion-button.custom-button:active {
+    --background: linear-gradient(to bottom, #5800b8, #7200a0);
+    --box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+ion-button.custom-button:disabled {
+    --background: linear-gradient(to bottom, #d1c6e0, #b4a5d0);
+    --color: #aaa;
+    --box-shadow: none;
+}

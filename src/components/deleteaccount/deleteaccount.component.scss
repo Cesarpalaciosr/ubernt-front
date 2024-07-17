@@ -1,0 +1,29 @@
+.card-header {
+    background-color: #eb445a; // Color de fondo del encabezado
+    color: #fff; // Color del texto del encabezado
+    padding: 10px; // Ajusta el relleno según sea necesario
+    text-align: center; // Ajusta la alineación del texto según sea necesario
+  }
+  
+  .card-title {
+    margin: 2; // Elimina el margen predeterminado si es necesario
+  }
+
+.wrapper {
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+  }
+  
+  ion-input {
+    color: black;
+    margin-bottom: 15px;
+  }
+  
+  ion-button {
+    color: black;
+    margin-top: 15px;
+  }
+
+  .input{
+    background-color: white;
+  }

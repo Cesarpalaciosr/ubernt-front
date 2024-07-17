@@ -1,0 +1,30 @@
+.card-header {
+    background: linear-gradient(to right, #d65753, rgb(224, 148, 87));
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-title {
+    margin: 2;
+  }
+  
+  .wrapper {
+    padding: 20px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 0 0 10px 10px; /* Bordes redondeados solo en la parte inferior */
+  }
+  
+  ion-input {
+    color: black;
+    margin-bottom: 15px;
+  }
+  
+  ion-button {
+    color: black;
+    margin-top: 15px;
+  }
+  
+  .input {
+    background-color: white;
+  }
