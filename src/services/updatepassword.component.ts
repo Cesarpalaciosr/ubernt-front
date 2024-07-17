@@ -6,13 +6,13 @@ import { Location } from '@angular/common';
 import { Preferences } from '@capacitor/preferences';
 
 @Component({
-  selector: 'app-updateemail',
-  templateUrl: './updateemail.component.html',
-  styleUrls: ['./updateemail.component.scss'],
+  selector: 'app-updatepassword',
+  templateUrl: '../components/updatepassword/updatepassword.component.html',
+  styleUrls: ['../components/updatepassword/updatepassword.component.scss'],
 })
-export class UpdateemailComponent implements OnInit {
+export class UpdatepasswordComponent implements OnInit {
   password: string = '';
-  email: string = '';
+  newPassword: string = '';
   loading: boolean = false;
 
   constructor(
@@ -25,17 +25,17 @@ export class UpdateemailComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  async updateEmail() {
+  async updatePassword() {
     const { value } = await Preferences.get({ key: 'alias' });
     this.loading = true;
-    const email = this.email;
+    const newPassword = this.newPassword;
     const password = this.password;
 
     this.http
       .put(
-        `https://tmdb-for-a-angularmovile.onrender.com/${value}/updateEmail`,
+        `https://tmdb-for-a-angularmovile.onrender.com/${value}/updatePassword`,
         {
-          email: email,
+          newPass: newPassword,
           oldPass: password,
         }
       )

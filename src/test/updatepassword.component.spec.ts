@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { UpdatepasswordComponent } from './updatepassword.component';
+import { UpdatepasswordComponent } from 'src/services/updatepassword.component';
 
 describe('UpdatepasswordComponent', () => {
   let component: UpdatepasswordComponent;

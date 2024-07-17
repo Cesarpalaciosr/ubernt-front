@@ -4,9 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapPage } from './map.page';
 import { MapPageRoutingModule } from 'src/routes/map-routing.module';
-
-import { MapDistanceComponent } from 'src/components/map-distance/map-distance.component';
-import { UserButtonComponent } from 'src/components/user-button/user-button.component'; 
+import { MapDistanceComponent } from 'src/services/map-distance.component';
+import { SharedModule } from 'src/components/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,15 +13,13 @@ import { UserButtonComponent } from 'src/components/user-button/user-button.comp
     FormsModule,
     IonicModule,
     MapPageRoutingModule,
+    SharedModule
   ],
   declarations: [
     MapPage,
-    MapDistanceComponent,
-    UserButtonComponent  
+    
   ],
   exports: [
-    MapDistanceComponent,
-    UserButtonComponent  
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })

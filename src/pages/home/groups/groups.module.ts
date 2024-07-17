@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { GroupsPageRoutingModule } from 'src/routes/groups-routing.module';
 import { ChatModalComponent } from 'src/components/chat-modal/chat-modal.component';
 import { GroupsPage } from './groups.page';  
+import { SharedModule } from 'src/components/shared/shared.module';
 
 @NgModule({
   declarations: [

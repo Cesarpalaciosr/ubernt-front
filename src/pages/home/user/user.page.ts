@@ -4,10 +4,10 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 import { Preferences } from '@capacitor/preferences';
-import { UpdateemailComponent } from '../../../components/updateemail/updateemail.component';
-import { UpdatepasswordComponent } from '../../../components/updatepassword/updatepassword.component';
-import { UpdatenameComponent } from '../../../components/updatename/updatename.component';
-import { DeleteaccountComponent } from '../../../components/deleteaccount/deleteaccount.component';
+import { UpdateemailComponent } from 'src/services/updateemail.component';
+import { UpdatepasswordComponent } from 'src/services/updatepassword.component';
+import { UpdatenameComponent } from 'src/services/updatename.component';
+import { DeleteaccountComponent } from 'src/services/deleteaccount.component';
 
 @Component({
   selector: 'app-user',

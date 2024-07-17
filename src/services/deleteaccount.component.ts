@@ -7,8 +7,8 @@ import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-deleteaccount',
-  templateUrl: './deleteaccount.component.html',
-  styleUrls: ['./deleteaccount.component.scss'],
+  templateUrl: '../components/deleteaccount/deleteaccount.component.html',
+  styleUrls: ['../components/deleteaccount/deleteaccount.component.scss'],
 })
 export class DeleteaccountComponent implements OnInit {
   password: string = '';

@@ -8,19 +8,20 @@ import { UserPageRoutingModule } from 'src/routes/user-routing.module';
 
 import { UserPage } from './user.page';
 
-import { UpdateemailComponent } from '../../../components/updateemail/updateemail.component';
-import { UpdatepasswordComponent } from '../../../components/updatepassword/updatepassword.component';
-import { UpdatenameComponent } from '../../../components/updatename/updatename.component';
-import { DeleteaccountComponent } from '../../../components/deleteaccount/deleteaccount.component';
+import { UpdateemailComponent } from 'src/services/updateemail.component';
+import { UpdatepasswordComponent } from 'src/services/updatepassword.component';
+import { UpdatenameComponent } from 'src/services/updatename.component';
+import { DeleteaccountComponent } from 'src/services/deleteaccount.component';
+import { SharedModule } from 'src/components/shared/shared.module';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, UserPageRoutingModule],
   declarations: [
-    UserPage,
-    UpdateemailComponent,
-    UpdatepasswordComponent,
-    UpdatenameComponent,
-    DeleteaccountComponent,
+     UserPage,
+    // UpdateemailComponent,
+    // UpdatepasswordComponent,
+    // UpdatenameComponent,
+    // DeleteaccountComponent,
   ],
 })
 export class UserPageModule {}

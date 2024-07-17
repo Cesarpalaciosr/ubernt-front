@@ -7,8 +7,8 @@ import { Geolocation } from '@capacitor/geolocation';
 
 @Component({
   selector: 'app-map-distance',
-  templateUrl: './map-distance.component.html',
-  styleUrls: ['./map-distance.component.scss']
+  templateUrl: '../components/map-distance/map-distance.component.html',
+  styleUrls: ['../components/map-distance/map-distance.component.scss']
 })
 export class MapDistanceComponent implements ViewWillEnter, OnInit, OnDestroy {
   private map: L.Map | null = null;

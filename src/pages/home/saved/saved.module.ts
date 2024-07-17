@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { SavedPageRoutingModule } from 'src/routes/saved-routing.module';
 import { SavedPage } from './saved.page';
+import { SharedModule } from 'src/components/shared/shared.module';
 
 @NgModule({
   imports: [
