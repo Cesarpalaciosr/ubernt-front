@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { SchedulePageRoutingModule } from 'src/app/routes/schedule-routing.module';
+import { SchedulePageRoutingModule } from '../../../routes/schedule-routing.module';
 import { SchedulePage } from './schedule.page';
 
 @NgModule({

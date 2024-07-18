@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RolPageRoutingModule } from 'src/app/routes/rol-routing.module';
+import { RolPageRoutingModule } from '../../../routes/rol-routing.module';
 
 import { RolPage } from './rol.page';
 

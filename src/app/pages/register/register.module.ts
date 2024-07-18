@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { RegisterPageRoutingModule } from 'src/app/routes/register-routing.module';
+import { RegisterPageRoutingModule } from '../../routes/register-routing.module';
 
 import { RegisterPage } from './register.page';
 

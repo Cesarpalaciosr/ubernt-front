@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { HomePageRoutingModule } from 'src/app/routes/home-routing.module';
+import { HomePageRoutingModule } from '../../routes/home-routing.module';
 import { HomePage } from './home.page';
 
 @NgModule({
