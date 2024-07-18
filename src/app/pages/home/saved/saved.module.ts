@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { SavedPageRoutingModule } from 'src/routes/saved-routing.module';
+import { SavedPageRoutingModule } from 'src/app/routes/saved-routing.module';
 import { SavedPage } from './saved.page';
 
 @NgModule({

@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapPage } from './map.page';
-import { MapPageRoutingModule } from 'src/routes/map-routing.module';
+import { MapPageRoutingModule } from 'src/app/routes/map-routing.module';
 
-import { MapDistanceComponent } from 'src/components/map-distance/map-distance.component';
-import { UserButtonComponent } from 'src/components/user-button/user-button.component'; 
+import { MapDistanceComponent } from 'src/app/components/map-distance/map-distance.component';
+import { UserButtonComponent } from 'src/app/components/atoms/user-button/user-button.component'; 
 
 @NgModule({
   imports: [
