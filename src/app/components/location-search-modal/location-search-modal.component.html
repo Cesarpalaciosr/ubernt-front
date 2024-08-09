@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Search Locations</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()">Close</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-item>
+    <ion-label position="stacked">Start Location</ion-label>
+    <ion-input [(ngModel)]="startLocation"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="stacked">End Location</ion-label>
+    <ion-input [(ngModel)]="endLocation"></ion-input>
+  </ion-item>
+  <ion-button expand="full" (click)="dismiss()">Ride</ion-button>
+</ion-content>
+
+

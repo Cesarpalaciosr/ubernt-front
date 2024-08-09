@@ -1,22 +1,29 @@
-<app-user-button></app-user-button>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Map Distance</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openSearchModal()">Buscar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <ion-content>
-  <ion-item>
-    <ion-label position="floating">Start Location</ion-label>
-    <ion-input [(ngModel)]="startLocationName" (ionChange)="updateStartLocation()"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">End Location</ion-label>
-    <ion-input [(ngModel)]="endLocationName" (ionChange)="updateEndLocation()"></ion-input>
-  </ion-item>
-
-  <!-- Lista de sugerencias de ubicación -->
-  <ion-list *ngIf="locationSuggestions.length > 0" class="suggestions-list">
-    <ion-item *ngFor="let suggestion of locationSuggestions" (click)="selectSuggestion(suggestion)">
-      {{ suggestion.name }}
+  <div class="inputs-container">
+    <ion-item>
+      <ion-label position="floating">Start Location</ion-label>
+      <ion-input id="startLocation" [(ngModel)]="startLocation" (ionChange)="onLocationInputChange('start')"></ion-input>
     </ion-item>
-  </ion-list>
+    
+    <ion-item>
+      <ion-label position="floating">End Location</ion-label>
+      <ion-input id="endLocation" [(ngModel)]="endLocation" (ionChange)="onLocationInputChange('end')"></ion-input>
+    </ion-item>
 
-  <!-- Contenedor del mapa -->
+    <ion-item>
+      <ion-label>Distance: {{ distance }}</ion-label>
+    </ion-item>
+  </div>
   <div id="map" class="map-container"></div>
 </ion-content>
+
+  

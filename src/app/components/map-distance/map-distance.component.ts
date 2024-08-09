@@ -1,265 +1,307 @@
-import { Component, AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
-import axios from 'axios';
-import { ViewWillEnter } from '@ionic/angular';
-import { Geolocation } from '@capacitor/geolocation';
-
+import { HttpClient } from '@angular/common/http';
+import { ModalController } from '@ionic/angular';
+import { LocationSearchModalComponent } from '../location-search-modal/location-search-modal.component';
 
 @Component({
   selector: 'app-map-distance',
   templateUrl: './map-distance.component.html',
   styleUrls: ['./map-distance.component.scss']
 })
-export class MapDistanceComponent implements ViewWillEnter, OnInit, OnDestroy {
-  private map: L.Map | null = null;
-  private startPoint: L.LatLng | null = null;
-  private endPoint: L.LatLng | null = null;
-  private distance: number | null = null;
-  private locationMarker: L.Marker | null = null;
-  private watchId: number | null = null;
-  private routeLayer: L.Layer | null = null;  // Nueva capa para la ruta
+export class MapDistanceComponent implements OnInit, AfterViewInit {
+  private map!: L.Map;
+  private startMarker!: L.Marker;
+  private endMarker!: L.Marker;
+  private routeLayer!: L.LayerGroup;
 
-  // Propiedades para manejar nombres de ubicaciones
-  startLocationName: string = '';
-  endLocationName: string = '';
-  locationSuggestions: any[] = [];  // Lista para las sugerencias de ubicaciones
+  public startLocation: string = '';
+  public endLocation: string = '';
+  public distance: string = '';
 
+  private readonly DEFAULT_ZOOM_LEVEL = 25;
+  private readonly DEFAULT_LOCATION = { lat: 10.649495, lng: -71.596806 };
 
+  constructor(private http: HttpClient, private modalController: ModalController) { }
 
-  // <uses-permission android: name = "android.permission.ACCESS_COARSE_LOCATION" />
-  // <uses-permission android: name = "android.permission.ACCESS_FINE_LOCATION" />
-  // <uses-feature android: name = "android.hardware.location.gps" />
+  ngOnInit(): void { }
 
-  constructor() { }
-
-  async ngOnInit() {
-    console.log("test");
-    //await navigator.geolocation.getCurrentPosition(this.successInit, this.errorInit)
-    await Geolocation.getCurrentPosition().then((position: any) => {
-      //console.log(position.coords.latitude, position.coords.longitude);
-      this.successInit(position.coords)
-    }
-    )
-      .catch((err) => {
-        console.log('Error getting location', err);
-      }
-      );
+  ngAfterViewInit(): void {
+    this.initMap();
   }
 
-
-  async ionViewWillEnter(): Promise<void> {
-    // await this.initMap();
-    await navigator.geolocation.getCurrentPosition(this.successInit, this.errorInit)
-    console.log("test");
-    const test = () => {
-      console.log("test")
-      Geolocation.getCurrentPosition().then((position) => {
-        console.log('Current', position);
-      })
-        .catch((err) => {
-          console.log('Error getting location', err);
-        }
-        );
-    }
-    await test();
-  }
-
-  private async successInit(position: any): Promise<void> {
-    console.log("cositas xdxd ", position.latitude, position.longitude);
-    const UserLat: any = position.latitude;
-    const UserLng: any = position.longitude;
-    console.log(UserLat, UserLng);
-    const zoom = 15;
-    await this.initMap(UserLat, UserLng, zoom)
-
-  }
-
-  private async errorInit() {
-    await this.initMap(0, 0, 15)
-  }
-
-  public async initMap(UserLat: any, UserLng: any, zoom: any): Promise<void> {
-    this.map = L.map('map').setView([UserLat, UserLng], zoom);
+  private initMap(): void {
+    this.map = L.map('map').setView([this.DEFAULT_LOCATION.lat, this.DEFAULT_LOCATION.lng], this.DEFAULT_ZOOM_LEVEL);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(this.map);
 
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      this.onMapClick(e);
+    this.addDefaultMarker();
+    this.locateUser();
+    this.setupClickHandler();
+  }
+
+  private addDefaultMarker(): void {
+    const customIcon = L.icon({
+      iconUrl: 'https://uru.edu/wp-content/uploads/2023/08/uru-logo-seo.png',
+      iconSize: [100, 100],
+      iconAnchor: [50, 100],
+      popupAnchor: [0, -100]
     });
 
-    this.setCurrentLocation();
+    L.marker([this.DEFAULT_LOCATION.lat, this.DEFAULT_LOCATION.lng], { icon: customIcon })
+      .addTo(this.map)
+      .bindPopup('Universidad Rafael Urdaneta');
   }
 
-  private onMapClick(e: L.LeafletMouseEvent): void {
-    if (!this.startPoint) {
-      this.startPoint = e.latlng;
-      L.marker(this.startPoint).addTo(this.map!)
-        .bindPopup('Start Point')
-        .openPopup();
-    } else if (!this.endPoint) {
-      this.endPoint = e.latlng;
-      L.marker(this.endPoint).addTo(this.map!)
-        .bindPopup('End Point')
-        .openPopup();
-
-      this.calculateDistance();
-      this.traceRoute();  // Llamar a la función para trazar la ruta
-    }
-  }
-
-  private async traceRoute(): Promise<void> {
-    if (this.startPoint && this.endPoint) {
-      const [startLat, startLon] = [this.startPoint.lat, this.startPoint.lng];
-      const [endLat, endLon] = [this.endPoint.lat, this.endPoint.lng];
-
-      try {
-        const response = await axios.get(`https://api.openrouteservice.org/v2/directions/driving-car`, {
-          params: {
-            start: `${startLon},${startLat}`,
-            end: `${endLon},${endLat}`,
-            api_key: '5b3ce3597851110001cf62483d78c961eb984a10809db54753ce8a50',  // Reemplaza con tu propia API Key de OpenRouteService
-            format: 'geojson'
-          }
-        });
-
-        if (this.routeLayer) {
-          this.map!.removeLayer(this.routeLayer);
-        }
-
-        const routeGeoJSON = response.data;
-        this.routeLayer = L.geoJSON(routeGeoJSON, {
-          style: {
-            color: '#800080',  // Color morado para la ruta
-            weight: 5,
-            opacity: 0.75  // Aumentar la opacidad para una mejor visibilidad
-          }
-        }).addTo(this.map!);
-
-        this.map!.fitBounds(L.geoJSON(routeGeoJSON).getBounds());
-
-      } catch (error) {
-        console.error(error);
-        alert('Error retrieving route');
-      }
-    }
-  }
-
-  private calculateDistance(): void {
-    if (this.startPoint && this.endPoint) {
-      this.distance = this.startPoint.distanceTo(this.endPoint);
-      alert(`Distance: ${this.distance.toFixed(2)} meters`);
-    }
-  }
-
-  private setCurrentLocation(): void {
+  private locateUser(): void {
     if (navigator.geolocation) {
-      this.watchId = navigator.geolocation.watchPosition(
-        (position) => {
-          const coords = position.coords;
-          const latLng = L.latLng(coords.latitude, coords.longitude);
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
 
-          if (this.map) {
-            this.map.setView(latLng, 13);
-          }
+          this.map.setView([lat, lng], this.DEFAULT_ZOOM_LEVEL);
 
-          if (this.locationMarker) {
-            this.locationMarker.setLatLng(latLng);
-          } else {
-            this.locationMarker = L.marker(latLng).addTo(this.map!)
-              .bindPopup('Current Location')
-              .openPopup();
-          }
+          L.marker([lat, lng], {
+            icon: L.divIcon({
+              html: '<ion-icon name="locate-outline" style="font-size: 2rem; color: red;"></ion-icon>',
+              iconSize: [40, 40],
+              className: 'custom-icon'
+            })
+          }).addTo(this.map).bindPopup('Your current location').openPopup();
+
         },
-        (error) => {
-          console.error(error);
-          alert('Unable to retrieve your location');
+        error => {
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              alert('User denied the request for Geolocation.');
+              break;
+            case error.POSITION_UNAVAILABLE:
+              alert('Location information is unavailable.');
+              break;
+            case error.TIMEOUT:
+              alert('The request to get user location timed out.');
+              break;
+            default:
+              alert('An unknown error occurred.');
+              break;
+          }
         },
         {
-          enableHighAccuracy: true,  // Solicitar la ubicación más precisa disponible
-          timeout: 5000,            // Tiempo máximo de espera para obtener una ubicación
-          maximumAge: 0            // No usar ubicaciones almacenadas
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0
         }
       );
     } else {
-      alert('Geolocation is not supported by your browser');
+      alert('Geolocation is not supported by this browser.');
     }
+
+    setTimeout(() => {
+      this.map.invalidateSize();
+    }, 500);
   }
 
-  public async updateStartLocation(): Promise<void> {
-    if (this.startLocationName) {
-      try {
-        const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-          params: {
-            q: `${this.startLocationName}, Zulia, Venezuela`,
-            format: 'json',
-            limit: 5  // Obtener hasta 5 sugerencias
-          }
-        });
-
-        this.locationSuggestions = response.data.map((loc: any) => ({
-          name: loc.display_name,
-          lat: loc.lat,
-          lon: loc.lon
-        }));
-      } catch (error) {
-        console.error(error);
-        alert('Error retrieving location');
+  private setupClickHandler(): void {
+    this.map.on('click', (e: L.LeafletMouseEvent) => {
+      if (!this.startMarker) {
+        this.startMarker = L.marker(e.latlng, {
+          icon: L.divIcon({
+            html: '<ion-icon name="location-sharp" style="font-size: 2rem; color: blue;"></ion-icon>',
+            iconSize: [40, 40],
+            className: 'custom-icon'
+          }),
+          draggable: false //se puede ajusta para ponerle funcionalidad y que se ajuste cuando se cambie el pointer
+        }).addTo(this.map)
+          .bindPopup('Start Point')
+          .openPopup();
+        this.getLocationName(e.latlng.lat, e.latlng.lng, 'start');
+      } else if (!this.endMarker) {
+        this.endMarker = L.marker(e.latlng, {
+          icon: L.divIcon({
+            html: '<ion-icon name="location-sharp" style="font-size: 2rem; color: purple;"></ion-icon>',
+            iconSize: [40, 40],
+            className: 'custom-icon'
+          }),
+          draggable: false //se puede ajusta para ponerle funcionalidad y que se ajuste cuando se cambie el pointer
+        }).addTo(this.map)
+          .bindPopup('End Point')
+          .openPopup();
+        this.getLocationName(e.latlng.lat, e.latlng.lng, 'end');
+        this.calculateRoute();
+      } else {
+        this.map.removeLayer(this.startMarker);
+        this.map.removeLayer(this.endMarker);
+        this.routeLayer?.clearLayers();
+        this.startMarker = undefined!;
+        this.endMarker = undefined!;
+        this.startLocation = '';
+        this.endLocation = '';
+        this.distance = '';
       }
-    }
+    });
   }
 
-  public async updateEndLocation(): Promise<void> {
-    if (this.endLocationName) {
-      try {
-        const response = await axios.get(`https://nominatim.openstreetmap.org/search`, {
-          params: {
-            q: `${this.endLocationName}, Zulia, Venezuela`,
-            format: 'json',
-            limit: 5  // Obtener hasta 5 sugerencias
-          }
-        });
+  private calculateRoute(): void {
+    if (!this.startMarker || !this.endMarker) {
+      console.error('Both start and end markers are required to calculate route.');
+      return;
+    }
 
-        this.locationSuggestions = response.data.map((loc: any) => ({
-          name: loc.display_name,
-          lat: loc.lat,
-          lon: loc.lon
-        }));
-      } catch (error) {
-        console.error(error);
-        alert('Error retrieving location');
+    const start = this.startMarker.getLatLng();
+    const end = this.endMarker.getLatLng();
+
+    const apiKey = '5b3ce3597851110001cf62483d78c961eb984a10809db54753ce8a50';
+    const url = `https://api.openrouteservice.org/v2/directions/foot-walking?api_key=${apiKey}&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`;
+
+    this.http.get(url).subscribe((data: any) => {
+      const coords = data.features[0].geometry.coordinates;
+      const latLngs = coords.map((coord: number[]) => new L.LatLng(coord[1], coord[0]));
+
+      if (this.routeLayer) {
+        this.routeLayer.clearLayers();
       }
+
+      this.routeLayer = L.layerGroup([
+        L.polyline(latLngs, { color: 'purple' })
+      ]).addTo(this.map);
+
+      this.calculateDistance(start, end);
+    }, error => {
+      console.error('Error fetching route:', error);
+    });
+  }
+
+  private calculateDistance(start: L.LatLng, end: L.LatLng): void {
+    const distanceInMeters = this.map.distance(start, end);
+    this.distance = `${(distanceInMeters / 1000).toFixed(2)} km`;
+  }
+
+  private getLocationName(lat: number, lng: number, type: 'start' | 'end'): void {
+    const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`;
+
+    this.http.get(url).subscribe((data: any) => {
+      const address = data.address;
+      let locationName = '';
+
+      if (address.road) {
+        locationName += address.road;
+      }
+      if (address.suburb) {
+        locationName += locationName ? `, ${address.suburb}` : address.suburb;
+      }
+      if (address.city) {
+        locationName += locationName ? `, ${address.city}` : address.city;
+      }
+
+      if (!locationName && address.neighbourhood) {
+        locationName = address.neighbourhood;
+      }
+
+      if (!locationName && address.city) {
+        locationName = address.city;
+      }
+
+      if (!locationName && address.state) {
+        locationName = address.state;
+      }
+
+      if (!locationName && address.country) {
+        locationName = address.country;
+      }
+
+      if (type === 'start') {
+        this.startLocation = locationName;
+      } else {
+        this.endLocation = locationName;
+      }
+    }, error => {
+      console.error('Error fetching location name:', error);
+    });
+  }
+
+  public async openSearchModal() {
+    const modal = await this.modalController.create({
+      component: LocationSearchModalComponent,
+      componentProps: {
+        startLocation: this.startLocation,
+        endLocation: this.endLocation
+      }
+    });
+
+    modal.onDidDismiss().then((detail) => {
+      if (detail !== null && detail.data) {
+        const { startLocation, endLocation } = detail.data;
+        this.startLocation = startLocation;
+        this.endLocation = endLocation;
+        // You can add additional logic here to handle marker updates or map adjustments (resumen: aqui puedo ajustar el draggable)
+        this.onLocationInputChange('start');
+        this.onLocationInputChange('end');
+      }
+    });
+
+    await modal.present();
+  }
+
+  public onLocationInputChange(type: 'start' | 'end'): void {
+    if (type === 'start') {
+      this.geocodeLocation(this.startLocation, 'start');
+    } else {
+      this.geocodeLocation(this.endLocation, 'end');
     }
   }
 
-  public selectSuggestion(suggestion: any): void {
-    const latLng = L.latLng(suggestion.lat, suggestion.lon);
+  private geocodeLocation(location: string, type: 'start' | 'end'): void {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&addressdetails=1&limit=1`;
 
-    if (!this.startPoint) {
-      this.startPoint = latLng;
-      L.marker(this.startPoint).addTo(this.map!)
-        .bindPopup('Start Point')
-        .openPopup();
-      this.startLocationName = suggestion.name;
-    } else if (!this.endPoint) {
-      this.endPoint = latLng;
-      L.marker(this.endPoint).addTo(this.map!)
-        .bindPopup('End Point')
-        .openPopup();
-      this.endLocationName = suggestion.name;
+    this.http.get(url).subscribe((data: any) => {
+      if (data.length > 0) {
+        const lat = data[0].lat;
+        const lng = data[0].lon;
+        const latLng = new L.LatLng(lat, lng);
 
-      this.calculateDistance();
-      this.traceRoute();  // Llamar a la función para trazar la ruta
-    }
+        if (type === 'start') {
+          if (this.startMarker) {
+            this.map.removeLayer(this.startMarker);
+          }
+          this.startMarker = L.marker(latLng, {
+            icon: L.divIcon({
+              html: '<ion-icon name="location-sharp" style="font-size: 2rem; color: blue;"></ion-icon>',
+              iconSize: [40, 40],
+              className: 'custom-icon'
+            }),
+            draggable: true
+          }).addTo(this.map).bindPopup('Start Point').openPopup();
 
-    this.map?.setView(latLng, 13);
-    this.locationSuggestions = [];  // Clear the suggestions list
-  }
+          this.map.setView(latLng, this.DEFAULT_ZOOM_LEVEL);
+        } else {
+          if (this.endMarker) {
+            this.map.removeLayer(this.endMarker);
+          }
+          this.endMarker = L.marker(latLng, {
+            icon: L.divIcon({
+              html: '<ion-icon name="location-sharp" style="font-size: 2rem; color: purple;"></ion-icon>',
+              iconSize: [40, 40],
+              className: 'custom-icon'
+            }),
+            draggable: true
+          }).addTo(this.map).bindPopup('End Point').openPopup();
 
-  ngOnDestroy(): void {
-    if (this.watchId !== null) {
-      navigator.geolocation.clearWatch(this.watchId);
-    }
+          this.map.setView(latLng, this.DEFAULT_ZOOM_LEVEL);
+        }
+
+        if (this.startMarker && this.endMarker) {
+          this.calculateRoute();
+        }
+      } else {
+        alert('Location not found.');
+      }
+    }, error => {
+      console.error('Error fetching geocode:', error);
+    });
   }
 }
+
