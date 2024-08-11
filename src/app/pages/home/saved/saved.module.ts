@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
-
-import { SavedPageRoutingModule } from 'src/app/routes/saved-routing.module';
+import { InfoCardUserComponent  } from "../../../components/atoms/info-card-user/info-card-user.component";
+import { SavedPageRoutingModule } from '../../../routes/saved-routing.module';
 import { SavedPage } from './saved.page';
 
 @NgModule({
@@ -13,6 +13,6 @@ import { SavedPage } from './saved.page';
     IonicModule,
     SavedPageRoutingModule
   ],
-  declarations: [SavedPage],
+  declarations: [SavedPage, InfoCardUserComponent],
 })
 export class SavedPageModule { }

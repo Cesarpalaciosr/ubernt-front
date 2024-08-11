@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { LoginPageRoutingModule } from 'src/app/routes/login-routing.module';
+import { LoginPageRoutingModule } from '../../routes/login-routing.module';
 
 import { LoginPage } from './login.page';
 

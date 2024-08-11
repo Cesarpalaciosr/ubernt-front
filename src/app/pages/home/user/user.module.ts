@@ -4,14 +4,14 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { UserPageRoutingModule } from 'src/app/routes/user-routing.module';
+import { UserPageRoutingModule } from '../../../routes/user-routing.module';
 
 import { UserPage } from './user.page';
 
-import { UpdateemailComponent } from 'src/app/components/updateemail/updateemail.component';
-import { UpdatepasswordComponent } from 'src/app/components/updatepassword/updatepassword.component';
-import { UpdatenameComponent } from 'src/app/components/updatename/updatename.component';
-import { DeleteaccountComponent } from 'src/app/components/deleteaccount/deleteaccount.component';
+import { UpdateemailComponent } from '../../../components/updateemail/updateemail.component';
+import { UpdatepasswordComponent } from '../../../components/updatepassword/updatepassword.component';
+import { UpdatenameComponent } from '../../../components/updatename/updatename.component';
+import { DeleteaccountComponent } from '../../../components/deleteaccount/deleteaccount.component';
 
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, UserPageRoutingModule],

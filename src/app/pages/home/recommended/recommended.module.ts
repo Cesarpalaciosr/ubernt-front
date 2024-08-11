@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import { RecommendedPageRoutingModule } from 'src/app/routes/recommended-routing.module';
+import { RecommendedPageRoutingModule } from '../../../routes/recommended-routing.module';
 import { RecommendedPage } from './recommended.page';
 
 @NgModule({

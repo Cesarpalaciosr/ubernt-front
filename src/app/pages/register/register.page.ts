@@ -16,6 +16,8 @@ export class RegisterPage implements OnInit {
   name: string = '';
   bios: string = '';
   errorMessage: string = '';
+  // options = ['Opción 1', 'Opción 2', 'Opción 3'];
+  // selectedOption: string = '';
 
   constructor(
     private router: Router,
