@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapPage } from './map.page';
-import { MapPageRoutingModule } from '../../../routes/map-routing.module';
-import { MapDistanceComponent } from '../../../components/map-distance/map-distance.component';
-import { UserButtonComponent } from '../../../components/atoms/user-button/user-button.component'; 
+import { MapPageRoutingModule } from 'src/app/routes/map-routing.module';
+
+import { MapDistanceComponent } from 'src/app/components/map-distance/map-distance.component';
+import { UserButtonComponent } from 'src/app/components/atoms/user-button/user-button.component'; 
+import { LocationSearchModalComponent } from 'src/app/components/location-search-modal/location-search-modal.component';
 
 @NgModule({
   imports: [
@@ -17,11 +19,13 @@ import { UserButtonComponent } from '../../../components/atoms/user-button/user-
   declarations: [
     MapPage,
     MapDistanceComponent,
-    UserButtonComponent  
+    UserButtonComponent,
+    LocationSearchModalComponent
   ],
   exports: [
     MapDistanceComponent,
-    UserButtonComponent  
+    UserButtonComponent,
+    MapDistanceComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })
