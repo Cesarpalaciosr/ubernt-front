@@ -11,7 +11,11 @@
     pointer-events: none;  /* Evita que el texto interfiera con la interacción de otros elementos */
 }
 
+a{
+    text-decoration: none;
+    color: #9B00EE;
 
+}
 
 ion-content {
     --background: linear-gradient(to bottom, rgb(30, 14, 72), rgb(18, 8, 43));

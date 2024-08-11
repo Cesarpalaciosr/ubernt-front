@@ -24,9 +24,6 @@
     <ion-card shape="round">
       <ion-card-content>
         <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-         
-
-
           <ion-item>
             <ion-input
               placeholder="UserName"
@@ -76,6 +73,9 @@
           </ion-item>
 
           <ion-item>
+            <!-- <ion-select [(ngModel)]="selectedOption">
+              <ion-select-option color="red" *ngFor="let option of options" [value]="option">{{ option }}</ion-select-option>
+            </ion-select> -->
             <ion-input
               placeholder="Phone"
               required
@@ -109,6 +109,9 @@
             >Register</ion-button
           >
         </form>
+        <ion-col>
+          <p>Ya tienes cuenta? <a [routerLink]="['/login']"> Ingresa aqui</a></p>
+        </ion-col>
       </ion-card-content>
     </ion-card>
   </div>
