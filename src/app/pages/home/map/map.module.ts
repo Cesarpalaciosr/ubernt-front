@@ -8,6 +8,8 @@ import { MapPageRoutingModule } from 'src/app/routes/map-routing.module';
 import { MapDistanceComponent } from 'src/app/components/map-distance/map-distance.component';
 import { UserButtonComponent } from 'src/app/components/atoms/user-button/user-button.component'; 
 import { LocationSearchModalComponent } from 'src/app/components/location-search-modal/location-search-modal.component';
+import { WaitDriverComponent } from 'src/app/components/wait-driver/wait-driver.component';
+import { ToggleSwitchComponent } from 'src/app/components/toggle-switch/toggle-switch.component';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import { LocationSearchModalComponent } from 'src/app/components/location-search
     MapPage,
     MapDistanceComponent,
     UserButtonComponent,
-    LocationSearchModalComponent
+    LocationSearchModalComponent,
+    WaitDriverComponent,
+    ToggleSwitchComponent
   ],
   exports: [
     MapDistanceComponent,

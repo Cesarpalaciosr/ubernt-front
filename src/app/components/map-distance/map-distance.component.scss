@@ -1,15 +1,22 @@
 
 
 :host, ion-content, #map {
-  display: block;
+  // display: block;
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
 }
+
 ion-header {
-  --background: var(--ion-color-primary);
-  color: var(--ion-color-light);
+  ion-toolbar {
+    --background: linear-gradient(to right, #550DA1, #661491);
+    --color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
 }
 
 ion-content {
@@ -27,10 +34,20 @@ ion-content {
   left: 0; /* Ajusta para que cubra desde el lado izquierdo */
   right: 0; /* Ajusta para que cubra hasta el lado derecho */
   z-index: 1000; /* Asegura que los inputs estén por encima del mapa */
-  background: rgba(0, 0, 0, 0.8); /* Fondo semitransparente */
+  
+  /* Fondo con degradado y blur */
+  background: linear-gradient(
+      180deg, 
+      rgba(32, 22, 112, 0.6) 0%, 
+      rgba(32, 22, 112, 0.4) 50%, 
+      rgba(32, 22, 112, 0.2) 100%
+  );
+  backdrop-filter: blur(8px); /* Aplica el desenfoque */
+  
   padding: 16px; /* Puedes ajustar el padding según sea necesario */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
 }
 
 
@@ -47,3 +64,44 @@ ion-item {
   --inner-padding-start: 10px;
 }
 
+app-toggle-switch {
+  position: absolute;
+  top: 50%; /* Centra verticalmente */
+  left: 50%; /* Centra horizontalmente */
+  transform: translate(-50%, -50%); /* Ajuste para centrar perfectamente */
+  z-index: 1; /* Asegura que el switch esté por encima de otros elementos */
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+
+  border-radius: 16px; /* Bordes más redondeados */
+  width: 100%;
+  height: 60px; /* Botones más grandes */
+  margin-bottom: 12px; /* Espacio extra entre botones */
+  align-items: center;
+}
+
+ion-label {
+  color: #4b097d;
+  text-align: left;
+  font-size: 18px; /* Tamaño de fuente más grande */
+}
+
+ion-icon {
+  color: #ffffff; /* Iconos en blanco */
+  background-color: #550DA1; /* Fondo morado */
+  padding: 10px;
+  border-radius: 10px; /* Borde redondeado para los iconos */
+  font-size: 24px; /* Aumenta el tamaño de los iconos */
+}
+
+.buscar-button {
+  
+  --background: #550DA1; /* Color de fondo morado */
+  --color: #ffffff; /* Color del texto blanco */
+  --border-radius: 8px; /* Bordes redondeados opcionales */
+  --padding-start: 16px; /* Espaciado interno */
+  --padding-end: 16px;
+}

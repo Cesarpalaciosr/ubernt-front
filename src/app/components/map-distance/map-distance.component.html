@@ -2,10 +2,12 @@
   <ion-toolbar>
     <ion-title>Map Distance</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="openSearchModal()">Buscar</ion-button>
+      <app-user-button></app-user-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<app-toggle-switch (statusChange)="onStatusChange($event)"></app-toggle-switch>
 
 <ion-content>
   <div class="inputs-container">
@@ -22,6 +24,9 @@
     <ion-item>
       <ion-label>Distance: {{ distance }}</ion-label>
     </ion-item>
+
+    <ion-button  expand="block" class= "buscar-button" (click)="openSearchModal()">Buscar</ion-button>
+
   </div>
   <div id="map" class="map-container"></div>
 </ion-content>

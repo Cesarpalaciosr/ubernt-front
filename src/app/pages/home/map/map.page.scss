@@ -1,3 +1,6 @@
+
+
+
 ion-menu-button {
   color: var(--ion-color-primary);
 }
@@ -26,4 +29,30 @@ ion-menu-button {
 
 #container a {
   text-decoration: none;
+}
+
+ion-item {
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --background: #ffffff;
+  --color: #4b097d;
+  border-radius: 16px; /* Bordes más redondeados */
+  width: 100%;
+  height: 60px; /* Botones más grandes */
+  margin-bottom: 12px; /* Espacio extra entre botones */
+  align-items: center;
+}
+
+ion-label {
+  color: #4b097d;
+  text-align: left;
+  font-size: 18px; /* Tamaño de fuente más grande */
+}
+
+ion-icon {
+  color: #ffffff; /* Iconos en blanco */
+  background-color: #550DA1; /* Fondo morado */
+  padding: 10px;
+  border-radius: 10px; /* Borde redondeado para los iconos */
+  font-size: 24px; /* Aumenta el tamaño de los iconos */
 }
