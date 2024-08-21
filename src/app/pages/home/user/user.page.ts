@@ -71,16 +71,8 @@ export class UserPage implements OnInit {
   }
 
   async logout() {
-    // await Preferences.remove({ key: 'alias' });
-    const a = await Preferences.get({key: this.token});
-
-    console.log(a.value);
-    
-    
-    await Preferences.remove({ key: this.token });
-    const b = await Preferences.get({key: this.token});
-    console.log(b.value);
-    
+    const a = await Preferences.get({key: this.token});    
+    await Preferences.remove({ key: this.token });    
     await Preferences.clear();
 
     this.router.navigate(['/login']); // ajustar para que salga en / limpio
