@@ -36,7 +36,7 @@ html, body, ion-app, ion-content {
 /* Aplicar temas basados en la preferencia del sistema */
 :root {
   --ion-background-color: #ffffff;
-  --ion-text-color: #000000;
+  --ion-text-color: #461572;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -50,3 +50,26 @@ ion-content {
   --background: var(--ion-background-color);
   --color: var(--ion-text-color);
 }
+
+.my-custom-class {
+
+  --width: fit-content;
+  --min-width: 350px;
+  --max-width: 450px;
+  --height: fit-content;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+
+  // max-width: 500px;
+  // max-height: 500px;
+  // margin: 10px;
+  // top: 0;
+  // right: 0;
+  // bottom: 0;
+  // left: 0;
+  // position: absolute;
+  // border-radius: 10px;
+  // overflow: auto;
+  // background-color: transparent;
+}
+

@@ -1,0 +1,32 @@
+.card-header {
+    background: linear-gradient(to right, #550DA1, #661491);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-title {
+    margin: 2;
+  }
+  
+  .wrapper {
+    padding: 20px;
+    background-color: rgba(23, 0, 98, 0.367);
+    border-radius: 0 0 10px 10px; /* Bordes redondeados solo en la parte inferior */
+  }
+  
+  ion-input {
+    color: rgb(255, 255, 255);
+    margin-bottom: 15px;
+  }
+  
+  ion-button {
+    background-color: rgba(23, 0, 98, 0.367);
+    margin-top: 15px;
+  }
+  
+  .input {
+    background-color: rgb(49, 0, 102);
+  }
+
+  

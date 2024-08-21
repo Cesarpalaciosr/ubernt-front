@@ -1,36 +1,49 @@
 <ion-header>
   <ion-toolbar>
-    <ion-back-button slot="start"></ion-back-button>
-    <ion-title> Account </ion-title>
+    <ion-title class="centered-title">{{ "Account" }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-img src="https://i.imgur.com/T3hn85p.png"></ion-img>
+  <ion-card-header> 
+    <ion-avatar class="custom-avatar">
+      <img src="https://i.imgur.com/s8gsz2Z.jpg" />
+    </ion-avatar>
+    <ion-card-title>User mango</ion-card-title>
+   </ion-card-header> 
 
   <div class="ion-center">
-    <ion-card shape="round">
-      <ion-card-header>
-        <ion-avatar>
-          <img src="https://i.imgur.com/s8gsz2Z.jpg" />
-        </ion-avatar>
-        <ion-card-title> {{this.alias}} </ion-card-title>
-      </ion-card-header>
+    <ion-card class="bottom-card" shape="round">
       <ion-card-content class="btnSection">
-        <ion-button shape="round" (click)="changeName()"
-          >Modify Name</ion-button
-        >
-        <ion-button shape="round" (click)="changeEmail()"
-          >Modify Email</ion-button
-        >
-        <ion-button shape="round" (click)="changePassword()"
-          >Modify Password</ion-button
-        >
-        <ion-button (click)="logout()" shape="round">Logout</ion-button>
+        <ion-item lines="none" (click)="changeName()">
+          <ion-icon name="person-outline" slot="start"></ion-icon>
+          <ion-label>Modify Name</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item lines="none" (click)="changeEmail()">
+          <ion-icon name="mail-outline" slot="start"></ion-icon>
+          <ion-label>Modify Email</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item lines="none" (click)="changePassword()">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-label>Modify Password</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <ion-item lines="none" (click)="logout()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Logout</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        <div class="separator"></div>
 
-        <ion-button shape="round" color="danger" (click)="deleteAccount()"
-          >Delete Account</ion-button
-        >
+        <ion-item lines="none"(click)="deleteAccount()">
+          <ion-icon name="trash-outline" class="trash-outline" slot="start"></ion-icon>
+          <ion-label color="danger" class="delete-account-label">Delete Account</ion-label>
+          
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
+        
       </ion-card-content>
     </ion-card>
   </div>
