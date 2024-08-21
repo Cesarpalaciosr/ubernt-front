@@ -228,42 +228,49 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       component: LocationSearchModalComponent,
       componentProps: {
         startLocation: this.startLocation,
-        endLocation: this.endLocation
+        endLocation: this.endLocation,
+         cssClass: 'my-custom-class'
       }
     });
-
+  
     modal.onDidDismiss().then((detail) => {
       if (detail !== null && detail.data) {
         const { startLocation, endLocation } = detail.data;
-        this.startLocation = startLocation;
-        this.endLocation = endLocation;
-        // You can add additional logic here to handle marker updates or map adjustments (resumen: aqui puedo ajustar el draggable)
-        this.onLocationInputChange('start');
-        this.onLocationInputChange('end');
+  
+      
+        if (this.startLocation !== startLocation) {
+          this.startLocation = startLocation;
+          this.onLocationInputChange('start');
+        }
+        if (this.endLocation !== endLocation) {
+          this.endLocation = endLocation;
+          this.onLocationInputChange('end');
+        }
       }
     });
-
+  
     await modal.present();
   }
-
+  
   public onLocationInputChange(type: 'start' | 'end'): void {
-    if (type === 'start') {
+    if (type === 'start' && this.startLocation) {
       this.geocodeLocation(this.startLocation, 'start');
-    } else {
+    } else if (type === 'end' && this.endLocation) {
       this.geocodeLocation(this.endLocation, 'end');
     }
   }
-
+  
   private geocodeLocation(location: string, type: 'start' | 'end'): void {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&addressdetails=1&limit=1`;
-
+  
     this.http.get(url).subscribe((data: any) => {
       if (data.length > 0) {
-        const lat = data[0].lat;
-        const lng = data[0].lon;
+        const lat = parseFloat(data[0].lat);
+        const lng = parseFloat(data[0].lon);
         const latLng = new L.LatLng(lat, lng);
-
-        if (type === 'start') {
+  
+        
+        if (type === 'start' && (!this.startMarker || this.startMarker.getLatLng().distanceTo(latLng) > 10)) {
           if (this.startMarker) {
             this.map.removeLayer(this.startMarker);
           }
@@ -275,9 +282,9 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
             }),
             draggable: true
           }).addTo(this.map).bindPopup('Start Point').openPopup();
-
+  
           this.map.setView(latLng, this.DEFAULT_ZOOM_LEVEL);
-        } else {
+        } else if (type === 'end' && (!this.endMarker || this.endMarker.getLatLng().distanceTo(latLng) > 10)) {
           if (this.endMarker) {
             this.map.removeLayer(this.endMarker);
           }
@@ -289,10 +296,10 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
             }),
             draggable: true
           }).addTo(this.map).bindPopup('End Point').openPopup();
-
+  
           this.map.setView(latLng, this.DEFAULT_ZOOM_LEVEL);
         }
-
+  
         if (this.startMarker && this.endMarker) {
           this.calculateRoute();
         }
@@ -303,5 +310,8 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       console.error('Error fetching geocode:', error);
     });
   }
-}
 
+  onStatusChange(status: boolean) {
+    console.log('Switch status:', status ? 'ON' : 'OFF');
+  }
+}
