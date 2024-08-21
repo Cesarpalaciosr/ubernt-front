@@ -14,7 +14,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-
+  private TOKEN_KEY = 'jwt_token';
   private localURL = environment.localURL;
 
   constructor(
@@ -90,18 +90,45 @@ export class LoginPage implements OnInit {
     }); // Utiliza la URL para hacer la petición
   }
 
-  fnLogin(){
-    this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe((res: any) => {
-      console.log(res);
+   fnLogin(){
+  this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe(async (res: any) => {
+      await this.storeToken(res.token);
+      // console.log();
     });
+
+    // /*return */this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe(
+    //   async (response: any) => {
+    //     if (response && response.token) {
+    //       console.log(response.token);
+          
+    //       await this.storeToken(response.token);
+
+    //       console.log();
+          
+    //     }
+    //   },
+    //   (error) => {
+    //     console.error('Error al iniciar sesión:', error);
+    //   }
+    // );
+
     // this.navigation.navigateForward('/home/map');
   }
   async getToken() {
-    const token = await Preferences.get({ key: 'token' });
+    const token = await Preferences.get({ key: this.TOKEN_KEY });
+    console.log(token);
+    
     if (token.value) {
-      this.navigation.navigateForward('/main/tabs/home');
+      // this.navigation.navigateForward('/home/map');
+      console.log(token.value);
     }
+    console.log('putoo');
+    
   }
+  // async getToken(): Promise<string | null> {
+  //   const { value } = await Preferences.get({ key: this.TOKEN_KEY });
+  //   return value;
+  // }
   // async Login() {
   //   if (this.existingUser.user_info == '' || this.existingUser.password == '') {
   //     this.alert
@@ -114,5 +141,23 @@ export class LoginPage implements OnInit {
   //     return;
   //   }
 
+// }
+
+private async storeToken(token: string) {
+  await Preferences.set({
+    key: this.TOKEN_KEY,
+    value: token,
+  });
+}
+
+async logout() {
+  // this.http.get
+  await Preferences.remove({ key: this.TOKEN_KEY });
+}
+
+
+// async isLoggedIn(): Promise<boolean> {
+//   const token = await this.getToken();
+//   return !!token;
 // }
 }
