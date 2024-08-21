@@ -5,7 +5,7 @@
   <!-- Contenedor de la ola -->
   <div>
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-         viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
       <defs>
         <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
         <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -34,7 +34,7 @@
               type="text"
               name="username"
               errorText="Username is required"
-              [(ngModel)]="username"
+              [(ngModel)]="existingUser.userInfo"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
@@ -47,7 +47,7 @@
               minlength="8"
               maxlength="16"
               errorText="Password is required"
-              [(ngModel)]="password"
+              [(ngModel)]="existingUser.password"
             ></ion-input>
           </ion-item>
           <ion-button class="custom-button" type="submit" [disabled]="!loginForm.valid">

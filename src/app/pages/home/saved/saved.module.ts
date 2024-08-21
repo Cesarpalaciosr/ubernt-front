@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 import { InfoCardUserComponent  } from "../../../components/atoms/info-card-user/info-card-user.component";
 import { SavedPageRoutingModule } from '../../../routes/saved-routing.module';
 import { SavedPage } from './saved.page';
+import { StorageComponent } from 'src/app/components/molecules/storage/storage.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import { SavedPage } from './saved.page';
     IonicModule,
     SavedPageRoutingModule
   ],
-  declarations: [SavedPage, InfoCardUserComponent],
+  declarations: [SavedPage, StorageComponent, InfoCardUserComponent],
 })
 export class SavedPageModule { }
