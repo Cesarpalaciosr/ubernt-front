@@ -5,8 +5,10 @@
 
 export const environment = {
   production: false,
+
   localURL:'http://localhost:7338', 
-  server:"http://twitterservermoviles2-production.up.railway.app"
+  server:"http://twitterservermoviles2-production.up.railway.app",
+  token: "jwt_token",
   // appid: process.env.APP_ID
 };
 

@@ -14,7 +14,7 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  private TOKEN_KEY = 'jwt_token';
+  public TOKEN:string = environment.token;
   private localURL = environment.localURL;
 
   constructor(
@@ -42,12 +42,7 @@ export class LoginPage implements OnInit {
 
   // BACK+FRONT
   onSubmit() {
-    // this.navigation.navigateForward('/home/map');
-    // return this.http.get(`${this.localURL}/auth/a`);
-    // this.getData()
-    // return this.http.get(`http://localhost:7338/auth/a`).subscribe();
     this.fnLogin();
-    // return this.fnLogin;
   }
   // onSubmit() {
   //   this.http
@@ -74,13 +69,7 @@ export class LoginPage implements OnInit {
   //     });
   // }
 
-  async setToken(token: string) {
-    await Preferences.set({
-      key: 'token',
-      value: token,
-    });
-    this.navigation.navigateForward('/home');
-  }
+
   getData() {
     // console.log(this.localURL);
     // this.http.get(`${this.localURL}/auth/a`)
@@ -92,7 +81,9 @@ export class LoginPage implements OnInit {
 
    fnLogin(){
   this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe(async (res: any) => {
-      await this.storeToken(res.token);
+    
+    await this.storeToken(res.token);
+      this.navigation.navigateForward('/home');
       // console.log();
     });
 
@@ -115,29 +106,28 @@ export class LoginPage implements OnInit {
     // this.navigation.navigateForward('/home/map');
   }
   async getToken() {
-    const token = await Preferences.get({ key: this.TOKEN_KEY });
-    console.log(token);
     
+    const token = await Preferences.get({ key: this.TOKEN });    
     if (token.value) {
-      // this.navigation.navigateForward('/home/map');
+      await this.navigation.navigateForward('/home/map');
       console.log(token.value);
     }
     console.log('putoo');
     
   }
   // async getToken(): Promise<string | null> {
-  //   const { value } = await Preferences.get({ key: this.TOKEN_KEY });
-  //   return value;
-  // }
-  // async Login() {
-  //   if (this.existingUser.user_info == '' || this.existingUser.password == '') {
-  //     this.alert
-  //       .create({
-  //         header: 'Error',
-  //         message: 'Please fill all the fields',
-  //         buttons: ['OK'],
-  //       })
-  //       .then((alert) => alert.present());
+    //   const { value } = await Preferences.get({ key: this.TOKEN_KEY });
+    //   return value;
+    // }
+    // async Login() {
+      //   if (this.existingUser.user_info == '' || this.existingUser.password == '') {
+        //     this.alert
+        //       .create({
+          //         header: 'Error',
+          //         message: 'Please fill all the fields',
+          //         buttons: ['OK'],
+          //       })
+          //       .then((alert) => alert.present());
   //     return;
   //   }
 
@@ -145,14 +135,23 @@ export class LoginPage implements OnInit {
 
 private async storeToken(token: string) {
   await Preferences.set({
-    key: this.TOKEN_KEY,
+    key: this.TOKEN,
     value: token,
   });
+  this.navigation.navigateForward('/home');
+}
+
+async setToken(token: string) {
+  await Preferences.set({
+    key: 'token',
+    value: token,
+  });
+  this.navigation.navigateForward('/home');
 }
 
 async logout() {
   // this.http.get
-  await Preferences.remove({ key: this.TOKEN_KEY });
+  await Preferences.remove({ key: this.TOKEN });
 }
 
 

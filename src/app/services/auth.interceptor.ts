@@ -8,14 +8,17 @@ import {
 import { Preferences } from '@capacitor/preferences';
 import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+  private TOKEN = environment.token;
+  private url = environment.localURL;
   constructor(private http: HttpClient) {}
 
   async getToken() {
     try {
-      const token = await Preferences.get({ key: 'token' });
+      const token = await Preferences.get({ key: this.TOKEN });
       return token.value;
     } catch (error) {
       return    console.log(error);
@@ -24,8 +27,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: any, next: HttpHandler): Observable<HttpEvent<any>> {
     const excludedRoutes = [
-      'https://funaticsbackend-production.up.railway.app/auth/register',
-      'https://funaticsbackend-production.up.railway.app/auth/login',
+      `${this.url}/auth/signin`,
+      `${this.url}/auth/signup`
     ];
 
     if (excludedRoutes.includes(req.url)) {

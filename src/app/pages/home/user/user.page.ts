@@ -8,6 +8,7 @@ import { UpdateemailComponent } from '../../../components/updateemail/updateemai
 import { UpdatepasswordComponent } from '../../../components/updatepassword/updatepassword.component';
 import { UpdatenameComponent } from '../../../components/updatename/updatename.component';
 import { DeleteaccountComponent } from '../../../components/deleteaccount/deleteaccount.component';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-user',
@@ -15,6 +16,7 @@ import { DeleteaccountComponent } from '../../../components/deleteaccount/delete
   styleUrls: ['./user.page.scss'],
 })
 export class UserPage implements OnInit {
+  token = environment.token;
   alias: string = '';
 
   constructor(
@@ -69,8 +71,16 @@ export class UserPage implements OnInit {
   }
 
   async logout() {
-    await Preferences.remove({ key: 'alias' });
-    await Preferences.remove({ key: 'jwt' });
+    // await Preferences.remove({ key: 'alias' });
+    const a = await Preferences.get({key: this.token});
+
+    console.log(a.value);
+    
+    
+    await Preferences.remove({ key: this.token });
+    const b = await Preferences.get({key: this.token});
+    console.log(b.value);
+    
     await Preferences.clear();
 
     this.router.navigate(['/login']); // ajustar para que salga en / limpio
