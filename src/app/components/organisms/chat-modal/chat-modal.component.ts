@@ -32,29 +32,33 @@ export class ChatModalComponent implements OnInit, AfterViewChecked {
   }
 
   sendMessage() {
-    const msg = {
-      message: this.message,
-      sender: this.user,
-    };
-
-    this.http
-      .post('https://tmdb-for-a-angularmovile.onrender.com/chat/message', {
-        message: msg,
-        roomId: this.roomId,
-      })
-      .subscribe(() => {
-        this.socket.emit('message', {
-          message: msg.message,
-          sender: msg.sender,
-          roomId: this.roomId,
-        });
-        this.message = '';
-      });
-
-    this.chatScroll.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-    });
+    console.log('hola');
+    
   }
+  // sendMessage() {
+  //   const msg = {
+  //     message: this.message,
+  //     sender: this.user,
+  //   };
+
+  //   this.http
+  //     .post('https://tmdb-for-a-angularmovile.onrender.com/chat/message', {
+  //       message: msg,
+  //       roomId: this.roomId,
+  //     })
+  //     .subscribe(() => {
+  //       this.socket.emit('message', {
+  //         message: msg.message,
+  //         sender: msg.sender,
+  //         roomId: this.roomId,
+  //       });
+  //       this.message = '';
+  //     });
+
+  //   this.chatScroll.nativeElement.scrollIntoView({
+  //     behavior: 'smooth',
+  //   });
+  // }
 
   closeModal() {
     this.socket.emit('leaveRoom', {
