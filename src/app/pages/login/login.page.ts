@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { existingUser } from '../../interfaces/user.interface';
+import { existingUser , ErrorInterface } from 'src/app/interfaces/index';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { AlertController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -26,58 +26,61 @@ export class LoginPage implements OnInit {
   }
   
   
-  ngOnInit() {
-    
-    this.getToken();
-    this.existingUser = {
-      userInfo: 'radsylph2',
-      password:"30683643",
-    };
+  async ngOnInit() {
+    await this.getToken();
   }
 
   // BACK+FRONT
-  onSubmit() {
+  public onSubmit() {
     this.fnLogin();
   }
   
-  fnLogin(){
+  public fnLogin(){
         this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe(async (res: any) => {
-          if (res && res.token) {
-            await this.storeToken(res.token);
-            this.navigation.navigateForward('/home')
-          }
+          console.log(res)
+          await this.storeToken(res.token)
+          this.alertController
+          .create({
+            header: 'Success',
+            message: 'Login succesfull',
+            buttons: ['OK'],
+          })
+          .then((alert) => alert.present());
+          this.navigation.navigateForward('/home');
         }, (error) => {
-              console.error('Error al iniciar sesión:', error);
+          console.log(error);
+          const errorsMessages = error.error.errors;
+          const newErrors: Array<String> = [];
+          console.log(errorsMessages);
+          errorsMessages.forEach((element: ErrorInterface) => {
+            newErrors.push(element.msg);
+          });
+          console.log(newErrors);
+          this.alertController
+            .create({
+              header: 'you have the following errors',
+              message: newErrors.join(', '),
+              buttons: ['OK'],
+            })
+            .then((alert) => {
+              alert.present();
+            });
             })
   };
 
-  async getToken() {
+  public async getToken() {
     const token = await Preferences.get({ key: this.TOKEN });
     if (token.value) {
       this.navigation.navigateForward('/home');
     }
   }
 
-    // async Login() {
-      //   if (this.existingUser.user_info == '' || this.existingUser.password == '') {
-        //     this.alert
-        //       .create({
-          //         header: 'Error',
-          //         message: 'Please fill all the fields',
-          //         buttons: ['OK'],
-          //       })
-          //       .then((alert) => alert.present());
-  //     return;
-  //   }
-
-// }
-
-private async storeToken(token: string) {
-  await Preferences.set({
-    key: this.TOKEN,
-    value: token,
-  });
-  this.navigation.navigateForward('/home');
-}
+  private async storeToken(token: string) {
+    await Preferences.set({
+      key: this.TOKEN,
+      value: token,
+    });
+    this.navigation.navigateForward('/home');
+  }
 
 }
