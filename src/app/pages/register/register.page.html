@@ -1,7 +1,14 @@
 <ion-content>
-  <div class="register-title">Register</div>
-  <!-- Contenedor de la ola -->
   <div>
+    <ion-progress-bar
+      type="indeterminate"
+      style="display: none"
+    ></ion-progress-bar>
+  </div>
+  <div class="register-title">Register</div>
+ 
+  <!-- Contenedor de la ola -->
+  <div *ngIf="!isLoading">
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
       <defs>
@@ -19,6 +26,13 @@
       </g>
     </svg>
   </div>
+  <div *ngIf="!isLoading">
+    <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
+  </div>
+  <!--backdrop-->
+  <div *ngIf="isLoading">
+    <ion-backdrop [visible]="true"></ion-backdrop>
+  </div>
   <!-- Contenedor del formulario de inicio de sesión -->
   <div class="ion-center">
     <ion-card shape="round">
@@ -26,48 +40,52 @@
         <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
           <ion-item>
             <ion-input
-              placeholder="UserName"
+            label="Nombre completo"
+            labelPlacement="floating"
               required
               type="text"
               name="UserName"
               errorText="UserName is required"
-              [(ngModel)]="name"
+              [(ngModel)]="newUser.fullName"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
           
           <ion-item>
             <ion-input
-              placeholder="Full Name"
+            label="Nombre de usuario"
+            labelPlacement="floating"
               required
               type="text"
               name="Full Name"
-              errorText="Full name is required"
-              [(ngModel)]="name"
+              errorText="username es requerido"
+              [(ngModel)]="newUser.username"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-input
-              placeholder="CI"
+            label="Cedula"
+            labelPlacement="floating"
               required
               type="text"
               name="CI"
               errorText="CI is required"
-              [(ngModel)]="name"
+              [(ngModel)]="newUser.ci"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
 
           <ion-item>
             <ion-input
-              placeholder="Email"
+            label="Email"
+            labelPlacement="floating"
               required
               type="text"
               name="Email"
               errorText="Email is required / Invalid email"
-              [(ngModel)]="email"
+              [(ngModel)]="newUser.email"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
@@ -77,12 +95,13 @@
               <ion-select-option color="red" *ngFor="let option of options" [value]="option">{{ option }}</ion-select-option>
             </ion-select> -->
             <ion-input
-              placeholder="Phone"
+            label="Phone"
+            labelPlacement="floating"
               required
               type="text"
               name="phone"
               errorText="Phone is required / Invalid phone"
-              [(ngModel)]="email"
+              [(ngModel)]="newUser.phoneNumber"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
@@ -90,15 +109,45 @@
 
           <ion-item>
             <ion-input
-              placeholder="Password"
+            id="password_input"
+            label="contraseña"
+            labelPlacement="floating"
               required
-              type="text"
+              type="password"
               name="password"
               minlength="8"
               maxlength="16"
               errorText="Password is required"
-              [(ngModel)]="password"
+              [(ngModel)]="newUser.password"
             ></ion-input>
+            <ion-icon
+          name="eye"
+          slot="end"
+          color="blue"
+          id="show_password"
+          (click)="showPassword('show_password' , 'password_input')"
+        ></ion-icon>
+          </ion-item>
+          <ion-item>
+            <ion-input
+            required
+            id="password_input2"
+            label="contraseña"
+            labelPlacement="floating"
+            type="password"
+            name="password"
+            minlength="8"
+            maxlength="16"
+            errorText="Password is required"
+            [(ngModel)]="newUser.repeat_password"
+          ></ion-input>
+          <ion-icon
+          name="eye"
+          slot="end"
+          color="blue"
+          id="show_password2"
+          (click)="showPassword('show_password2' , 'password_input2')"
+        ></ion-icon>
           </ion-item>
 
           <ion-button class="custom-button" type="submit"

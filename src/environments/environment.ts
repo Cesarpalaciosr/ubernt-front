@@ -1,9 +1,15 @@
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
+// import 'dotenv/config';
 
 export const environment = {
-  production: false
+  production: false,
+
+  localURL:'http://localhost:7338', 
+  server:"http://twitterservermoviles2-production.up.railway.app",
+  token: "jwt_token",
+  // appid: process.env.APP_ID
 };
 
 /*
