@@ -96,7 +96,7 @@ export class RegisterPage implements OnInit {
   async getToken() {
     const token = await Preferences.get({ key: this.TOKEN });
     if (token.value) {
-      this.navigation.navigateForward('/home');
+      this.navigation.navigateForward('/home/map');
     }
   }
 

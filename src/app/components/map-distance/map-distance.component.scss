@@ -17,7 +17,46 @@ ion-header {
     justify-content: center;
     position: relative;
   }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  ion-title {
+    font-size: 1.1em;  /* Tamaño de texto más pequeño */
+    font-weight: normal;  /* Texto sin negrita */
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 ;
 }
+
+.toolbar-columns {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.centered-title {
+  text-align: center;
+  flex: 2; /* Ajusta este valor para controlar el tamaño de la columna central */
+}
+
 
 ion-content {
   --padding-start: 0;
@@ -64,13 +103,7 @@ ion-item {
   --inner-padding-start: 10px;
 }
 
-app-toggle-switch {
-  position: absolute;
-  top: 50%; /* Centra verticalmente */
-  left: 50%; /* Centra horizontalmente */
-  transform: translate(-50%, -50%); /* Ajuste para centrar perfectamente */
-  z-index: 1; /* Asegura que el switch esté por encima de otros elementos */
-}
+
 
 ion-item {
   --padding-start: 16px;
@@ -105,3 +138,4 @@ ion-icon {
   --padding-start: 16px; /* Espaciado interno */
   --padding-end: 16px;
 }
+

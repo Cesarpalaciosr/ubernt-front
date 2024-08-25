@@ -15,4 +15,5 @@ export class MapPage implements OnInit {
   ngOnInit() {
     this.map = this.activatedRoute.snapshot.paramMap.get('id') as string;
   }
+  
 }

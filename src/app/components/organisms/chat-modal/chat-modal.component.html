@@ -3,17 +3,14 @@
     <div class="header-content">
       <ion-buttons slot="start">
         <ion-button (click)="closeModal()">
-          <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title>Chat no se que 
-      </ion-title>
+      <ion-title>Chat</ion-title>
     </div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-img src="https://i.imgur.com/hLpfp8K.png"></ion-img>
   <ion-list *ngIf="messages.length > 0">
     <ion-item *ngFor="let message of messages">
       <ion-label>
@@ -30,12 +27,13 @@
     <ion-grid>
       <ion-row>
         <ion-col>
+
           <ion-input
             placeholder="Type a message"
             [(ngModel)]="message"
             name="message"
-            color="terciary"
           ></ion-input>
+          
         </ion-col>
         <ion-col size="auto">
           <ion-button class="custom-button"
