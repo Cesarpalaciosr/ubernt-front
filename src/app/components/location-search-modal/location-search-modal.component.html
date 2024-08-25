@@ -1,29 +1,32 @@
-<div class="card-header">
-  <h2 class="card-title">Search Locations</h2>
-</div>
+<ion-header>
+  <ion-toolbar>
+    <div class="header-content">
+      <h2 class="card-title">Search Locations</h2>
+    </div>
+  </ion-toolbar>
+</ion-header>
 
 <div class="wrapper">
-
-
-    <div position="stacked">Start Location</div>
+  <div class="input-container">
+    <div class="label">Start Location</div>
     <ion-input [(ngModel)]="startLocation"></ion-input>
-  
-    <div position="stacked">End Location</div>
+    
+    <div class="label">End Location</div>
     <ion-input [(ngModel)]="endLocation"></ion-input>
+  </div>
+
+  <div class="button-container">
+    <ion-button 
+      (click)="dismissAndOpenWaitDriver()"
+      class="buscar-button"
+      expand="block"
+      >Ride</ion-button>
   
-
-  <ion-button 
-  (click)="dismissAndOpenWaitDriver()"
-  color="light"
-  fill="outline"
-  expand="block"
-  >Ride</ion-button>
-
-  <ion-button (click)="dismiss()" color="light" expand="block" 
-  >Cancel</ion-button>
-
+    <ion-button 
+      (click)="dismiss()" 
+      class="buscar-button" 
+      expand="block"
+      >Cancel</ion-button>
+  </div>
 </div>
-
-
-
 

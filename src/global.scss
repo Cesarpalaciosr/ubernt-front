@@ -73,3 +73,19 @@ ion-content {
   // background-color: transparent;
 }
 
+ion-modal {
+  --background: transparent; /* Gradiente de 50% morado y 50% transparente */
+  --backdrop-opacity: 0 !important; /* Hace el backdrop completamente transparente */
+  --box-shadow: none !important; /* Elimina cualquier sombra por defecto */
+}
+
+.modal-content-class{
+  
+  --width: fit-content;
+  --min-width: 350px;
+  --max-width: 450px;
+  --height: fit-content;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+

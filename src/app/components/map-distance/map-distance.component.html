@@ -1,13 +1,24 @@
-<ion-header>
+<ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>Map Distance</ion-title>
-    <ion-buttons slot="end">
-      <app-user-button></app-user-button>
-    </ion-buttons>
+    <div class="toolbar-columns">
+      <!-- Columna izquierda -->
+      <ion-buttons slot="start" class="toolbar-left">
+        <app-toggle-switch (statusChange)="onStatusChange($event)"></app-toggle-switch>
+      </ion-buttons>
+
+      <!-- Columna central -->
+      <ion-title class="centered-title">{{ "Map Distance" }}</ion-title>
+
+      <!-- Columna derecha -->
+      <ion-buttons slot="end" class="toolbar-right">
+        <app-user-button></app-user-button>
+      </ion-buttons>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<app-toggle-switch (statusChange)="onStatusChange($event)"></app-toggle-switch>
+
+
 
 <ion-content>
   <div class="inputs-container">

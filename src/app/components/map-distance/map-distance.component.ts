@@ -222,6 +222,13 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       console.error('Error fetching location name:', error);
     });
   }
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: LocationSearchModalComponent,
+      cssClass: 'modal-content-class' 
+    });
+    return await modal.present();
+  }
 
   public async openSearchModal() {
     const modal = await this.modalController.create({
@@ -229,7 +236,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       componentProps: {
         startLocation: this.startLocation,
         endLocation: this.endLocation,
-         cssClass: 'my-custom-class'
+
       }
     });
   

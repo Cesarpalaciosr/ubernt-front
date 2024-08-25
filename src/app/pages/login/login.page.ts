@@ -46,7 +46,7 @@ export class LoginPage implements OnInit {
             buttons: ['OK'],
           })
           .then((alert) => alert.present());
-          this.navigation.navigateForward('/home');
+          this.navigation.navigateForward('/home/map');
         }, (error) => {
           console.log(error);
           const errorsMessages = error.error.errors;
