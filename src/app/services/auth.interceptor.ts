@@ -10,7 +10,9 @@ import { Observable, from } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root',
+})
 export class AuthInterceptor implements HttpInterceptor {
   private TOKEN = environment.token;
   private url = environment.localURL;
@@ -49,5 +51,9 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       })
     );
+  }
+  async isLoggedIn(): Promise<boolean> {
+    const { value } = await Preferences.get({ key: this.TOKEN });
+    return !!value;
   }
 }

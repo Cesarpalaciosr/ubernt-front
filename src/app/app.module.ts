@@ -6,8 +6,10 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { FormsModule } from '@angular/forms'; // Importa FormsModule
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { AuthInterceptor } from './services/auth.interceptor';
 //process.env.
 @NgModule({
   declarations: [
@@ -29,7 +31,7 @@ import { getStorage, provideStorage } from '@angular/fire/storage';
     "apiKey":"AIzaSyA0hVJYyEk71oPi5WKQp2_PNx-cLEF1IL4",
     "authDomain":"ubernt-99b85.firebaseapp.com",
     "messagingSenderId":"592747694283"
-  })), provideStorage(() => getStorage())],
+  })), provideStorage(() => getStorage()), { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

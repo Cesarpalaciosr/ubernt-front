@@ -12,7 +12,9 @@ import { environment } from '../../../environments/environment';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  public TOKEN:string = environment.token;
+  public TOKEN  : string = environment.token;
+  public ROLE   : string = environment.role;
+  public ID     : string = environment.id;
   private localURL = environment.localURL;
 
   constructor(
@@ -38,7 +40,7 @@ export class LoginPage implements OnInit {
   public fnLogin(){
         this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe(async (res: any) => {
           console.log(res)
-          await this.storeToken(res.token)
+          await this.storeCredentials(res.token, res.id, res.role)
           this.alertController
           .create({
             header: 'Success',
@@ -70,16 +72,19 @@ export class LoginPage implements OnInit {
 
   public async getToken() {
     const token = await Preferences.get({ key: this.TOKEN });
+    const id = await Preferences.get({key: this.ID});
+    const role =await Preferences.get({key: this.ROLE});
+    
     if (token.value) {
+      console.log(token, id, role);
       this.navigation.navigateForward('/home');
     }
   }
 
-  private async storeToken(token: string) {
-    await Preferences.set({
-      key: this.TOKEN,
-      value: token,
-    });
+  private async storeCredentials(token: string, id : string, role: string) {
+    await Preferences.set({ key: this.TOKEN, value: token });
+    await Preferences.set({ key: this.ID, value: id });
+    await Preferences.set({ key: this.ROLE, value: role });
     this.navigation.navigateForward('/home');
   }
 

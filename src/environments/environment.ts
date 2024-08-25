@@ -9,6 +9,8 @@ export const environment = {
   localURL:'http://localhost:7338', 
   server:"http://twitterservermoviles2-production.up.railway.app",
   token: "jwt_token",
+  id: "id",
+  role: "role"
   // appid: process.env.APP_ID
 };
 

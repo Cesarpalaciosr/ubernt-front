@@ -19,6 +19,7 @@ export class ChatModalComponent implements OnInit, AfterViewChecked {
 
   message: string = '';
   messages: any[] = [];
+  // public user 
   private socket: any;
 
   constructor(
