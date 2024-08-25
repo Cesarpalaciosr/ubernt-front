@@ -21,7 +21,7 @@ const routes: Routes = [
       {
         path: 'groups',
         loadChildren: () =>
-          import('../pages/home/groups/groups.module').then((m) => m.GroupsModule), 
+          import('../pages/home/groups/groups.module').then((m) => m.GroupsPageModule), 
       },
       {
         path: 'recommended',

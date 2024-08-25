@@ -28,27 +28,76 @@ ion-header {
   }
 }
 
-#container {
-  text-align: center;
-  position: absolute;
+ion-img {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+  object-fit: cover;
+  top: 0;
   left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+ion-tab-bar {
+  --background: #ff3366;
+  /* Mantén el fondo de la barra de pestañas en un tono más claro */
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
+ion-tab-button {
+  color: #fff;
 }
 
-#container a {
-  text-decoration: none;
+ion-searchbar {
+  --border-radius: 20px;
+  /* Ajusta el valor según sea necesario */
+  --background: rgba(255, 255, 255, 0.1);
+  /* Ajusta el color de fondo según sea necesario */
+
+}
+
+/* Opcional: Si deseas cambiar el estilo del ícono de búsqueda */
+ion-searchbar .searchbar-search-icon {
+  color: #ffffff;
+  /* Ajusta el color del ícono según sea necesario */
+}
+
+/* Opcional: Si deseas cambiar el estilo del botón de cancelar */
+ion-searchbar .searchbar-cancel {
+  color: #ffffff;
+  /* Ajusta el color del botón según sea necesario */
+}
+
+/* Opcional: Si deseas cambiar el estilo del texto de búsqueda */
+ion-searchbar .searchbar-input {
+  color: #ffffff;
+  /* Ajusta el color del texto según sea necesario */
+}
+
+ion-text.titles {
+  font-weight: bold;
+  font-size: 1.2em;
+  color:#ffffff
+  
+}
+
+.green-bar {
+  width: 4px;
+  height: 20px;
+  background-color: #4e743d;
+  margin-right: 10px;
+}
+
+
+ion-icon{
+  color:#ffffff94
+}
+
+.group-chat ion-text.titles {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #ffffff; /* Color blanco */
+}
+
+.group-chat ion-list {
+  background-color: transparent;
 }

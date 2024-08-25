@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
-import { GroupsPage } from './groups.page';
+// import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 
+import { GroupsPage } from './groups.page';
+import { GroupsPageModule } from './groups.module';
 describe('GroupsPage', () => {
   let component: GroupsPage;
   let fixture: ComponentFixture<GroupsPage>;
@@ -11,7 +12,7 @@ describe('GroupsPage', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [GroupsPage],
-      imports: [IonicModule.forRoot(), RouterModule.forRoot([])]
+      imports: [IonicModule.forRoot(),] // ExploreContainerComponentModule
     }).compileComponents();
 
     fixture = TestBed.createComponent(GroupsPage);
