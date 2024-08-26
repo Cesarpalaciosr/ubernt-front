@@ -15,6 +15,11 @@
   <div class="ion-center">
     <ion-card class="bottom-card" shape="round">
       <ion-card-content class="btnSection">
+        <ion-item lines="none" (click)="changePicture()">
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          <ion-label>Foto de Perfil</ion-label>
+          <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+        </ion-item>
         <ion-item lines="none" (click)="changeName()">
           <ion-icon name="person-outline" slot="start"></ion-icon>
           <ion-label>Modify Name</ion-label>
@@ -35,6 +40,7 @@
           <ion-label>Logout</ion-label>
           <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         </ion-item>
+        
         <div class="separator"></div>
 
         <ion-item lines="none"(click)="deleteAccount()">

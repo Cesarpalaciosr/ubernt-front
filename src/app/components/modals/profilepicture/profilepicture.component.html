@@ -1,0 +1,71 @@
+<div class="card-header">
+  <h2 class="card-title">Actualizar foto de perfil</h2>
+</div>
+
+<div class="wrapper">
+  
+  <ion-buttons slot="start">
+    <ion-button (click)="openGallery()" class="custom-button">
+      <ion-icon name="images" color="light"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <ion-buttons slot="start">
+    <ion-button (click)="openCamera()" class="custom-button">
+      <ion-icon name="camera" color="light"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  
+  
+    <ion-button (click)="setProfilePicture()" class="blue-button">Actualizar</ion-button>
+  
+    
+  <div id="imagePreview" class="image-grid">
+    <ion-row>
+      <ion-col size="{{getImageSize()}}" *ngFor="let image of selectedImages; let i = index">
+        <div class="image-container">
+          <img [src]="image" alt="Imagen seleccionada">
+          <ion-fab (click)="removeImage(i)" vertical="top" horizontal="end" class="small-fab">
+            <ion-fab-button>
+              <ion-icon name="close" color="light"></ion-icon>
+            </ion-fab-button>
+            </ion-fab>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-button (click)="dismissModal()" color= tertiary expand="block"
+      >Cancel</ion-button>
+    </div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- <ion-input
+    label="Current Password:"
+    type="text"
+    [(ngModel)]="password"
+    name="password"
+    required
+  ></ion-input>
+
+
+
+  <ion-button
+    (click)="setProfilePicture()"
+    color= tertiary
+    fill="outline"
+    expand="block"
+    [disabled]="loading"
+    >Update</ion-button
+  >
+  -->
+</div>

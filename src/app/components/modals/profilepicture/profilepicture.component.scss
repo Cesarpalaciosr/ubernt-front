@@ -1,0 +1,40 @@
+.card-header {
+    background: linear-gradient(to right, #550DA1, #661491);
+    color: #fff;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .card-title {
+    margin: 2;
+  }
+  
+  .wrapper {
+    padding: 20px;
+    border-radius: 0 0 10px 10px; /* Bordes redondeados solo en la parte inferior */
+    background-color: #fff; /* Color por defecto para el tema claro */
+  
+    @media (prefers-color-scheme: dark) {
+      background-color: #111111; /* Color de fondo para el tema oscuro */
+    }
+  }
+  
+  
+  ion-input {
+    // color: rgb(255, 255, 255);
+    margin-bottom: 15px;
+  }
+  
+  ion-button {
+    // color: rgb(255, 255, 255);
+    margin-top: 15px;
+  }
+  
+  .input {
+    background-color: rgb(49, 0, 102);
+  }
+  
+  .custom-button {
+    --background: var(--moradocustom);
+    --color: var(--moradocustom-contrast);
+  }

@@ -9,7 +9,7 @@ import { UpdatepasswordComponent } from '../../../components/updatepassword/upda
 import { UpdatenameComponent } from '../../../components/updatename/updatename.component';
 import { DeleteaccountComponent } from '../../../components/deleteaccount/deleteaccount.component';
 import { environment } from '../../../../environments/environment';
-
+import { ProfilepictureComponent } from 'src/app/components/modals/profilepicture/profilepicture.component';
 @Component({
   selector: 'app-user',
   templateUrl: './user.page.html',
@@ -25,6 +25,20 @@ export class UserPage implements OnInit {
     private alertController: AlertController,
     private router: Router
   ) {}
+
+  changePicture(){
+    console.log('hola mundo');
+    this.modalController
+    .create({
+      component: ProfilepictureComponent ,
+      cssClass: 'my-custom-class',
+    })
+    .then((modal) => {
+      modal.present();
+    });
+  }
+
+
 
   changeEmail() {
     this.modalController

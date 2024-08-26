@@ -12,11 +12,12 @@ import { UpdateemailComponent } from '../../../components/updateemail/updateemai
 import { UpdatepasswordComponent } from '../../../components/updatepassword/updatepassword.component';
 import { UpdatenameComponent } from '../../../components/updatename/updatename.component';
 import { DeleteaccountComponent } from '../../../components/deleteaccount/deleteaccount.component';
-
+import { ProfilepictureComponent } from 'src/app/components/modals/profilepicture/profilepicture.component';
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, UserPageRoutingModule],
   declarations: [
     UserPage,
+    ProfilepictureComponent,
     UpdateemailComponent,
     UpdatepasswordComponent,
     UpdatenameComponent,

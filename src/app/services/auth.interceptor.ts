@@ -56,4 +56,10 @@ export class AuthInterceptor implements HttpInterceptor {
     const { value } = await Preferences.get({ key: this.TOKEN });
     return !!value;
   }
+
+
+  storeImageUrl(imageUrl: string) {
+    //endpoint de la imagen
+    return this.http.post(`${this.url}/auth/updateprofile`, { imageUrl });
+  }
 }
