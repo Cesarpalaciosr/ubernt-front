@@ -1,0 +1,7 @@
+<ng-container *ngIf="userRole === 'driver'; else passengerMapDistance">
+  <app-map-driver-distance/>
+</ng-container>
+<ng-template #passengerMapDistance>
+  
+  <app-map-distance/>
+</ng-template>

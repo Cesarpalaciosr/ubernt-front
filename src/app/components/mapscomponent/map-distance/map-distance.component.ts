@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { ModalController } from '@ionic/angular';
-import { LocationSearchModalComponent } from '../location-search-modal/location-search-modal.component';
+import { LocationSearchModalComponent } from '../../location-search-modal/location-search-modal.component';
 
 @Component({
   selector: 'app-map-distance',

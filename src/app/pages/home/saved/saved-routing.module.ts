@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { SavedPage } from '../pages/home/saved/saved.page';
+import { SavedPage } from './saved.page';
 
 const routes: Routes = [
   {

@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { WaitDriverComponent } from '../wait-driver/wait-driver.component'; // Importa el modal WaitDriver
+import { WaitDriverComponent } from '../modals/wait-driver/wait-driver.component'; // Importa el modal WaitDriver
 
 @Component({
   selector: 'app-location-search-modal',

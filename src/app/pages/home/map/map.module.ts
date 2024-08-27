@@ -3,14 +3,15 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { MapPage } from './map.page';
-import { MapPageRoutingModule } from 'src/app/routes/map-routing.module';
+import { MapPageRoutingModule } from './map-routing.module';
 
-import { MapDistanceComponent } from 'src/app/components/map-distance/map-distance.component';
-import { UserButtonComponent } from 'src/app/components/atoms/user-button/user-button.component'; 
+import { MapDistanceComponent } from 'src/app/components/mapscomponent/map-distance/map-distance.component';
+import { UserButtonComponent } from 'src/app/components/buttons/user-button/user-button.component'; 
 import { LocationSearchModalComponent } from 'src/app/components/location-search-modal/location-search-modal.component';
-import { WaitDriverComponent } from 'src/app/components/wait-driver/wait-driver.component';
-import { ToggleSwitchComponent } from 'src/app/components/toggle-switch/toggle-switch.component';
-import { MapDriverDistanceComponent } from 'src/app/components/map-driver-distance/map-driver-distance.component';
+import { WaitDriverComponent } from 'src/app/components/modals/wait-driver/wait-driver.component';
+import { ToggleSwitchComponent } from 'src/app/components/buttons/toggle-switch/toggle-switch.component';
+import { MapDriverDistanceComponent } from 'src/app/components/mapscomponent/map-driver-distance/map-driver-distance.component';
+import { RendermapComponent } from 'src/app/components/mapscomponent/rendermap/rendermap.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { MapDriverDistanceComponent } from 'src/app/components/map-driver-distan
     LocationSearchModalComponent,
     WaitDriverComponent,
     ToggleSwitchComponent,
-    MapDriverDistanceComponent
+    MapDriverDistanceComponent,
+    RendermapComponent
   ],
   exports: [
     MapDistanceComponent,

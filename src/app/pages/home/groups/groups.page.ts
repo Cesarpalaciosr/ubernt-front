@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { of, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { ChatModalComponent } from 'src/app/components/organisms/chat-modal/chat-modal.component';
+import { ChatModalComponent } from 'src/app/components/modals/chat-modal/chat-modal.component';
 import { Preferences } from '@capacitor/preferences';
 import { environment } from '../../../../environments/environment';
   
