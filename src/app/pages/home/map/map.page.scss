@@ -41,3 +41,10 @@ app-map-distance {
   flex-direction: column;
   justify-content: space-between;
 }
+
+app-map-driver-distance {
+  height: 100%; /* Asegura que el componente ocupe todo el contenido */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}

@@ -317,8 +317,4 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       console.error('Error fetching geocode:', error);
     });
   }
-
-  onStatusChange(status: boolean) {
-    console.log('Switch status:', status ? 'ON' : 'OFF');
-  }
 }
