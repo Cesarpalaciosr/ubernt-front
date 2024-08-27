@@ -11,7 +11,7 @@ import { RecommendedPage } from './recommended.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    RecommendedPageRoutingModule
+    RecommendedPageRoutingModule,
   ],
   declarations: [RecommendedPage],
 })

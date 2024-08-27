@@ -1,0 +1,27 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <div class="toolbar-columns">
+      <!-- Columna izquierda -->
+      <ion-buttons slot="start" class="toolbar-left">
+        <app-toggle-switch (statusChange)="onStatusChange($event)"></app-toggle-switch>
+      </ion-buttons>
+
+      <!-- Columna central -->
+      <ion-title class="centered-title">{{ "Map Distance" }}</ion-title>
+
+      <!-- Columna derecha -->
+      <ion-buttons slot="end" class="toolbar-right">
+        <app-user-button></app-user-button>
+      </ion-buttons>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-button expand="full" (click)="startNavigation()">Start Navigation</ion-button>
+    <ion-button expand="full" (click)="startPassengerNavigation()">Start Navigation Passenger</ion-button>
+    <ion-button expand="full" (click)="finishRide()">Finish Ride</ion-button> 
+  <div id="map" style="height: 100%;">
+  </div>
+     
+</ion-content>

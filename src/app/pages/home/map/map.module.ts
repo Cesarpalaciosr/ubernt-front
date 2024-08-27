@@ -10,6 +10,7 @@ import { UserButtonComponent } from 'src/app/components/atoms/user-button/user-b
 import { LocationSearchModalComponent } from 'src/app/components/location-search-modal/location-search-modal.component';
 import { WaitDriverComponent } from 'src/app/components/wait-driver/wait-driver.component';
 import { ToggleSwitchComponent } from 'src/app/components/toggle-switch/toggle-switch.component';
+import { MapDriverDistanceComponent } from 'src/app/components/map-driver-distance/map-driver-distance.component';
 
 @NgModule({
   imports: [
@@ -24,12 +25,14 @@ import { ToggleSwitchComponent } from 'src/app/components/toggle-switch/toggle-s
     UserButtonComponent,
     LocationSearchModalComponent,
     WaitDriverComponent,
-    ToggleSwitchComponent
+    ToggleSwitchComponent,
+    MapDriverDistanceComponent
   ],
   exports: [
     MapDistanceComponent,
     UserButtonComponent,
-    MapDistanceComponent
+    MapDistanceComponent,
+    MapDriverDistanceComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA] 
 })
