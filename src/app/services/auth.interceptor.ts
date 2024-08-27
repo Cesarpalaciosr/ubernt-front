@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment';
 export class AuthInterceptor implements HttpInterceptor {
   private TOKEN = environment.token;
   private url = environment.localURL;
+  private ROLE = environment.role;
   constructor(private http: HttpClient) {}
 
   async getToken() {
@@ -53,10 +54,14 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
   async isLoggedIn(): Promise<boolean> {
-    const { value } = await Preferences.get({ key: this.TOKEN });
+    const { value } = await Preferences.get({ key : this.TOKEN });
     return !!value;
   }
 
+  async getRole(){
+    const {value} = await Preferences.get({key : this.ROLE}) 
+    return value;
+  }
 
   storeImageUrl(imageUrl: string) {
     //endpoint de la imagen

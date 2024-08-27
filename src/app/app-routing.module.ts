@@ -8,7 +8,6 @@ const routes: Routes = [
     redirectTo: 'home/map', //cambiar por sign in
     pathMatch: 'full',
   },
-
   {
     path: 'login',
     loadChildren: () =>

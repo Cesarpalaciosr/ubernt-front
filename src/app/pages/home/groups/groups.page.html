@@ -1,4 +1,4 @@
-<ion-header [translucent]="true">
+  <ion-header [translucent]="true">
     <ion-toolbar>
       <ion-title> Chats </ion-title>
     </ion-toolbar>
@@ -38,21 +38,24 @@
       <ion-item-divider class="divider">
         <div class="green-bar"></div>
         <ion-text class="titles">
-          Groups
+          Groups test
         </ion-text>
       </ion-item-divider>
   
       <ion-list *ngIf="groups.length > 0" [inset]="true">
         <ion-item *ngFor="let group of groups">
+           <ion-avatar> <!-- arreglar esto si se puede -->
+            <ion-img style="height: 50px; width: 50px;" [src]="group.imgURL"></ion-img>
+          </ion-avatar>
           <ion-label>
-            <h2>{{ group.roomId }}</h2>
-            <p>Come chat about {{ group.roomId }}</p>
+            <h2>{{ group.idRoom }}</h2>
+            <p>Come chat about {{ group.type }}</p>
           </ion-label>
           <ion-button
             id="chat-button"
             fill="clear"
             color="primary"
-            (click)="openGroup(group)"
+            (click)="openGroup(group.idRoom)"
             slot="end"
           >
             <ion-icon slot="icon-only" name="chatbubbles-outline"></ion-icon

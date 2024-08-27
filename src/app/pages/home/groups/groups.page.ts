@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { ChatModalComponent } from 'src/app/components/organisms/chat-modal/chat-modal.component';
 import { Preferences } from '@capacitor/preferences';
+import { environment } from '../../../../environments/environment';
+  
 
 @Component({
   selector: 'app-groups',
@@ -15,6 +17,8 @@ export class GroupsPage implements OnInit {
   user: string = '';
   users: any = [];
   groups: any = [];
+  private localURL = environment.localURL;
+   
 
   constructor(
     private http: HttpClient,
@@ -79,15 +83,19 @@ export class GroupsPage implements OnInit {
       });
   }
 
-  async ngOnInit() {
+
+  private async loadGroups(): Promise<void> {
+    await this.http
+        .get(`${this.localURL}/chat/getGroupChats`, {})
+        .subscribe((data: any) => {
+          console.log(data)
+          this.groups = data.groups
+          console.log(this.groups)
+        });
+  }
+  async ngOnInit() { //cambiar o poner un refresher para que actualize los grupos cuando se vuelva a entrar a la app
     const data = await Preferences.get({ key: 'alias' });
     this.user = data.value!;
-
-    this.http
-      .get('https://tmdb-for-a-angularmovile.onrender.com/chat/public')
-      .subscribe((data: any) => {
-        console.log(data);
-        this.groups = data;
-      });
+    await this.loadGroups();
   }
 }
