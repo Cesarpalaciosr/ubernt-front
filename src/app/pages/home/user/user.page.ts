@@ -10,6 +10,7 @@ import { UpdatenameComponent } from 'src/app/components/modals/updatename/update
 import { DeleteaccountComponent } from 'src/app/components/modals/deleteaccount/deleteaccount.component';
 import { environment } from '../../../../environments/environment';
 import { ProfilepictureComponent } from 'src/app/components/modals/profilepicture/profilepicture.component';
+import { AuthInterceptor } from 'src/app/services/auth.interceptor';
 @Component({
   selector: 'app-user',
   templateUrl: './user.page.html',
@@ -17,14 +18,21 @@ import { ProfilepictureComponent } from 'src/app/components/modals/profilepictur
 })
 export class UserPage implements OnInit {
   token = environment.token;
-  alias: string = '';
+  fullname: string | null = null;
+  username: string | null = null;
+  userid: any = '';
+  userRole: string | null = null;
+  profilePictureUrl: string = '/assets/icon/profilepic.png';
+
 
   constructor(
     private http: HttpClient,
     private modalController: ModalController,
     private alertController: AlertController,
-    private router: Router
-  ) {}
+    private router: Router,
+    private authInterceptor: AuthInterceptor
+  ) { }
+
 
   changePicture(){
     console.log('hola mundo');
@@ -91,9 +99,22 @@ export class UserPage implements OnInit {
 
     this.router.navigate(['/login']); // ajustar para que salga en / limpio
   }
-
+  async createVehicle(){
+    console.log('holamundo');
+    
+  }
   async ngOnInit() {
-    const { value } = await Preferences.get({ key: 'alias' });
-    this.alias = value!;
+    this.fullname = await this.authInterceptor.getFullname();
+    this.username = await this.authInterceptor.getUsername();
+    this.userid = await this.authInterceptor.getUserID();
+    this.userRole = await this.authInterceptor.getRole();
+    this.authInterceptor.getProfilePicture(this.userid).subscribe(
+      (url: string) => {
+        this.profilePictureUrl = url;
+      },
+      (error) => {
+        console.error('Error al cargar la imagen de perfil', error);
+      }
+    );
   }
 }

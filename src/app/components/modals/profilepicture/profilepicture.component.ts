@@ -15,6 +15,7 @@ import { Camera, CameraResultType, CameraSource} from '@capacitor/camera';
 import { ref, uploadString, getDownloadURL, Storage, uploadBytes} from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import { AuthInterceptor } from 'src/app/services/auth.interceptor';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-profilepicture',
@@ -27,6 +28,7 @@ export class ProfilepictureComponent  implements OnInit {
   selectedImages: string[] = [];
   maxImages: number = 4;
   private apiURL = environment.localURL;
+  private ID = environment.id;
 
   @ViewChild('fileInput', { static: false }) fileInput: any;
   password: string = '';
@@ -48,12 +50,14 @@ export class ProfilepictureComponent  implements OnInit {
     this.modalController.dismiss();
   }
 
-
+  
 
   //terminar de conectar, pedir el id de usuario para asociar la foto
-  postPhoto(downloadURL: string){ 
-    this.http.post(`${this.apiURL}`, downloadURL).subscribe()
+  postPhoto(_id:string ,profilePhoto: string):Observable<any>{ 
+    const body = { _id, profilePhoto };
+    return this.http.put(`${this.apiURL}/auth/updateprofilephoto`, body);
   }
+
   async setProfilePicture(){
     const imagesInDataURLFormat = await Promise.all(this.selectedImages.map(imagePath => this.convertToBase64(imagePath)));
 
@@ -67,7 +71,16 @@ export class ProfilepictureComponent  implements OnInit {
         await uploadString(storageRef, image, 'data_url');
         const downloadURL = await getDownloadURL(storageRef);
         
-
+        if (downloadURL) {
+          this.postPhoto(this.ID, downloadURL).subscribe(
+            response => {
+              console.log('Foto de perfil actualizada con éxito:', response);
+            },
+            error => {
+              console.error('Error al actualizar la foto de perfil:', error);
+            }
+          );
+        }
         console.log('URL de descarga:', downloadURL);
         // Luego, puedes guardar la URL de descarga y el tweet en Firebase Firestore
       } catch (error) {
@@ -178,6 +191,8 @@ export class ProfilepictureComponent  implements OnInit {
   }
 
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
 }

@@ -28,59 +28,54 @@ export class GroupsPage implements OnInit {
 
   searchUser(event: any) {
     this.users = [];
-    if (event.target.value !== '') {
-      this.http
-        .post('https://tmdb-for-a-angularmovile.onrender.com/search', {
-          query: `${event.target.value}`,
-        })
-        .subscribe((data: any) => {
-          data.forEach((user: any) => {
-            if (user.alias !== this.user) {
-              this.users.push(user);
-            }
-          });
-        });
-    }
+    // if (event.target.value !== '') {
+    //   this.http
+    //     .post('https://tmdb-for-a-angularmovile.onrender.com/search', {
+    //       query: `${event.target.value}`,
+    //     })
+    //     .subscribe((data: any) => {
+    //       data.forEach((user: any) => {
+    //         if (user.alias !== this.user) {
+    //           this.users.push(user);
+    //         }
+    //       });
+    //     });
+    // }
     console.log(this.users);
   }
 
-  openChat(user: any) {
-    this.http
-      .post('https://tmdb-for-a-angularmovile.onrender.com/chat', {
-        roomId: this.user + user.alias,
-        participants: [this.user, user.alias],
-      })
-      .subscribe((data: any) => {
-        // console.log(data);
-        const modal = this.modalController
+  public async openChat(user: any) {
+  
+    // this.http
+    //   .post('https://tmdb-for-a-angularmovile.onrender.com/chat', {
+    //     roomId: this.user + user.alias,
+    //     participants: [this.user, user.alias],
+    //   })
+    //   .subscribe((data: any) => {
+    //     // console.log(data);
+        
+    //   });
+    // modal.then(modal => modal.present());
+  }
+
+  public async openGroup(group: any ) {
+    await Preferences.set({key:"groupToSee" , value:group});
+  
+      console.log("user to chat:" +  group)
+      const modal = this.modalController
           .create({
             component: ChatModalComponent,
             componentProps: {
               user: this.user,
-              participants: [this.user, user.alias],
-              roomId: data.roomId,
+              participants: [],
+              roomId: group,
             },
           })
           .then((modal) => {
             modal.present();
+            console.log("gruop saved" , group)
           });
-      });
-    // modal.then(modal => modal.present());
-  }
-
-  openGroup(group: any) {
-    const modal = this.modalController
-      .create({
-        component: ChatModalComponent,
-        componentProps: {
-          user: this.user,
-          participants: [],
-          roomId: group.roomId,
-        },
-      })
-      .then((modal) => {
-        modal.present();
-      });
+  
   }
 
 

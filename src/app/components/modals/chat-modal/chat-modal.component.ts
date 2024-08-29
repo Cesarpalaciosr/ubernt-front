@@ -5,6 +5,8 @@ import { ModalController } from '@ionic/angular';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { io } from 'socket.io-client';
+import { environment } from '../../../../environments/environment';
+
 
 @Component({
   selector: 'app-chat-modal',
@@ -21,15 +23,21 @@ export class ChatModalComponent implements OnInit, AfterViewChecked {
   messages: any[] = [];
   // public user 
   private socket: any;
+  private localURL = environment.localURL;
 
   constructor(
     public modalController: ModalController,
     private http: HttpClient,
     private router: Router
   ) {
-    this.socket = io('https://tmdb-for-a-angularmovile.onrender.com', {
+    this.socket = io(`${this.localURL}`, {
       autoConnect: false,
     });
+    this.socket.on('messageFromAnother' , (data:any)=>{
+      console.log(data);
+      this.messages.push(data);
+      console.log(this.messages);
+    })
   }
 
   sendMessage() {

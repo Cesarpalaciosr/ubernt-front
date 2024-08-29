@@ -15,6 +15,8 @@ export class LoginPage implements OnInit {
   public TOKEN  : string = environment.token;
   public ROLE   : string = environment.role;
   public ID     : string = environment.id;
+  public FULLNAME   : string = environment.fullname;
+  public USERNAME   : string = environment.username;
   private localURL = environment.localURL;
 
   constructor(
@@ -40,7 +42,7 @@ export class LoginPage implements OnInit {
   public fnLogin(){
         this.http.post(`${this.localURL}/auth/signin`, this.existingUser).subscribe(async (res: any) => {
           console.log(res)
-          await this.storeCredentials(res.token, res.id, res.role)
+          await this.storeCredentials(res.token, res.id, res.role, res.fullname, res.username)
           this.alertController
           .create({
             header: 'Success',
@@ -81,10 +83,12 @@ export class LoginPage implements OnInit {
     }
   }
 
-  private async storeCredentials(token: string, id : string, role: string) {
+  private async storeCredentials(token: string, id : string, role: string, fullname: string, username: string) {
     await Preferences.set({ key: this.TOKEN, value: token });
     await Preferences.set({ key: this.ID, value: id });
     await Preferences.set({ key: this.ROLE, value: role });
+    await Preferences.set({ key: this.FULLNAME, value: fullname });
+    await Preferences.set({ key: this.USERNAME, value: username});
     this.navigation.navigateForward('/home');
   }
 

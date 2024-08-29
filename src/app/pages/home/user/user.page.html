@@ -7,9 +7,10 @@
 <ion-content>
   <ion-card-header> 
     <ion-avatar class="custom-avatar">
-      <img src="https://i.imgur.com/s8gsz2Z.jpg" />
+      <img [src]="profilePictureUrl" />
     </ion-avatar>
-    <ion-card-title>User mango</ion-card-title>
+    <ion-card-title>{{fullname}}</ion-card-title>
+    <ion-card-title>{{username}}</ion-card-title>
    </ion-card-header> 
 
   <div class="ion-center">
@@ -17,9 +18,16 @@
       <ion-card-content class="btnSection">
         <ion-item lines="none" (click)="changePicture()">
           <ion-icon name="log-out-outline" slot="start"></ion-icon>
-          <ion-label>Foto de Perfil</ion-label>
+          <ion-label>Cambiar Foto de Perfil</ion-label>
           <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
         </ion-item>
+        <ng-container *ngIf="userRole === 'driver'">
+          <ion-item lines="none" (click)="createVehicle()">
+            <ion-icon name="car-outline" slot="start"></ion-icon>
+            <ion-label>Asociar Vehiculo</ion-label>
+            <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+          </ion-item>
+        </ng-container>
         <ion-item lines="none" (click)="changeName()">
           <ion-icon name="person-outline" slot="start"></ion-icon>
           <ion-label>Modify Name</ion-label>
