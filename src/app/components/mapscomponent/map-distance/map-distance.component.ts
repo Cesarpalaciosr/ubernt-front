@@ -17,7 +17,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   private startMarker!: L.Marker;
   private endMarker!: L.Marker;
   private routeLayer!: L.LayerGroup;
-  private URL = environment.localURL;
+  // private URL = environment.localURL;
 
   public startLocation: string = '';
   public endLocation: string = '';
@@ -31,7 +31,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   */
   // startLocation = { latitude: 0, longitude: 0 };
   // endLocation = { latitude: 0, longitude: 0 };
-  passenger_id: string | null = null; 
+  // passenger_id: string | null = null; 
 
   constructor(
     private http: HttpClient,
@@ -41,36 +41,36 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   ) {}
 
   /*Logica de sockets*/
-  requestTrip() {
-    this.socket.emit('request_trip', {
-      passenger_id: this.passenger_id,
-      startLocation: this.startLocation,
-      endLocation: this.endLocation,
-    });
+  // requestTrip() {
+  //   this.socket.emit('request_trip', {
+  //     passenger_id: this.passenger_id,
+  //     startLocation: this.startLocation,
+  //     endLocation: this.endLocation,
+  //   });
 
-    this.socket.fromEvent('no_drivers_available').subscribe(() => {
-      console.log('No hay conductores disponibles');
-    });
+  //   this.socket.fromEvent('no_drivers_available').subscribe(() => {
+  //     console.log('No hay conductores disponibles');
+  //   });
 
-    this.socket.fromEvent('trip_taken').subscribe(() => {
-      console.log('El viaje ya ha sido tomado por otro driver');
-    });
+  //   this.socket.fromEvent('trip_taken').subscribe(() => {
+  //     console.log('El viaje ya ha sido tomado por otro driver');
+  //   });
 
-    this.socket.fromEvent('trip_accepted').subscribe((trip: any) => {
-      console.log('Viaje aceptado:', trip);
-    });
+  //   this.socket.fromEvent('trip_accepted').subscribe((trip: any) => {
+  //     console.log('Viaje aceptado:', trip);
+  //   });
 
-    this.socket.fromEvent('driver_cancelled_trip').subscribe(() => {
-      console.log('El conductor ha cancelado el viaje. Buscando otro conductor...');
-      this.requestTrip(); // Reintentar la búsqueda de otro driver
-    });
-  }
+  //   this.socket.fromEvent('driver_cancelled_trip').subscribe(() => {
+  //     console.log('El conductor ha cancelado el viaje. Buscando otro conductor...');
+  //     this.requestTrip(); // Reintentar la búsqueda de otro driver
+  //   });
+  // }
 
-  cancelRequest() {
-    this.socket.emit('cancel_trip_request', this.passenger_id);
-  }
+  // cancelRequest() {
+  //   this.socket.emit('cancel_trip_request', this.passenger_id);
+  // }
   async ngOnInit(){
-    this.passenger_id = await this.authInterceptor.getUserID();
+    // this.passenger_id = await this.authInterceptor.getUserID();
 
    }
 
