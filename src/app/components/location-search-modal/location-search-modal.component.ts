@@ -23,7 +23,7 @@ export class LocationSearchModalComponent {
       componentProps: {
         startLocation: this.startLocation,
         endLocation: this.endLocation,
-
+        
         
       }
 
