@@ -18,6 +18,7 @@ export class RegisterPage implements OnInit {
   public TOKEN:string = environment.token;
   public URL: string = environment.localURL
   public isLoading: boolean = false;
+  // selectedCareer: string;
 
   newUser : newUser = {
     fullName: '',
@@ -25,6 +26,7 @@ export class RegisterPage implements OnInit {
     username: '',
     email: '',
     password: '',
+    career: '',
     repeat_password: '',
     phoneNumber: '',
   }
@@ -55,6 +57,7 @@ export class RegisterPage implements OnInit {
   public onSubmit() {
     this.isLoading = true;
     console.log(this.newUser);
+    console.log(this.newUser.career);
     try{
       this.http.post(`${this.URL}/auth/signup`, this.newUser).subscribe(async (res:any)=>{
         this.alertController

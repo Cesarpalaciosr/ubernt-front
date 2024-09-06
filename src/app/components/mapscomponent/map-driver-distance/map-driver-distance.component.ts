@@ -1,6 +1,10 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
+import {Socket, io} from 'socket.io-client';
+import { environment } from 'src/environments/environment';
+import { AuthInterceptor } from 'src/app/services/auth.interceptor';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-map-driver-distance',
@@ -15,7 +19,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   private routeLayer!: L.LayerGroup;
   private fuchsiaRouteLayer!: L.LayerGroup;
   private locationWatchId: number | undefined;
-
+  private URL = environment.localURL;
   public readonly DEFAULT_ZOOM_LEVEL = 15; //no se si tengo que ponerlo publico o privado
   public readonly START_LOCATION = { lat: 10.649495, lng: -71.596806 }; // Universidad Rafael Urdaneta
   public readonly END_LOCATION = { lat: 10.683081, lng: -71.607131 }; // Universidad Rafael Belloso Chacín
@@ -25,10 +29,68 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   public showEndTripButton = false;
   public showEndRideButton = false;
   public firstNavigationCompleted = false;
+  
 
-  constructor(private http: HttpClient) { }
+  //Variables usadas por los sockets
+  private socket: any = io(`${this.URL}`);
 
-  ngOnInit(): void { }
+  startLoctoback = {
+    lat: 0,
+    lng: 0,
+    typecoord: '',
+    stringLocation: ''
+  };
+  endLoctoback = {
+    lat: 0,
+    lng: 0,
+    typecoord: '',
+    stringLocation: ''
+  };
+  
+
+  constructor(
+    private http: HttpClient,
+    private modalController: ModalController,
+    private authInterceptor: AuthInterceptor
+  ) { }
+
+  driver_id : string | null = null; // Reemplaza con el ID real del driver
+  tripRequest: any = null;
+  tripAccepted: boolean = false;
+  tripDetails: any = null;
+
+  async ngOnInit(){ 
+    this.driver_id = await this.authInterceptor.getUserID();
+
+    //Logica del socket
+        // Escuchar solicitudes de viaje desde el servidor
+        this.socket.on('new_trip_request', (data: any) => {
+          console.log('Solicitud de viaje recibida:', data);
+          this.tripRequest = data; // Guardar los detalles del viaje
+        });
+    
+        // Escuchar cuando otro driver ha aceptado el viaje
+        this.socket.on('trip_taken', () => {
+          console.log('El viaje ya ha sido aceptado por otro driver');
+          this.tripRequest = null; // Limpiar la solicitud actual si otro driver acepta el viaje
+        });
+    
+        // Escuchar cuando el pasajero cancela la solicitud
+        this.socket.on('trip_request_cancelled', (passengerId: string) => {
+          if (this.tripRequest && this.tripRequest.passenger_id === passengerId) {
+            console.log('El pasajero ha cancelado la solicitud');
+            this.tripRequest = null; // Limpiar la solicitud actual
+          }
+        });
+    
+        // Escuchar confirmación de que el viaje fue aceptado
+        this.socket.on('trip_accepted', (tripDetails: any) => {
+          this.tripAccepted = true;
+          this.tripDetails = tripDetails;
+          console.log('Viaje aceptado:', tripDetails);
+        });
+
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -41,7 +103,47 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     if (this.locationWatchId) {
       navigator.geolocation.clearWatch(this.locationWatchId);
     }
+
+    this.socket.disconnect(); // Desconectar el socket al destruir el componente
   }
+
+  /*  ///\\\  */
+  /*  \\\///  */
+
+  // Aceptar el viaje
+  acceptTrip() {
+    if (this.tripRequest) {
+      this.socket.emit('accept_trip', {
+        driver_id: this.driver_id,
+        passenger_id: this.tripRequest.passenger_id,
+        start_location_id: this.tripRequest.start_location_id,
+        end_location_id: this.tripRequest.end_location_id,
+        vehicle_id: 'vehicle_id_example', // Reemplaza con el ID del vehículo del driver
+      });
+    }
+  }
+
+  // Rechazar el viaje
+  rejectTrip() {
+    this.tripRequest = null; // Limpiar la solicitud del viaje
+    // Puedes agregar lógica adicional aquí si deseas notificar al servidor
+  }
+
+  // Cancelar el viaje
+  cancelTrip() {
+    if (this.tripDetails) {
+      this.socket.emit('cancel_trip', {
+        driver_id: this.driver_id,
+        trip_id: this.tripDetails._id,
+      });
+      this.tripAccepted = false;
+      this.tripDetails = null;
+    }
+  }
+
+  /*  ///\\\  */
+  /*  \\\///  */
+
 
   private initMap(): void {
     this.map = L.map('map', {

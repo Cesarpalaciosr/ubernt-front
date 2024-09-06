@@ -60,7 +60,6 @@ export class GroupsPage implements OnInit {
 
   public async openGroup(group: any ) {
     await Preferences.set({key:"groupToSee" , value:group});
-  
       console.log("user to chat:" +  group)
       const modal = this.modalController
           .create({
@@ -89,7 +88,7 @@ export class GroupsPage implements OnInit {
         });
   }
   async ngOnInit() { //cambiar o poner un refresher para que actualize los grupos cuando se vuelva a entrar a la app
-    const data = await Preferences.get({ key: 'alias' });
+    const data = await Preferences.get({ key: 'id' });
     this.user = data.value!;
     await this.loadGroups();
   }

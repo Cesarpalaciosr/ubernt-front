@@ -5,6 +5,7 @@ export interface newUser {
     email: string,
     password: string,
     repeat_password: string,
+    career: string,
     phoneNumber: string,
     profilePhoto?:string
 }

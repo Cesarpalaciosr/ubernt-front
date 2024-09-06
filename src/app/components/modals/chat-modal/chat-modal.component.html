@@ -2,10 +2,9 @@
   <ion-toolbar>
     <div class="header-content">
       <ion-buttons slot="start">
-        <ion-button (click)="closeModal()">
-        </ion-button>
+        <ion-button (click)="closeModal()"> </ion-button>
       </ion-buttons>
-      <ion-title>Chat</ion-title>
+      <ion-title>{{ roomId }}</ion-title>
     </div>
   </ion-toolbar>
 </ion-header>
@@ -27,22 +26,20 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-
           <ion-input
             placeholder="Type a message"
             [(ngModel)]="message"
             name="message"
           ></ion-input>
-          
         </ion-col>
         <ion-col size="auto">
-          <ion-button class="custom-button"
-          (click)="sendMessage(); message = ''"
-          [disabled]="!message"
-        >
-          <ion-icon name="send"></ion-icon>
-        </ion-button>
-
+          <ion-button
+            class="custom-button"
+            (click)="sendMessage(); message = ''"
+            [disabled]="!message"
+          >
+            <ion-icon name="send"></ion-icon>
+          </ion-button>
         </ion-col>
       </ion-row>
     </ion-grid>
