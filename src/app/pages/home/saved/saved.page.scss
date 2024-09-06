@@ -52,3 +52,60 @@ ion-header {
 #container a {
   text-decoration: none;
 }
+
+ion-chip{
+
+
+@media (prefers-color-scheme: light) {
+  --background: #ffffff; /* Fondo blanco */
+  --color: #000000; /* Texto negro */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra para dar efecto de borde */
+}
+
+/* Estilos para tema oscuro */
+@media (prefers-color-scheme: dark) {
+  --background: #000000; /* Fondo negro */
+  --color: #d3d3d3; /* Texto gris claro */
+  box-shadow: 0 2px 4px rgba(255, 255, 255, 0.2); /* Sombra para dar efecto de borde */
+}
+}
+
+.custom-chip {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #3a3459;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ajusta el espacio entre el avatar y el texto */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añadir sombra para mayor estilo */
+}
+
+.custom-avatar {
+  width: 80px; /* Aumenta el tamaño del avatar */
+  height: 80px;
+  margin-right: 20px; /* Añade espacio entre el avatar y el texto */
+}
+
+.labels-container {
+  flex: 1; /* Permite que los labels usen todo el espacio disponible */
+  display: flex;
+  flex-direction: column; /* Coloca los labels uno encima del otro */
+  text-align: left; /* Alinea el texto a la izquierda */
+  margin-right: 10px; /* Añade espacio entre el texto y el icono */
+}
+
+.primary-label {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.secondary-label,
+.tertiary-label {
+  font-size: 14px;
+}
+
+.chevron-icon {
+  font-size: 24px;
+}

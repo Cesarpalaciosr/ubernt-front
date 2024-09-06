@@ -9,9 +9,9 @@
     <ion-card-header class="avatar-container">
       <ion-avatar class="custom-avatar">
         <img [src]="profilePictureUrl" />
-        <ion-button class="avatar-button" (click)="changePicture()">
-          +
-        </ion-button>
+        <div class="avatar-button" (click)="changePicture()">
+          <ion-icon name="camera-outline"></ion-icon>
+        </div>
       </ion-avatar>
       <ion-card-title>{{ fullname }}</ion-card-title>
       <ion-card-title>{{ '@' + username }}</ion-card-title>

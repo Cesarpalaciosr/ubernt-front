@@ -13,6 +13,7 @@ import { UpdatepasswordComponent } from '../../../components/modals/updatepasswo
 import { UpdatenameComponent } from 'src/app/components/modals/updatename/updatename.component'; 
 import { DeleteaccountComponent } from '../../../components/modals/deleteaccount/deleteaccount.component';
 import { ProfilepictureComponent } from 'src/app/components/modals/profilepicture/profilepicture.component';
+
 @NgModule({
   imports: [CommonModule, FormsModule, IonicModule, UserPageRoutingModule],
   declarations: [

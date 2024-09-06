@@ -38,14 +38,28 @@ ion-content {
   flex: 1 1 auto;
   margin-bottom: 20px;
   position: relative; /* Asegura que el botón esté relacionado con el contenedor */
+  
 }
 
 .custom-avatar {
-  width: 25vw;
-  max-width: 150px;
-  height: auto;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   overflow: hidden;
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.custom-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: visible; /* Asegura que el botón no se corte */
   position: relative;
 
   img {
@@ -59,30 +73,39 @@ ion-content {
   --border-radius: 50%;
   --background: #51007d !important;
   --color: #fff;
-  width: 5vw;
-  height: 5vw;
-  max-width: 40px;
-  max-height: 40px;
+  --z-index: 10;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
-  bottom: 0; /* Posiciona el botón en la parte inferior */
-  right: 0; /* Posiciona el botón en la parte derecha */
-  z-index: 10;
+  bottom: 5px; /* Asegura que el botón sobresalga un poco más */
+  right: 5px; /* Ajusta la posición para que no se vea cortado */
   font-weight: bold;
-  border-radius: 50%;
   border: none;
-  padding: 0;
-  
+  cursor: pointer; /* Cambia el cursor a mano al pasar sobre el botón */
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease; /* Transición para hover, active y background */
+
+  ion-icon {
+    font-size: 24px;
+  }
+
   &:hover {
-    --background: #51007d;
+    --background: #6e1db0; /* Cambia ligeramente el color de fondo al pasar el mouse */
+    transform: scale(1.1); /* Agranda el botón ligeramente al hacer hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Añade una sombra para el efecto de elevación */
   }
 
   &:active {
-    --background: #51007d;
+    --background: #3c0051; /* Color más oscuro al hacer clic */
+    transform: scale(0.95); /* Reduce ligeramente el tamaño del botón para simular la presión */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Reduce la sombra al hacer clic */
   }
 }
+
+
+
 
 .ion-center {
   width: 100%;
