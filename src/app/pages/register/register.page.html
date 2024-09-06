@@ -89,7 +89,27 @@
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
-
+          <ion-item>
+            <ion-label>Carrera</ion-label>
+            <ion-select [(ngModel)]="newUser.career" name="career" placeholder="Selecciona una carrera" required>
+              <ion-select-option value="Psicologia">Psicología</ion-select-option>
+              <ion-select-option value="Administracion de Empresas">Administración de Empresas</ion-select-option>
+              <ion-select-option value="Ciencias Politicas">Ciencias Políticas</ion-select-option>
+              <ion-select-option value="Contaduria Publica">Contaduría Pública</ion-select-option>
+              <ion-select-option value="Derecho">Derecho</ion-select-option>
+              <ion-select-option value="Estudios Internacionales">Estudios Internacionales</ion-select-option>
+              <ion-select-option value="Negocios Gastronomicos y Turisticos">Negocios Gastronómicos y Turísticos</ion-select-option>
+              <ion-select-option value="Arquitectura">Arquitectura</ion-select-option>
+              <ion-select-option value="Ingenieria Electrica">Ingeniería Eléctrica</ion-select-option>
+              <ion-select-option value="Ingenieria en Computacion">Ingeniería en Computación</ion-select-option>
+              <ion-select-option value="Ingenieria Industrial">Ingeniería Industrial</ion-select-option>
+              <ion-select-option value="Ingenieria Quimica">Ingeniería Química</ion-select-option>
+              <ion-select-option value="Ingenieria en Telecomunicaciones">Ingeniería en Telecomunicaciones</ion-select-option>
+              <ion-select-option value="Ingenieria Civil">Ingeniería Civil</ion-select-option>
+              <ion-select-option value="Diseño de Espacios e Interiorismo">Diseño de Espacios e Interiorismo</ion-select-option>
+              <ion-select-option value="Ingenieria de Produccion Animal">Ingeniería de Producción Animal</ion-select-option>
+            </ion-select>
+          </ion-item>
           <ion-item>
             <!-- <ion-select [(ngModel)]="selectedOption">
               <ion-select-option color="red" *ngFor="let option of options" [value]="option">{{ option }}</ion-select-option>

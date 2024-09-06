@@ -79,16 +79,9 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     });
   }
 
-  cancelRequest() {
-    this.socket.emit('cancel_trip_request', this.passenger_id);
-  }
   async ngOnInit(){
     this.passenger_id = await this.authInterceptor.getUserID();
-    console.log('soy el oninit map');
-    
-    console.log(this.passenger_id);
-    
-   }
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -314,13 +307,11 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       componentProps: {
         startLocation: this.startLocation,
         endLocation: this.endLocation,
-        pinga: 'pinga'
+        passenger_id: this.passenger_id,
+        startLoctoback: this.startLoctoback,
+        endLoctoback: this.endLoctoback
       }
-    });
-    console.log(this.startLocation);
-    console.log(this.startLoctoback );
-    console.log(this.endLoctoback );
-    
+    });    
   
     modal.onDidDismiss().then((detail) => {
       if (detail !== null && detail.data) {

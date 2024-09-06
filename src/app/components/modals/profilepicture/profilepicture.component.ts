@@ -26,7 +26,7 @@ export class ProfilepictureComponent  implements OnInit {
 
   tweetText: string = '';
   selectedImages: string[] = [];
-  maxImages: number = 4;
+  maxImages: number = 1;
   private apiURL = environment.localURL;
   private ID = environment.id;
 
