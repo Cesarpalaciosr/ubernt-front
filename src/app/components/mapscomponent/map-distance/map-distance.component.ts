@@ -84,7 +84,11 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
         
         this.socket.emit('select_driver', {
           passenger_id: this.passenger_id,
-          driver_id: response.data.driver.driver_id
+          driver_id: response.data.driver.driver_id,
+          startLocation: this.startLocation,
+          endLocation: this.endLocation,
+          startLoctoback: this.startLoctoback,
+          endLoctoback: this.endLoctoback
         });
       } else {
         console.log('Búsqueda cancelada o no se encontró conductor.');
