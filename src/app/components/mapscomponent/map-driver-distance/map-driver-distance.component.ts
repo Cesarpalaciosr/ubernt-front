@@ -1,6 +1,12 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
+import {Socket, io} from 'socket.io-client';
+import { environment } from 'src/environments/environment';
+import { AuthInterceptor } from 'src/app/services/auth.interceptor';
+import { ModalController } from '@ionic/angular';
+import { TripService } from 'src/app/services/socket.service';
+import { AcceptTripModalComponent } from '../../modals/accept-trip-modal/accept-trip-modal.component';
 
 @Component({
   selector: 'app-map-driver-distance',
@@ -15,7 +21,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   private routeLayer!: L.LayerGroup;
   private fuchsiaRouteLayer!: L.LayerGroup;
   private locationWatchId: number | undefined;
-
+  private URL = environment.localURL;
   public readonly DEFAULT_ZOOM_LEVEL = 15; //no se si tengo que ponerlo publico o privado
   public readonly START_LOCATION = { lat: 10.649495, lng: -71.596806 }; // Universidad Rafael Urdaneta
   public readonly END_LOCATION = { lat: 10.683081, lng: -71.607131 }; // Universidad Rafael Belloso Chacín
@@ -25,10 +31,71 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   public showEndTripButton = false;
   public showEndRideButton = false;
   public firstNavigationCompleted = false;
+  
 
-  constructor(private http: HttpClient) { }
+  //Variables usadas por los sockets
+  // private socket: any = io(`${this.URL}`);
 
-  ngOnInit(): void { }
+  startLoctoback = {
+    lat: 0,
+    lng: 0,
+    typecoord: '',
+    stringLocation: ''
+  };
+  endLoctoback = {
+    lat: 0,
+    lng: 0,
+    typecoord: '',
+    stringLocation: ''
+  };
+  
+
+  constructor(
+    private http: HttpClient,
+    private modalController: ModalController,
+    private authInterceptor: AuthInterceptor,
+    private socket: TripService,
+  ) { }
+
+  driver_id : string | null = null; // Reemplaza con el ID real del driver
+  status: 'active' | 'inactive' = 'inactive'; // Estado inicial
+  tripRequest: any = null;
+  tripAccepted: boolean = false;
+  tripDetails: any = null;
+
+  async ngOnInit(){ 
+    this.driver_id = await this.authInterceptor.getUserID();
+        // Escuchar cuando el driver active su estado
+        this.socket.on('driver_activated', (driverId: string) => {
+          if (driverId === this.driver_id) {
+            console.log('Tu estado es ahora activo');
+          }
+        });
+    
+        // Escuchar cuando el driver desactive su estado
+        this.socket.on('driver_deactivated', (driverId: string) => {
+          if (driverId === this.driver_id) {
+            console.log('Tu estado es ahora inactivo');
+          }
+        });
+
+    //Logica del socket
+    this.socket.on('trip_request', async (data: any) => {
+      console.log('Soy la data');
+      console.log(data);
+      
+      this.tripRequest = data;
+      const modal = await this.modalController.create({
+        component: AcceptTripModalComponent,
+        componentProps: { 
+          tripRequest: this.tripRequest,
+          driver_id: this.driver_id
+         }
+      });
+
+      await modal.present();
+    });
+  }
 
   ngAfterViewInit(): void {
     this.initMap();
@@ -41,7 +108,47 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     if (this.locationWatchId) {
       navigator.geolocation.clearWatch(this.locationWatchId);
     }
+
+    this.socket.disconnect(); // Desconectar el socket al destruir el componente
   }
+
+  /*  ///\\\  */
+  /*  \\\///  */
+
+  // Aceptar el viaje
+  acceptTrip() {
+    if (this.tripRequest) {
+      this.socket.emit('accept_trip', {
+        driver_id: this.driver_id,
+        passenger_id: this.tripRequest.passenger_id,
+        start_location_id: this.tripRequest.start_location_id,
+        end_location_id: this.tripRequest.end_location_id,
+        vehicle_id: 'vehicle_id_example', // Reemplaza con el ID del vehículo del driver
+      });
+    }
+  }
+
+  // Rechazar el viaje
+  rejectTrip() {
+    this.tripRequest = null; // Limpiar la solicitud del viaje
+    // Puedes agregar lógica adicional aquí si deseas notificar al servidor
+  }
+
+  // Cancelar el viaje
+  cancelTrip() {
+    if (this.tripDetails) {
+      this.socket.emit('cancel_trip', {
+        driver_id: this.driver_id,
+        trip_id: this.tripDetails._id,
+      });
+      this.tripAccepted = false;
+      this.tripDetails = null;
+    }
+  }
+
+  /*  ///\\\  */
+  /*  \\\///  */
+
 
   private initMap(): void {
     this.map = L.map('map', {
@@ -298,7 +405,25 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
   onStatusChange(status: boolean): void {
   console.log('Switch status:', status ? 'ON' : 'OFF');
+  if (status == true) {
+    this.status = 'active'
+    // Emitir el cambio de estado al servidor
+      // Emitir el cambio de estado al servidor
+      this.socket.emit('driver_status_change', {
+        driver_id: this.driver_id,
+        status: this.status
+      });
+  } else {
+    this.status = 'inactive' 
+    // Emitir el cambio de estado al servidor
+      // Emitir el cambio de estado al servidor
+      this.socket.emit('driver_status_change', {
+        driver_id: this.driver_id,
+        status: this.status
+      });
+  }
 
+   
   if (!status && (this.routeLayer.getLayers().length > 0 || this.fuchsiaRouteLayer.getLayers().length > 0)) {
     // Mostrar alerta si hay rutas activas y el usuario intenta apagar el switch
     alert('No puedes apagar el switch porque hay una ruta activa.');

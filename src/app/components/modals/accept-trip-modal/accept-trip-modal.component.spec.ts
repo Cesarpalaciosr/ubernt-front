@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { InfoCardUserComponent } from './info-card-user.component';
+import { AcceptTripModalComponent } from './accept-trip-modal.component';
 
-describe('InfoCardUserComponent', () => {
-  let component: InfoCardUserComponent;
-  let fixture: ComponentFixture<InfoCardUserComponent>;
+describe('AcceptTripModalComponent', () => {
+  let component: AcceptTripModalComponent;
+  let fixture: ComponentFixture<AcceptTripModalComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ InfoCardUserComponent ],
+      declarations: [ AcceptTripModalComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(InfoCardUserComponent);
+    fixture = TestBed.createComponent(AcceptTripModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

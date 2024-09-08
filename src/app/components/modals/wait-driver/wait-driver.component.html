@@ -1,11 +1,30 @@
 
 <ion-content class="transparent-content">
   <div class="modal-content">
-    <h2>Buscando Conductores</h2>
+    <!-- <h2>Buscando Conductores</h2>
     <div class="circle">
-      <!-- Imagen del auto animada -->
+      Imagen del auto animada
+      <img src="https://firebasestorage.googleapis.com/v0/b/ubernt-99b85.appspot.com/o/images%2F4.png?alt=media&token=bd2569a6-e9af-4567-a6dd-62ed234a509d" alt="Car Image" class="car-image">
+    </div> -->
+
+
+    <h2 *ngIf="isSearching">Buscando Conductores</h2>
+    
+    <!-- Mostrar la animación mientras se busca -->
+    <div class="circle" *ngIf="isSearching">
       <img src="https://firebasestorage.googleapis.com/v0/b/ubernt-99b85.appspot.com/o/images%2F4.png?alt=media&token=bd2569a6-e9af-4567-a6dd-62ed234a509d" alt="Car Image" class="car-image">
     </div>
-    <ion-button expand="full" color= "danger" class="cancelar-button" (click)="dismiss()">Cancel searching</ion-button>
+
+        <!-- Mostrar los conductores cuando estén disponibles -->
+        <ion-list *ngIf="!isSearching" class="ionlist">
+          <h2>Conductores disponibles</h2>
+          <ion-item *ngFor="let driver of availableDrivers" (click)="selectDriver(driver)">
+            <ion-label>
+              {{ driver.user.fullName }} - {{ driver.vehicle.model }}
+            </ion-label>
+          </ion-item>
+        </ion-list>
+    
+    <ion-button expand="full" color= "danger" class="cancelar-button" (click)="closeModal(null)">Cancel searching</ion-button>
   </div>
 </ion-content>

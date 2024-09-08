@@ -1,0 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aceptar Viaje</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="rejectTrip()">Rechazar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <p>Solicitud de viaje de {{ tripRequest.passenger_id }}</p>
+  <ion-button expand="full" (click)="acceptTrip()">Aceptar Viaje</ion-button>
+</ion-content>
