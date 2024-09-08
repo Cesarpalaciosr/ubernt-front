@@ -13,6 +13,7 @@ import { ToggleSwitchComponent } from 'src/app/components/buttons/toggle-switch/
 import { MapDriverDistanceComponent } from 'src/app/components/mapscomponent/map-driver-distance/map-driver-distance.component';
 import { RendermapComponent } from 'src/app/components/mapscomponent/rendermap/rendermap.component';
 import { AcceptTripModalComponent } from 'src/app/components/modals/accept-trip-modal/accept-trip-modal.component';
+import { DriverChipComponent } from 'src/app/components/driver-chip/driver-chip.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,6 +27,7 @@ import { AcceptTripModalComponent } from 'src/app/components/modals/accept-trip-
     UserButtonComponent,
     LocationSearchModalComponent,
     WaitDriverComponent,
+    DriverChipComponent,
     AcceptTripModalComponent,
     ToggleSwitchComponent,
     MapDriverDistanceComponent,

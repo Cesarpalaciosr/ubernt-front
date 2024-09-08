@@ -18,11 +18,17 @@
         <!-- Mostrar los conductores cuando estén disponibles -->
         <ion-list *ngIf="!isSearching" class="ionlist">
           <h2>Conductores disponibles</h2>
-          <ion-item *ngFor="let driver of availableDrivers" (click)="selectDriver(driver)">
-            <ion-label>
-              {{ driver.user.fullName }} - {{ driver.vehicle.model }}
-            </ion-label>
-          </ion-item>
+          <div *ngFor="let driver of availableDrivers" class="list-content" (click)="selectDriver(driver)">
+            <app-driver-chip 
+              [fullName]="driver.user.fullName" 
+              [phoneNumber]="driver.user.phoneNumber" 
+              [email]="driver.user.email"
+              [ci]="driver.user.ci" 
+              [profilePhoto]="driver.user.profilePhoto" 
+              [vehicleModel]="driver.vehicle.model"
+              [licensePlate]="driver.vehicle.licensePlate">
+            </app-driver-chip>
+          </div>
         </ion-list>
     
     <ion-button expand="full" color= "danger" class="cancelar-button" (click)="closeModal(null)">Cancel searching</ion-button>

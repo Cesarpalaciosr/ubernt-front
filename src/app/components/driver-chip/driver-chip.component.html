@@ -1,0 +1,15 @@
+<div id="chips-container">
+  <ion-chip class="custom-chip">
+    <ion-avatar class="custom-avatar">
+      <img [alt]="fullName" [src]="profilePhoto || 'https://ionicframework.com/docs/img/demos/avatar.svg'" />
+    </ion-avatar>
+    <div class="labels-container">
+      <ion-label class="primary-label">Nombre: {{ fullName }}</ion-label>
+      <ion-label class="secondary-label">tlf: {{ phoneNumber }}</ion-label>
+      <ion-label class="secondary-label">email: {{ email}}</ion-label>
+      <ion-label class="secondary-label">ci: {{ ci }}</ion-label>
+      <ion-label class="tertiary-label">{{ vehicleModel }} - {{ licensePlate }}</ion-label>
+    </div>
+    <ion-icon name="chevron-forward-outline" slot="end" class="chevron-icon"></ion-icon>
+  </ion-chip>
+</div>
