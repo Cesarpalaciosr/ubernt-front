@@ -3,9 +3,11 @@ import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
 import { ModalController } from '@ionic/angular';
 import { LocationSearchModalComponent } from '../../location-search-modal/location-search-modal.component';
+import { WaitDriverComponent } from '../../modals/wait-driver/wait-driver.component';
 import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from 'src/app/services/auth.interceptor';
+import { TripService } from 'src/app/services/socket.service';
 @Component({
   selector: 'app-map-distance',
   templateUrl: './map-distance.component.html',
@@ -17,7 +19,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   private endMarker!: L.Marker;
   private routeLayer!: L.LayerGroup;
   private URL = environment.localURL;
-  private socket: any;
+  // private socket: any;
   public startLocation: string = '';
   public endLocation: string = '';
   public distance: string = '';
@@ -47,37 +49,52 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     private http: HttpClient,
     private modalController: ModalController,
     // private socket: Socket,
+    private socket: TripService,
     private authInterceptor: AuthInterceptor
   ) {
-    // this.socket = io(`${this.URL}`, { autoConnect: false });
-
   }
 
   /*Logica de sockets*/
-  requestTrip() {
-    this.socket.emit('request_trip', {
-      passenger_id: this.passenger_id,
-      startLocation: this.startLocation,
-      endLocation: this.endLocation,
-    });
-
-    this.socket.fromEvent('no_drivers_available').subscribe(() => {
-      console.log('No hay conductores disponibles');
-    });
-
-    this.socket.fromEvent('trip_taken').subscribe(() => {
-      console.log('El viaje ya ha sido tomado por otro driver');
-    });
-
-    this.socket.fromEvent('trip_accepted').subscribe((trip: any) => {
-      console.log('Viaje aceptado:', trip);
-    });
-
-    this.socket.fromEvent('driver_cancelled_trip').subscribe(() => {
-      console.log('El conductor ha cancelado el viaje. Buscando otro conductor...');
-      this.requestTrip(); // Reintentar la búsqueda de otro driver
-    });
+  // Cancelar la búsqueda
+  cancelSearch() {
+    this.socket.emit('cancel_trip_request', this.passenger_id);
+    // this.socket.disconnect(); // Desconectar el socket si se cancela la búsqueda
   }
+  async searchDriver() {
+    // Emitir el evento request_trip para buscar drivers activos
+    this.socket.emit('request_trip', {
+      startLocation: this.startLoctoback,
+      endLocation: this.endLoctoback,
+      passenger_id: this.passenger_id,
+    });
+
+    // Abrir el modal con los drivers activos
+    const modal = await this.modalController.create({
+      // component: SearchingDriverModalComponent,
+      component: WaitDriverComponent,
+      componentProps:{
+        passenger_id: this.passenger_id
+      }
+    });
+
+    modal.onDidDismiss().then((response) => {
+      if (response.data && response.data.driver) {
+        console.log('Driver seleccionado:', response.data.driver);
+        console.log(response.data.driver.driver_id);
+        
+        this.socket.emit('select_driver', {
+          passenger_id: this.passenger_id,
+          driver_id: response.data.driver.driver_id
+        });
+      } else {
+        console.log('Búsqueda cancelada o no se encontró conductor.');
+        this.cancelSearch()
+      }
+    });
+
+    return await modal.present();
+  }
+
 
   async ngOnInit(){
     this.passenger_id = await this.authInterceptor.getUserID();
@@ -303,7 +320,8 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
 
   public async openSearchModal() {
     const modal = await this.modalController.create({
-      component: LocationSearchModalComponent,
+      component: WaitDriverComponent,
+      // component: LocationSearchModalComponent,
       componentProps: {
         startLocation: this.startLocation,
         endLocation: this.endLocation,

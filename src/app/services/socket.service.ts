@@ -78,3 +78,31 @@ export class ChatService {
     }
 }
 
+@Injectable({
+    providedIn: 'root'
+  })
+  export class TripService {
+    private socket: any;
+    private URL = environment.localURL;
+  
+    constructor() {
+      this.socket = io(`${this.URL}`); // Reemplaza con tu URL de servidor
+    }
+  
+    // Emitir eventos
+    emit(event: string, data: any) {
+      this.socket.emit(event, data);
+    }
+  
+    // Escuchar eventos
+    on(event: string, callback: Function) {
+      this.socket.on(event, callback);
+    }
+  
+    // Desconectar el socket
+    disconnect() {
+      if (this.socket) {
+        this.socket.disconnect();
+      }
+    }
+  }
