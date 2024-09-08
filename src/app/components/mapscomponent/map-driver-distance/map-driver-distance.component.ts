@@ -5,6 +5,8 @@ import {Socket, io} from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from 'src/app/services/auth.interceptor';
 import { ModalController } from '@ionic/angular';
+import { TripService } from 'src/app/services/socket.service';
+import { AcceptTripModalComponent } from '../../modals/accept-trip-modal/accept-trip-modal.component';
 
 @Component({
   selector: 'app-map-driver-distance',
@@ -32,7 +34,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   
 
   //Variables usadas por los sockets
-  private socket: any = io(`${this.URL}`);
+  // private socket: any = io(`${this.URL}`);
 
   startLoctoback = {
     lat: 0,
@@ -51,45 +53,48 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   constructor(
     private http: HttpClient,
     private modalController: ModalController,
-    private authInterceptor: AuthInterceptor
+    private authInterceptor: AuthInterceptor,
+    private socket: TripService,
   ) { }
 
   driver_id : string | null = null; // Reemplaza con el ID real del driver
+  status: 'active' | 'inactive' = 'inactive'; // Estado inicial
   tripRequest: any = null;
   tripAccepted: boolean = false;
   tripDetails: any = null;
 
   async ngOnInit(){ 
     this.driver_id = await this.authInterceptor.getUserID();
-
-    //Logica del socket
-        // Escuchar solicitudes de viaje desde el servidor
-        this.socket.on('new_trip_request', (data: any) => {
-          console.log('Solicitud de viaje recibida:', data);
-          this.tripRequest = data; // Guardar los detalles del viaje
-        });
-    
-        // Escuchar cuando otro driver ha aceptado el viaje
-        this.socket.on('trip_taken', () => {
-          console.log('El viaje ya ha sido aceptado por otro driver');
-          this.tripRequest = null; // Limpiar la solicitud actual si otro driver acepta el viaje
-        });
-    
-        // Escuchar cuando el pasajero cancela la solicitud
-        this.socket.on('trip_request_cancelled', (passengerId: string) => {
-          if (this.tripRequest && this.tripRequest.passenger_id === passengerId) {
-            console.log('El pasajero ha cancelado la solicitud');
-            this.tripRequest = null; // Limpiar la solicitud actual
+        // Escuchar cuando el driver active su estado
+        this.socket.on('driver_activated', (driverId: string) => {
+          if (driverId === this.driver_id) {
+            console.log('Tu estado es ahora activo');
           }
         });
     
-        // Escuchar confirmación de que el viaje fue aceptado
-        this.socket.on('trip_accepted', (tripDetails: any) => {
-          this.tripAccepted = true;
-          this.tripDetails = tripDetails;
-          console.log('Viaje aceptado:', tripDetails);
+        // Escuchar cuando el driver desactive su estado
+        this.socket.on('driver_deactivated', (driverId: string) => {
+          if (driverId === this.driver_id) {
+            console.log('Tu estado es ahora inactivo');
+          }
         });
 
+    //Logica del socket
+    this.socket.on('trip_request', async (data: any) => {
+      console.log('Soy la data');
+      console.log(data);
+      
+      this.tripRequest = data;
+      const modal = await this.modalController.create({
+        component: AcceptTripModalComponent,
+        componentProps: { 
+          tripRequest: this.tripRequest,
+          driver_id: this.driver_id
+         }
+      });
+
+      await modal.present();
+    });
   }
 
   ngAfterViewInit(): void {
@@ -400,7 +405,25 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
   onStatusChange(status: boolean): void {
   console.log('Switch status:', status ? 'ON' : 'OFF');
+  if (status == true) {
+    this.status = 'active'
+    // Emitir el cambio de estado al servidor
+      // Emitir el cambio de estado al servidor
+      this.socket.emit('driver_status_change', {
+        driver_id: this.driver_id,
+        status: this.status
+      });
+  } else {
+    this.status = 'inactive' 
+    // Emitir el cambio de estado al servidor
+      // Emitir el cambio de estado al servidor
+      this.socket.emit('driver_status_change', {
+        driver_id: this.driver_id,
+        status: this.status
+      });
+  }
 
+   
   if (!status && (this.routeLayer.getLayers().length > 0 || this.fuchsiaRouteLayer.getLayers().length > 0)) {
     // Mostrar alerta si hay rutas activas y el usuario intenta apagar el switch
     alert('No puedes apagar el switch porque hay una ruta activa.');
