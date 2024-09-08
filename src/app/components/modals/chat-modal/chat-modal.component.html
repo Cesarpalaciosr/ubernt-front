@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<!-- <ion-content>
   <ion-list *ngIf="messages.length > 0">
     <ion-item *ngFor="let message of messages">
       <ion-label>
@@ -19,6 +19,33 @@
     </ion-item>
   </ion-list>
   <div #chatScroll></div>
+</ion-content> -->
+
+<ion-content>
+  <ion-list class="chat" lines="none">
+    <ion-item *ngFor="let message of messages">
+      <ion-card
+        class="message-card user1"
+        slot="end"
+        *ngIf="message.idSender === userInfo._id"
+      >
+        <ion-card-content class="message-content">
+          {{ message.message }}
+        </ion-card-content>
+      </ion-card>
+      <ion-card
+        class="message-card user2"
+        slot="start"
+        *ngIf="message.idSender !== userInfo._id"
+      >
+        <ion-label class="message-sender">{{ message.sender }}</ion-label>
+        <ion-card-content class="message-content">
+          {{ message.message }}
+        </ion-card-content>
+      </ion-card>
+    </ion-item>
+  </ion-list>
+  <!-- <div #chatScroll></div> -->
 </ion-content>
 
 <ion-footer>
