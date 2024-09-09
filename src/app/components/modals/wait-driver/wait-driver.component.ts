@@ -40,7 +40,6 @@ export class WaitDriverComponent implements OnInit {
   ngOnInit() {
      // Escuchar los drivers activos
      this.socket.on('active_drivers', (drivers: any[]) => {
-       
        if (drivers.length > 0) {
         console.log(drivers);
         this.isSearching = false; // Si se encuentran conductores, detener la animación
