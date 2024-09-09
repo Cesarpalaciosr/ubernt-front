@@ -14,7 +14,7 @@ import { Preferences } from '@capacitor/preferences';
   styleUrls: ['./chat-modal.component.scss'],
 })
 
-export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class ChatModalComponent implements OnInit, OnDestroy {
   @Input() user!: any;
   @Input() participants!: string[];
   @Input() roomId!: string;
@@ -29,11 +29,11 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
   public userInfo: {
     _id: string;
     username: string;
-    fullName: string
+    fullName: string;
   } = {
       _id: '',
       username: '',
-      fullName: ''
+      fullName: '',
     }
   public users: any = [];
 
@@ -53,13 +53,13 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
     });
   }
 
+
   public async getMessages() {
     try {
       this.socket.emit('getMessages', {
         roomId: this.roomId,
         user: this.user,
       });
-
       this.socket.on('message', (data: any) => {
         console.log(data);
       });
@@ -87,15 +87,18 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       idSentTo: this.roomId,
     };
 
-    this.socket.emit('chatMessage', {
-      message: this.message,
-      sender: this.user.username,
-      idSender: this.user._id,
-      idRoom: this.roomId,
-    });
+    // this.socket.emit('chatMessage', {
+    //   message: this.message,
+    //   sender: this.user.username,
+    //   idSender: this.user._id,
+    //   idRoom: this.roomId,
+    // });
+    this.socket.emit('chatMessage', messageToSave);
+
     try {
       this.chatService.saveChatMessages(messageToSave);
       this.message = '';
+      // this.messages.push(messageToSave);
     } catch (error) {
       console.log(error);
     }
@@ -108,7 +111,7 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
     this.userInfo = {
       _id: _id.value,
       username: username.value,
-      fullName: fullName.value
+      fullName: fullName.value,
     };
   }
 
@@ -123,10 +126,9 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
 
   public async ngOnInit() {
     await this.getUserInfo();
-    console.log(this.localURL);
-    console.log(`connecting to the chat: ${this.roomId} with the user: ${this.user}`);
-    this.socket.connect();
-    this.socket.emit('joinRoom', {
+    //console.log(`connecting to the chat: ${this.roomId} with the user: ${this.user}`);
+    await this.socket.connect();
+    await this.socket.emit('joinRoom', {
       roomId: this.roomId,
       user: this.userInfo
     });
@@ -135,7 +137,6 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
       const messages: MessageInterface[] = ChatMessages.chatMessages;
       if (messages.length > 0) {
         this.messages = messages;
-        return;
       }
 
     } catch (error) {
@@ -143,11 +144,11 @@ export class ChatModalComponent implements OnInit, AfterViewChecked, OnDestroy {
     }
   }
 
-  public ngAfterViewChecked() {
-    this.chatScroll.nativeElement.scrollIntoView({
-      behavior: 'smooth',
-    });
-  }
+  // public ngAfterViewChecked() {
+  //   // this.chatScroll.nativeElement.scrollIntoView({
+  //   //   behavior: 'smooth',
+  //   // });
+  // }
 
   public ngOnDestroy() {
     this.closeModal();

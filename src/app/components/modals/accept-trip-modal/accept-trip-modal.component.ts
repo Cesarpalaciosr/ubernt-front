@@ -1,6 +1,7 @@
-import { Component, OnInit , Input} from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { TripService } from 'src/app/services/socket.service';
+import { ChatModalComponent } from '../chat-modal/chat-modal.component';
 
 @Component({
   selector: 'app-accept-trip-modal',
@@ -10,18 +11,31 @@ import { TripService } from 'src/app/services/socket.service';
 export class AcceptTripModalComponent {
   @Input() tripRequest: any;
   @Input() driver_id: any;
-  
+
   constructor(private modalController: ModalController, private socketService: TripService) { }
 
-  acceptTrip() {
-    this.socketService.emit('accept_trip', {
+  public async acceptTrip() {
+    await this.socketService.emit('accept_trip', {
       driver_id: this.driver_id,
       passenger_id: this.tripRequest.passenger_id
     });
-    this.modalController.dismiss();
+    // await this.socketService.on('trip_accepted', (data: any) => {
+    //   console.log(data);
+    //   // const privateChat = this.modalController.create({
+    //   //   component: ChatModalComponent,
+    //   //   componentProps: {
+    //   //     user: data.driver._id,
+    //   //     participants: [data.driver.username, data.passenger.username],
+    //   //     roomId: data.passenger._id + data.driver._id
+    //   //   },
+    //   // }).then((privateChat) => {
+    //   //   privateChat.present();
+    //   // })
+    // });
+    await this.modalController.dismiss();
   }
 
-  rejectTrip() {
-    this.modalController.dismiss();
+  public async rejectTrip() {
+    await this.modalController.dismiss();
   }
 }

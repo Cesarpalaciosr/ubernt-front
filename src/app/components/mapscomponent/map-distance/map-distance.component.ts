@@ -8,6 +8,7 @@ import { io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from 'src/app/services/auth.interceptor';
 import { TripService } from 'src/app/services/socket.service';
+import { ChatModalComponent } from '../../modals/chat-modal/chat-modal.component';
 @Component({
   selector: 'app-map-distance',
   templateUrl: './map-distance.component.html',
@@ -43,7 +44,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   */
   // startLocation = { latitude: 0, longitude: 0 };
   // endLocation = { latitude: 0, longitude: 0 };
-  passenger_id: string | null = null; 
+  passenger_id: string | null = null;
 
   constructor(
     private http: HttpClient,
@@ -52,6 +53,19 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     private socket: TripService,
     private authInterceptor: AuthInterceptor
   ) {
+    this.socket.on("trip_accepted", (data: any) => {
+      console.log('Viaje aceptado');
+      const privateChat = this.modalController.create({
+        component: ChatModalComponent,
+        componentProps: {
+          user: data.driver._id,
+          participants: [data.driver.username, data.passenger.username],
+          roomId: data.passenger._id + data.driver._id
+        },
+      }).then((privateChat) => {
+        privateChat.present();
+      })
+    })
   }
 
   /*Logica de sockets*/
@@ -72,7 +86,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     const modal = await this.modalController.create({
       // component: SearchingDriverModalComponent,
       component: WaitDriverComponent,
-      componentProps:{
+      componentProps: {
         passenger_id: this.passenger_id
       }
     });
@@ -81,7 +95,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       if (response.data && response.data.driver) {
         console.log('Driver seleccionado:', response.data.driver);
         console.log(response.data.driver.driver_id);
-        
+
         this.socket.emit('select_driver', {
           passenger_id: this.passenger_id,
           driver_id: response.data.driver.driver_id,
@@ -100,7 +114,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   }
 
 
-  async ngOnInit(){
+  async ngOnInit() {
     this.passenger_id = await this.authInterceptor.getUserID();
   }
 
@@ -317,7 +331,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   async presentModal() {
     const modal = await this.modalController.create({
       component: LocationSearchModalComponent,
-      cssClass: 'modal-content-class' 
+      cssClass: 'modal-content-class'
     });
     return await modal.present();
   }
@@ -333,16 +347,16 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
         startLoctoback: this.startLoctoback,
         endLoctoback: this.endLoctoback
       }
-    });    
-  
+    });
+
     modal.onDidDismiss().then((detail) => {
       if (detail !== null && detail.data) {
         const { startLocation, endLocation } = detail.data;
-  
-      
+
+
         if (this.startLocation !== startLocation) {
           this.startLocation = startLocation;
-          this.onLocationInputChange('start');          
+          this.onLocationInputChange('start');
         }
         if (this.endLocation !== endLocation) {
           this.endLocation = endLocation;
@@ -350,10 +364,10 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
         }
       }
     });
-  
+
     await modal.present();
   }
-  
+
   public onLocationInputChange(type: 'start' | 'end'): void {
     if (type === 'start' && this.startLocation) {
       this.geocodeLocation(this.startLocation, 'start');
@@ -361,17 +375,17 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       this.geocodeLocation(this.endLocation, 'end');
     }
   }
-  
+
   private geocodeLocation(location: string, type: 'start' | 'end'): void {
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&addressdetails=1&limit=1`;
-  
+
     this.http.get(url).subscribe((data: any) => {
       if (data.length > 0) {
         const lat = parseFloat(data[0].lat);
         const lng = parseFloat(data[0].lon);
         const latLng = new L.LatLng(lat, lng);
-  
-        
+
+
         if (type === 'start' && (!this.startMarker || this.startMarker.getLatLng().distanceTo(latLng) > 10)) {
           if (this.startMarker) {
             this.map.removeLayer(this.startMarker);
@@ -384,7 +398,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
             }),
             draggable: true
           }).addTo(this.map).bindPopup('Start Point').openPopup();
-  
+
           this.map.setView(latLng, this.DEFAULT_ZOOM_LEVEL);
         } else if (type === 'end' && (!this.endMarker || this.endMarker.getLatLng().distanceTo(latLng) > 10)) {
           if (this.endMarker) {
@@ -398,10 +412,10 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
             }),
             draggable: true
           }).addTo(this.map).bindPopup('End Point').openPopup();
-  
+
           this.map.setView(latLng, this.DEFAULT_ZOOM_LEVEL);
         }
-  
+
         if (this.startMarker && this.endMarker) {
           this.calculateRoute();
         }
