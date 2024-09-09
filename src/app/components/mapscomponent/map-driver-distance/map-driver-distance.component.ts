@@ -1,12 +1,13 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
-import {Socket, io} from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import { environment } from 'src/environments/environment';
 import { AuthInterceptor } from 'src/app/services/auth.interceptor';
 import { ModalController } from '@ionic/angular';
 import { TripService } from 'src/app/services/socket.service';
 import { AcceptTripModalComponent } from '../../modals/accept-trip-modal/accept-trip-modal.component';
+import { ChatModalComponent } from '../../modals/chat-modal/chat-modal.component';
 
 @Component({
   selector: 'app-map-driver-distance',
@@ -31,7 +32,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   public showEndTripButton = false;
   public showEndRideButton = false;
   public firstNavigationCompleted = false;
-  
+
 
   //Variables usadas por los sockets
   // private socket: any = io(`${this.URL}`);
@@ -48,49 +49,63 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     typecoord: '',
     stringLocation: ''
   };
-  
+
 
   constructor(
     private http: HttpClient,
     private modalController: ModalController,
     private authInterceptor: AuthInterceptor,
     private socket: TripService,
-  ) { }
+  ) {
+    this.socket.on("trip_accepted", (data: any) => {
+      console.log('Viaje aceptado');
+      const privateChat = this.modalController.create({
+        component: ChatModalComponent,
+        componentProps: {
+          user: data.driver._id,
+          participants: [data.driver.username, data.passenger.username],
+          roomId: data.passenger._id + data.driver._id
+        },
+      }).then((privateChat) => {
+        privateChat.present();
+      })
+    })
+  }
 
-  driver_id : string | null = null; // Reemplaza con el ID real del driver
+  driver_id: string | null = null; // Reemplaza con el ID real del driver
   status: 'active' | 'inactive' = 'inactive'; // Estado inicial
   tripRequest: any = null;
   tripAccepted: boolean = false;
   tripDetails: any = null;
 
-  async ngOnInit(){ 
+  async ngOnInit() {
     this.driver_id = await this.authInterceptor.getUserID();
-        // Escuchar cuando el driver active su estado
-        this.socket.on('driver_activated', (driverId: string) => {
-          if (driverId === this.driver_id) {
-            console.log('Tu estado es ahora activo');
-          }
-        });
-    
-        // Escuchar cuando el driver desactive su estado
-        this.socket.on('driver_deactivated', (driverId: string) => {
-          if (driverId === this.driver_id) {
-            console.log('Tu estado es ahora inactivo');
-          }
-        });
+    // Escuchar cuando el driver active su estado
+    this.socket.on('driver_activated', (driverId: string) => {
+      if (driverId === this.driver_id) {
+        console.log('Tu estado es ahora activo');
+      }
+    });
+
+    // Escuchar cuando el driver desactive su estado
+    this.socket.on('driver_deactivated', (driverId: string) => {
+      if (driverId === this.driver_id) {
+        console.log('Tu estado es ahora inactivo');
+      }
+    });
 
     //Logica del socket
     this.socket.on('trip_request', async (data: any) => {
       console.log('Soy la data');
       console.log(data);
-      
+
       this.tripRequest = data;
       const modal = await this.modalController.create({
         component: AcceptTripModalComponent,
-        componentProps: { 
+        componentProps: {
           tripRequest: this.tripRequest,
           driver_id: this.driver_id
-         }
+        }
       });
 
       await modal.present();
@@ -209,35 +224,35 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
         position => {
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
-  
+
           const driverIcon = L.divIcon({
             html: '<ion-icon name="car-sport" style="font-size: 2rem; color: black;"></ion-icon>',
             iconSize: [40, 40],
             className: 'custom-icon'
           });
-  
+
           if (this.currentLocationMarker) {
             this.map.removeLayer(this.currentLocationMarker);
           }
-  
+
           this.currentLocationMarker = L.marker([lat, lng], { icon: driverIcon })
             .addTo(this.map)
             .bindPopup('Your Current Location')
             .openPopup();
-  
+
           this.map.setView([lat, lng], this.DEFAULT_ZOOM_LEVEL);
-  
+
           if (setRoute) {
             const currentLocation = L.latLng(lat, lng);
             const start = this.startMarker.getLatLng();
-  
+
             const options: L.PolylineOptions = {
               color: 'fuchsia',
               dashArray: '5, 10',
               weight: 4,
               opacity: 0.9
             };
-  
+
             this.drawRoute(currentLocation, start, options, this.fuchsiaRouteLayer);
           }
         },
@@ -271,7 +286,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   private showPassengerRoute(): void {
     const start = this.startMarker.getLatLng();
     const end = this.endMarker.getLatLng();
-    
+
     const options: L.PolylineOptions = {
       color: 'purple',
       weight: 4,
@@ -316,7 +331,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     // Borra todas las rutas y marcadores existentes
     this.routeLayer.clearLayers();
     this.fuchsiaRouteLayer.clearLayers();
-  
+
     if (this.startMarker) {
       this.map.removeLayer(this.startMarker);
     }
@@ -326,17 +341,17 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     if (this.currentLocationMarker) {
       this.map.removeLayer(this.currentLocationMarker);
     }
-  
+
     // Oculta los botones relacionados con la navegación
     this.showStartNavigationButton = true;
     this.showStartPassengerNavigationButton = false;
     this.showEndTripButton = false;
     this.showEndRideButton = false;
-  
+
     // Lee la ubicación actual pero sin establecer ninguna ruta
     this.locateDriver(false);
   }
-  
+
 
   private calculateRoute(start: L.LatLng, end: L.LatLng, options: L.PolylineOptions, onArrival: () => void): void {
     const apiKey = '5b3ce3597851110001cf62483d78c961eb984a10809db54753ce8a50';
@@ -404,45 +419,45 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   }
 
   onStatusChange(status: boolean): void {
-  console.log('Switch status:', status ? 'ON' : 'OFF');
-  if (status == true) {
-    this.status = 'active'
-    // Emitir el cambio de estado al servidor
+    console.log('Switch status:', status ? 'ON' : 'OFF');
+    if (status == true) {
+      this.status = 'active'
+      // Emitir el cambio de estado al servidor
       // Emitir el cambio de estado al servidor
       this.socket.emit('driver_status_change', {
         driver_id: this.driver_id,
         status: this.status
       });
-  } else {
-    this.status = 'inactive' 
-    // Emitir el cambio de estado al servidor
+    } else {
+      this.status = 'inactive'
+      // Emitir el cambio de estado al servidor
       // Emitir el cambio de estado al servidor
       this.socket.emit('driver_status_change', {
         driver_id: this.driver_id,
         status: this.status
       });
+    }
+
+
+    if (!status && (this.routeLayer.getLayers().length > 0 || this.fuchsiaRouteLayer.getLayers().length > 0)) {
+      // Mostrar alerta si hay rutas activas y el usuario intenta apagar el switch
+      alert('No puedes apagar el switch porque hay una ruta activa.');
+      return;
+    }
+
+    // Cambiar el color del marcador si no hay rutas activas
+    const carColor = status ? 'black' : 'gray';
+
+    if (this.currentLocationMarker) {
+      const driverIcon = L.divIcon({
+        html: `<ion-icon name="car-sport" style="font-size: 2rem; color: ${carColor};"></ion-icon>`,
+        iconSize: [40, 40],
+        className: 'custom-icon'
+      });
+
+      this.currentLocationMarker.setIcon(driverIcon);
+    }
   }
-
-   
-  if (!status && (this.routeLayer.getLayers().length > 0 || this.fuchsiaRouteLayer.getLayers().length > 0)) {
-    // Mostrar alerta si hay rutas activas y el usuario intenta apagar el switch
-    alert('No puedes apagar el switch porque hay una ruta activa.');
-    return;
-  }
-
-  // Cambiar el color del marcador si no hay rutas activas
-  const carColor = status ? 'black' : 'gray';
-
-  if (this.currentLocationMarker) {
-    const driverIcon = L.divIcon({
-      html: `<ion-icon name="car-sport" style="font-size: 2rem; color: ${carColor};"></ion-icon>`,
-      iconSize: [40, 40],
-      className: 'custom-icon'
-    });
-
-    this.currentLocationMarker.setIcon(driverIcon);
-  }
-}
 }
 
 
