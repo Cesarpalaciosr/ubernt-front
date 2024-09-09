@@ -1,20 +1,19 @@
-
 <ion-content class="transparent-content">
   <div class="modal-content">
     <h2>Solicitud de viaje</h2>
     <app-driver-chip
-    [fullName]="tripRequest.user.fullName" 
-    [phoneNumber]="tripRequest.user.phoneNumber"
-    [ci]="tripRequest.user.ci"
-    [email]="tripRequest.user.email"
-    [profilePhoto]="tripRequest.user.profilePhoto"
+      [fullName]="tripRequest.user.fullName"
+      [phoneNumber]="tripRequest.user.phoneNumber"
+      [ci]="tripRequest.user.ci"
+      [email]="tripRequest.user.email"
+      [profilePhoto]="tripRequest.user.profilePhoto"
     />
-    <p>Inicio del viaje:
-      {{ tripRequest.data.startLocation}}</p>
-    <p>Destino del viaje:
-      {{ tripRequest.data.endLocation}}</p>
-    
+    <p>Inicio del viaje: {{ tripRequest.data.startLocation }}</p>
+    <p>Destino del viaje: {{ tripRequest.data.endLocation }}</p>
+
     <ion-button expand="full" (click)="acceptTrip()">Aceptar Viaje</ion-button>
-    <ion-button expand="full"  color="danger" (click)="rejectTrip()">Rechazar</ion-button>
+    <ion-button expand="full" color="danger" (click)="rejectTrip()"
+      >Rechazar</ion-button
+    >
   </div>
 </ion-content>
