@@ -27,6 +27,13 @@
               <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
             </ion-item>
           </ng-container>
+          <ng-container *ngIf="userRole === 'passenger'">
+            <ion-item lines="none" (click)="driverForm()">
+              <ion-icon name="car-outline" slot="start"></ion-icon>
+              <ion-label>Formulario de driver</ion-label>
+              <ion-icon name="chevron-forward-outline" slot="end"></ion-icon>
+            </ion-item>
+          </ng-container>
           <ion-item lines="none" (click)="changeName()">
             <ion-icon name="person-outline" slot="start"></ion-icon>
             <ion-label>Modify Name</ion-label>

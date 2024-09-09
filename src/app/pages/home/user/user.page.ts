@@ -103,13 +103,19 @@ export class UserPage implements OnInit {
     console.log('holamundo');
     
   }
+  async driverForm(){
+    console.log('holamundo');
+    
+  }
   async ngOnInit() {
     this.fullname = await this.authInterceptor.getFullname();
     this.username = await this.authInterceptor.getUsername();
     this.userid = await this.authInterceptor.getUserID();
     this.userRole = await this.authInterceptor.getRole();
+    
     this.authInterceptor.getProfilePicture(this.userid).subscribe(
       (url: string) => {
+        console.log(this.userid);
         this.profilePictureUrl = url;
       },
       (error) => {
