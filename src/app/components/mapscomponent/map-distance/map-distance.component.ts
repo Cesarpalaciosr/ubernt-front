@@ -20,7 +20,6 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   private endMarker!: L.Marker;
   private routeLayer!: L.LayerGroup;
   private URL = environment.localURL;
-  // private socket: any;
   public startLocation: string = '';
   public endLocation: string = '';
   public distance: string = '';
@@ -55,9 +54,12 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
   ) {
     this.socket.on("trip_accepted", (data: any) => {
       console.log('Viaje aceptado');
+      console.log(data);
+      
       const privateChat = this.modalController.create({
         component: ChatModalComponent,
         componentProps: {
+          top: data.driver.fullName,
           user: data.driver._id,
           participants: [data.driver.username, data.passenger.username],
           roomId: data.passenger._id + data.driver._id
@@ -99,6 +101,7 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
         this.socket.emit('select_driver', {
           passenger_id: this.passenger_id,
           driver_id: response.data.driver.driver_id,
+          infodriver: response.data.driver,
           startLocation: this.startLocation,
           endLocation: this.endLocation,
           startLoctoback: this.startLoctoback,

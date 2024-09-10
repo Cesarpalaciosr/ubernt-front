@@ -59,9 +59,14 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   ) {
     this.socket.on("trip_accepted", (data: any) => {
       console.log('Viaje aceptado');
+      console.log('soy la vista driver');
+      
+      console.log(data);
+      
       const privateChat = this.modalController.create({
         component: ChatModalComponent,
         componentProps: {
+          top: data.passenger.fullName,
           user: data.driver._id,
           participants: [data.driver.username, data.passenger.username],
           roomId: data.passenger._id + data.driver._id

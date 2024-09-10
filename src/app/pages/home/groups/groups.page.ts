@@ -65,6 +65,7 @@ export class GroupsPage implements OnInit {
           .create({
             component: ChatModalComponent,
             componentProps: {
+              top: group,
               user: this.user,
               participants: [],
               roomId: group,
