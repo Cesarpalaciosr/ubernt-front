@@ -23,6 +23,7 @@
   <ion-button expand="full" (click)="startNavigation()"
     >Start Navigation</ion-button
   >
+  <app-bubbles *ngIf="showBubbles" (click)="openChatFromBubbles()"/>
   <!-- <ion-button expand="full" (click)="startPassengerNavigation()">Start Navigation Passenger</ion-button> -->
   <ion-button expand="full" (click)="startPassengerNavigation()"
     >Start Navigation Passenger</ion-button

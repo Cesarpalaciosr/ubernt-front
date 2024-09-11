@@ -38,11 +38,10 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     typecoord: '',
     stringLocation: ''
   };
-  /*
-  Variables de sockets
-  */
-  // startLocation = { latitude: 0, longitude: 0 };
-  // endLocation = { latitude: 0, longitude: 0 };
+
+  showBubbles: boolean = false; // Estado para controlar la visibilidad de las burbujas
+  chatData: any; // Datos del chat para pasarlos al modal y a las burbujas
+
   passenger_id: string | null = null;
 
   constructor(
@@ -55,15 +54,17 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     this.socket.on("trip_accepted", (data: any) => {
       console.log('Viaje aceptado');
       console.log(data);
-      
+      this.chatData = {
+        top: data.passenger.fullName,
+        user: data.driver._id,
+        participants: [data.driver.username, data.passenger.username],
+        roomId: data.passenger._id + data.driver._id
+      }
+      // Mostrar las burbujas
+      this.showBubbles = true;
       const privateChat = this.modalController.create({
         component: ChatModalComponent,
-        componentProps: {
-          top: data.driver.fullName,
-          user: data.driver._id,
-          participants: [data.driver.username, data.passenger.username],
-          roomId: data.passenger._id + data.driver._id
-        },
+        componentProps: this.chatData,
       }).then((privateChat) => {
         privateChat.present();
       })
@@ -199,7 +200,15 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
       this.map.invalidateSize();
     }, 500);
   }
-
+  // Función para abrir el chat desde las burbujas
+  openChatFromBubbles() {
+    if (this.chatData) {
+      this.modalController.create({
+        component: ChatModalComponent,
+        componentProps: this.chatData,
+      }).then(modal => modal.present());
+    }
+  }
   private setupClickHandler(): void {
     this.map.on('click', (e: L.LeafletMouseEvent) => {
       if (!this.startMarker) {

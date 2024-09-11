@@ -34,8 +34,8 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   public firstNavigationCompleted = false;
 
 
-  //Variables usadas por los sockets
-  // private socket: any = io(`${this.URL}`);
+  showBubbles: boolean = false; // Estado para controlar la visibilidad de las burbujas
+  chatData: any; // Datos del chat para pasarlos al modal y a las burbujas
 
   startLoctoback = {
     lat: 0,
@@ -57,20 +57,30 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     private authInterceptor: AuthInterceptor,
     private socket: TripService,
   ) {
+      // Evento cuando se finaliza el viaje
+      this.socket.on("finish_trip", () => {
+        console.log('Viaje finalizado');
+        // Ocultar las burbujas cuando finalice el viaje
+        this.showBubbles = false;
+      });
     this.socket.on("trip_accepted", (data: any) => {
       console.log('Viaje aceptado');
       console.log('soy la vista driver');
       
       console.log(data);
       
+      this.chatData = {
+        top: data.passenger.fullName,
+        user: data.driver._id,
+        participants: [data.driver.username, data.passenger.username],
+        roomId: data.passenger._id + data.driver._id
+      }
+      // Mostrar las burbujas
+      this.showBubbles = true;
       const privateChat = this.modalController.create({
         component: ChatModalComponent,
-        componentProps: {
-          top: data.passenger.fullName,
-          user: data.driver._id,
-          participants: [data.driver.username, data.passenger.username],
-          roomId: data.passenger._id + data.driver._id
-        },
+        componentProps: this.chatData
+
       }).then((privateChat) => {
         privateChat.present();
       })
@@ -150,7 +160,15 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
     this.socket.disconnect(); // Desconectar el socket al destruir el componente
   }
-
+  // Función para abrir el chat desde las burbujas
+  openChatFromBubbles() {
+    if (this.chatData) {
+      this.modalController.create({
+        component: ChatModalComponent,
+        componentProps: this.chatData,
+      }).then(modal => modal.present());
+    }
+  }
   /*  ///\\\  */
   /*  \\\///  */
 
@@ -374,6 +392,8 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   }
 
   public finishRide(): void {
+
+    // this.socket.emit('finish')
     // Borra todas las rutas y marcadores existentes
     this.routeLayer.clearLayers();
     this.fuchsiaRouteLayer.clearLayers();

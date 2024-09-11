@@ -1,0 +1,8 @@
+.bubble-button {
+    border-radius: 50px;
+    position: fixed;
+    top: 50%; /* Mitad de la pantalla verticalmente */
+    right: 0; /* En el borde derecho */
+    transform: translateY(-50%); /* Para centrar el botón verticalmente */
+    z-index: 1000; /* Asegura que esté encima de los demás elementos */
+  }
