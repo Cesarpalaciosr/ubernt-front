@@ -108,7 +108,12 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
         console.log('Tu estado es ahora inactivo');
       }
     });
-
+      // Evento cuando se finaliza el viaje
+      this.socket.on("finish_trip", () => {
+        console.log('Viaje finalizado');
+        // Ocultar las burbujas cuando finalice el viaje
+        this.showBubbles = false;
+      });
     //Logica del socket
     this.socket.on('trip_request', async (data: any) => {
       console.log('Solicitud de viaje recibida:', data);
@@ -425,7 +430,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
   public finishRide(): void {
 
-    // this.socket.emit('finish')
+    this.socket.emit('finish_trip', null)
     // Borra todas las rutas y marcadores existentes
     this.routeLayer.clearLayers();
     this.fuchsiaRouteLayer.clearLayers();
@@ -440,6 +445,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     if (this.currentLocationMarker) {
       this.map.removeLayer(this.currentLocationMarker);
     }
+    setTimeout(() => this.locateDriver(), 2000);
 
     // Oculta los botones relacionados con la navegación
     // this.showStartNavigationButton = true;

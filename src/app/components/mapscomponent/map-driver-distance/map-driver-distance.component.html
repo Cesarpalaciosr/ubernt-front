@@ -49,4 +49,5 @@
     <ion-button expand="full" (click)="acceptTrip()">Aceptar Viaje</ion-button>
     <ion-button expand="full" color="danger" (click)="rejectTrip()">Rechazar Viaje</ion-button>
   </div>
+  <app-bubbles *ngIf="showBubbles" (click)="openChatFromBubbles()"/>
 </ion-content>
