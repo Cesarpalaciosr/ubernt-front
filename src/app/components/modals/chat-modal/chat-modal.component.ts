@@ -14,7 +14,7 @@ import { Preferences } from '@capacitor/preferences';
   styleUrls: ['./chat-modal.component.scss'],
 })
 
-export class ChatModalComponent implements OnInit, OnDestroy {
+export class ChatModalComponent implements OnInit, OnDestroy, AfterViewChecked {
   @Input() top: any;
   @Input() user!: any;
   @Input() participants!: string[];
@@ -54,7 +54,6 @@ export class ChatModalComponent implements OnInit, OnDestroy {
     });
   }
 
-
   public async getMessages() {
     try {
       this.socket.emit('getMessages', {
@@ -88,18 +87,12 @@ export class ChatModalComponent implements OnInit, OnDestroy {
       idSentTo: this.roomId,
     };
 
-    // this.socket.emit('chatMessage', {
-    //   message: this.message,
-    //   sender: this.user.username,
-    //   idSender: this.user._id,
-    //   idRoom: this.roomId,
-    // });
     this.socket.emit('chatMessage', messageToSave);
 
     try {
       this.chatService.saveChatMessages(messageToSave);
       this.message = '';
-      // this.messages.push(messageToSave);
+      this.scrollToBottom();  // Desplazar al final después de enviar el mensaje
     } catch (error) {
       console.log(error);
     }
@@ -127,7 +120,6 @@ export class ChatModalComponent implements OnInit, OnDestroy {
 
   public async ngOnInit() {
     await this.getUserInfo();
-    //console.log(`connecting to the chat: ${this.roomId} with the user: ${this.user}`);
     await this.socket.connect();
     await this.socket.emit('joinRoom', {
       roomId: this.roomId,
@@ -145,11 +137,17 @@ export class ChatModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  // public ngAfterViewChecked() {
-  //   // this.chatScroll.nativeElement.scrollIntoView({
-  //   //   behavior: 'smooth',
-  //   // });
-  // }
+  public scrollToBottom(): void {
+    try {
+      this.chatScroll.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    } catch (err) {
+      console.error('Error al desplazarse al final del chat:', err);
+    }
+  }
+
+  public ngAfterViewChecked() {
+    this.scrollToBottom();  // Desplazar al final cada vez que se actualiza la vista
+  }
 
   public ngOnDestroy() {
     this.closeModal();

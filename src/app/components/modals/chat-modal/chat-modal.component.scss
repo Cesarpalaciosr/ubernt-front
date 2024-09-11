@@ -1,4 +1,3 @@
-
 ion-header {
   ion-toolbar {
     --background: linear-gradient(to right, #550DA1, #661491);
@@ -30,116 +29,146 @@ ion-header {
 }
 
 ion-content {
-    ion-img {
-        width: 100%;
-        height: 100vh;
-        position: fixed;
-        z-index: -1;
-        object-fit: cover;
-        top: 0;
-        left: 0;
-      }
-
-    ion-list {
-      background-color: transparent;
-      padding: 10px;
-      margin-top: 7px;
-  
-      ion-item {
-        border-radius: 20px 20px 0 20px;
-        border: 1.3px solid rgba(211, 135, 230, 0.259);
-        margin-bottom: 5px;
-      }
-    }
-  }
-
-.tab-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  ion-img {
     width: 100%;
     height: 100vh;
-    background: linear-gradient(to right, #550DA1, #661491);
+    position: fixed;
+    z-index: -1;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+  }
+
+  ion-list {
+    background-color: transparent;
+    padding: 10px;
+    margin-top: 7px;
+
+    ion-item {
+      border-radius: 20px 20px 0 20px;
+      margin-bottom: 5px;
+    }
+  }
+}
+
+.tab-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(to right, #550DA1, #661491);
 }
 
 .tab-container ion-tab-button {
-    flex: 1;
-    text-align: center;
-    margin: 0 8px;
-    background-color: transparent;
-    color: azure;
+  flex: 1;
+  text-align: center;
+  margin: 0 8px;
+  background-color: transparent;
+  color: azure;
 }
 
 .movie-cover {
-    position: relative;
-    overflow: hidden;
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+
+  .poster-image {
+    width: 100%;
+    height: auto;
     border-radius: 8px;
+    display: block;
+  }
 
-    .poster-image {
-        width: 100%;
-        height: auto;
-        border-radius: 8px;
-        display: block;
-    }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 16px;
+    background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+  }
 
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 16px;
-        background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
-    }
+  .details {
+    color: #fff;
+  }
 
-    .details {
-        color: #fff;
-    }
-
-    .name {
-        font-size: 14px;
-        font-weight: bold;
-        margin-top: 8px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 100%;
-    }
-
-    .category {
-        font-size: 14px;
-        margin-top: 4px;
-        background-color: #ff3366;
-        color: #fff;
-        padding: 4px 10px;
-        border-radius: 40px;
-        display: inline-block;
-    }
-}
-  ion-text.titles {
+  .name {
+    font-size: 14px;
     font-weight: bold;
-    font-size: 1.2em;
-    color:#ffffff
+    margin-top: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
   }
 
-  .custom-button{
-    background-color: transparent;
-    border-radius: 5px;
+  .category {
+    font-size: 14px;
+    margin-top: 4px;
+    background-color: #ff3366;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 40px;
+    display: inline-block;
   }
+}
 
-  ion-button.custom-button {
-    --background: #6a2c93;
-    --background-activated: #441663; 
-    --background-disabled: transparent;
-    --color: #ffffff
-    border-radius: 5px;
-  }
-  
-  ion-button.custom-button[disabled] {
-    --background: transparent;
-   --border-radius: 5px;
-    
-  }
+ion-text.titles {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #ffffff;
+}
+
+.custom-button {
+  background-color: transparent;
+  border-radius: 5px;
+}
+
+ion-button.custom-button {
+  --background: #6a2c93;
+  --background-activated: #441663;
+  --background-disabled: transparent;
+  --color: #ffffff;
+  border-radius: 5px;
+}
+
+ion-button.custom-button[disabled] {
+  --background: transparent;
+  --border-radius: 5px;
+}
+
+/* Estilos adicionales para los mensajes */
+ion-card.message-card.user1 {
+  background-color: #6a2c93;  /* Morado */
+  color: #ffffff;  /* Letras blancas */
+  --ion-card-background:linear-gradient(to right, #661491, #550DA1);
+  border-radius: 15px 15px 0px 15px; /* Esquinas redondeadas, excepto en la inferior izquierda */
+  padding: 20px;  /* Padding de 20px */
+}
+
+ion-card.message-card.user2 {
+  background-color: #b4005e;  /* Fucsia oscuro */
+  color: #ffffff;  /* Letras blancas */
+  --ion-card-background: linear-gradient(to right, #6f0775, #91148d);
+  border-radius: 15px 15px 15px 0px; /* Esquinas redondeadas, excepto en la inferior derecha */
+
+  padding: 20px;  /* Padding de 20px */
+}
+
+.message-content {
+  font-size: 1em;
+}
+
+.message-sender {
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: left;  /* Alineado a la izquierda */
+}
+
+
+

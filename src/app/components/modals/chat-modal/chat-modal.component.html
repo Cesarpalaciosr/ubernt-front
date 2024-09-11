@@ -1,29 +1,31 @@
 <ion-header>
   <ion-toolbar>
-    <div class="header-content">
+    <div class="header-content" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <!-- Botón de back que cierra el modal, ubicado a la izquierda -->
       <ion-buttons slot="start">
-        <ion-button (click)="closeModal()"> </ion-button>
+        <ion-button (click)="closeModal()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
       </ion-buttons>
-      <ion-title>{{ top }}</ion-title>
+
+      <!-- Título centrado -->
+      <ion-title style="text-align: center; flex-grow: 1;">{{ top }}</ion-title>
+
+      <!-- Icono de guardar a la derecha del título con efecto de clic -->
+      <ion-buttons slot="end">
+        <ion-button fill="clear" color="light">
+          <ion-icon name="save-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </div>
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content>
-  <ion-list *ngIf="messages.length > 0">
-    <ion-item *ngFor="let message of messages">
-      <ion-label>
-        <h2>{{ message.sender }}</h2>
-        <p>{{ message.message }}</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  <div #chatScroll></div>
-</ion-content> -->
 
 <ion-content>
   <ion-list class="chat" lines="none">
     <ion-item *ngFor="let message of messages">
+      <!-- Mensaje enviado por el usuario (color morado) -->
       <ion-card
         class="message-card user1"
         slot="end"
@@ -33,6 +35,8 @@
           {{ message.message }}
         </ion-card-content>
       </ion-card>
+
+      <!-- Mensaje recibido (color fucsia oscuro) -->
       <ion-card
         class="message-card user2"
         slot="start"
@@ -44,8 +48,9 @@
         </ion-card-content>
       </ion-card>
     </ion-item>
+    <!-- Aquí se coloca la referencia para hacer scroll al último mensaje -->
+    <div #chatScroll></div>
   </ion-list>
-  <!-- <div #chatScroll></div> -->
 </ion-content>
 
 <ion-footer>
