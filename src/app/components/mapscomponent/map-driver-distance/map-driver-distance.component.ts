@@ -24,8 +24,8 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   private locationWatchId: number | undefined;
   private URL = environment.localURL;
   public readonly DEFAULT_ZOOM_LEVEL = 15; //no se si tengo que ponerlo publico o privado
-  public readonly START_LOCATION = { lat: 10.649495, lng: -71.596806 }; // Universidad Rafael Urdaneta
-  public readonly END_LOCATION = { lat: 10.683081, lng: -71.607131 }; // Universidad Rafael Belloso Chacín
+  public START_LOCATION = { lat: 10.649495, lng: -71.596806 }; // Universidad Rafael Urdaneta
+  public END_LOCATION = { lat: 10.683081, lng: -71.607131 }; // Universidad Rafael Belloso Chacín
 
   public showStartNavigationButton = true;
   public showStartPassengerNavigationButton = false;
@@ -101,8 +101,9 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
     //Logica del socket
     this.socket.on('trip_request', async (data: any) => {
-      console.log('Soy la data');
-      console.log(data);
+      console.log('Solicitud de viaje recibida:', data);
+
+      // console.log(data);
 
       this.tripRequest = data;
       const modal = await this.modalController.create({
@@ -114,6 +115,25 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
       });
 
       await modal.present();
+        // Capturar la respuesta del modal
+      const { data: result } = await modal.onWillDismiss();
+
+      // Si el viaje fue aceptado
+      if (result?.accepted) {
+        console.log('El viaje fue aceptado. soy el if');
+        this.START_LOCATION = {lat: data.data.startLoctoback.lat, lng: data.data.startLoctoback.lng }
+        this.END_LOCATION = {lat: data.data.endLoctoback.lat, lng: data.data.endLoctoback.lng }
+        // console.log(data.data.startLoctoback.lat);
+        // console.log(this.START_LOCATION);
+        
+        this.addMarkers();
+        this.showPassengerRoute();
+        // this.acceptTrip(); // Función que maneja la lógica de aceptar viaje
+        // this.paintRoutesFromTripRequest(); // Función para pintar las rutas en el mapa
+      } else {
+        console.log('El viaje fue rechazado tambien soyy el if');
+        // this.rejectTrip(); // Función que maneja la lógica de rechazo de viaje
+      }
     });
   }
 
@@ -121,7 +141,6 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     this.initMap();
     this.showInitialView(); // Mostrar la vista inicial antes de pedir la ubicación en tiempo real
     setTimeout(() => this.locateDriver(), 2000); // Delay para asegurar que la vista inicial se renderice primero
-    this.showPassengerRoute();
   }
 
   ngOnDestroy(): void {
@@ -186,7 +205,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     this.routeLayer = L.layerGroup().addTo(this.map);
     this.fuchsiaRouteLayer = L.layerGroup().addTo(this.map);
 
-    this.addMarkers();
+    
     setTimeout(() => {
       this.map.invalidateSize();
     }, 500);
@@ -230,6 +249,8 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
           const lat = position.coords.latitude;
           const lng = position.coords.longitude;
 
+          
+
           const driverIcon = L.divIcon({
             html: '<ion-icon name="car-sport" style="font-size: 2rem; color: black;"></ion-icon>',
             iconSize: [40, 40],
@@ -246,20 +267,20 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
             .openPopup();
 
           this.map.setView([lat, lng], this.DEFAULT_ZOOM_LEVEL);
+          
+          // if (setRoute) {
+          //   const currentLocation = L.latLng(lat, lng);
+          //   const start = this.startMarker.getLatLng();
 
-          if (setRoute) {
-            const currentLocation = L.latLng(lat, lng);
-            const start = this.startMarker.getLatLng();
+          //   const options: L.PolylineOptions = {
+          //     color: 'fuchsia',
+          //     dashArray: '5, 10',
+          //     weight: 4,
+          //     opacity: 0.9
+          //   };
 
-            const options: L.PolylineOptions = {
-              color: 'fuchsia',
-              dashArray: '5, 10',
-              weight: 4,
-              opacity: 0.9
-            };
-
-            this.drawRoute(currentLocation, start, options, this.fuchsiaRouteLayer);
-          }
+          //   this.drawRoute(currentLocation, start, options, this.fuchsiaRouteLayer);
+          // }
         },
         error => {
           console.error('Error getting current location:', error);
@@ -288,6 +309,26 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     });
   }
 
+  private showDriverRoute(start:any){
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
+        const currentLocation = L.latLng(lat, lng);
+        
+            const options: L.PolylineOptions = {
+              color: 'fuchsia',
+              dashArray: '5, 10',
+              weight: 4,
+              opacity: 0.9
+            };
+        
+            this.drawRoute(currentLocation, start, options, this.fuchsiaRouteLayer);
+
+      })
+    
+  }
+
   private showPassengerRoute(): void {
     const start = this.startMarker.getLatLng();
     const end = this.endMarker.getLatLng();
@@ -297,7 +338,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
       weight: 4,
       opacity: 0.9
     };
-
+    this.showDriverRoute(start);
     this.drawRoute(start, end, options, this.routeLayer);
   }
 

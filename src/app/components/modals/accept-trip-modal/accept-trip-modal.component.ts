@@ -15,6 +15,7 @@ export class AcceptTripModalComponent {
   constructor(private modalController: ModalController, private socketService: TripService) { }
 
   public async acceptTrip() {
+    await this.modalController.dismiss({ accepted: true });
     console.log('soy el this.tripRequest');
     console.log(this.tripRequest);
     
@@ -40,6 +41,7 @@ export class AcceptTripModalComponent {
   }
 
   public async rejectTrip() {
+    await this.modalController.dismiss({ accepted: false });
     await this.modalController.dismiss();
   }
 }
