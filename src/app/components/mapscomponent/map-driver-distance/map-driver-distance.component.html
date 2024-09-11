@@ -20,16 +20,15 @@
 </ion-header>
 
 <ion-content>
-  <ion-button expand="full" (click)="startNavigation()"
-    >Start Navigation</ion-button
-  >
-  <app-bubbles *ngIf="showBubbles" (click)="openChatFromBubbles()"/>
-  <!-- <ion-button expand="full" (click)="startPassengerNavigation()">Start Navigation Passenger</ion-button> -->
-  <ion-button expand="full" (click)="startPassengerNavigation()"
-    >Start Navigation Passenger</ion-button
-  >
-  <ion-button expand="full" (click)="finishRide()">Finish Ride</ion-button>
-  <div id="map" style="height: 100%"></div>
+  <!-- Contenedor para los botones de navegación -->
+  <div class="buttons-container">
+    <ion-button expand="full" (click)="startNavigation()">Start Navigation</ion-button>
+    <ion-button expand="full" (click)="startPassengerNavigation()">Start Navigation Passenger</ion-button>
+    <ion-button expand="full" (click)="finishRide()">Finish Ride</ion-button>
+  </div>
+
+  <div id="map" style="height: 100%" (click)="onMapClick()"></div>
+
   <div *ngIf="tripRequest && !tripAccepted">
     <h2>Solicitud de viaje recibida</h2>
     <p>Pasajero ID: {{ tripRequest.passenger_id }}</p>
@@ -37,8 +36,6 @@
     <p>Ubicación de fin: {{ tripRequest.end_location_id }}</p>
 
     <ion-button expand="full" (click)="acceptTrip()">Aceptar Viaje</ion-button>
-    <ion-button expand="full" color="danger" (click)="rejectTrip()"
-      >Rechazar Viaje</ion-button
-    >
+    <ion-button expand="full" color="danger" (click)="rejectTrip()">Rechazar Viaje</ion-button>
   </div>
 </ion-content>

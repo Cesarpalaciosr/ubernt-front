@@ -483,6 +483,11 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     this.showStartPassengerNavigationButton = false;
     this.showEndTripButton = true;
   }
+  
+  onMapClick() {
+    // Asegúrate de que este método no oculte ni modifique los botones
+    console.log('Mapa clicado');
+  }
 
   onStatusChange(status: boolean): void {
     console.log('Switch status:', status ? 'ON' : 'OFF');

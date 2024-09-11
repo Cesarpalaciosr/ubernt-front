@@ -65,6 +65,7 @@ ion-content {
   --padding-bottom: 0;
   display: flex;
   flex-direction: column;
+  --overflow: hidden;
 }
 
 .inputs-container {
@@ -98,12 +99,30 @@ ion-content {
   z-index: 0; /* Asegura que el mapa esté debajo de los inputs */
 }
 
+.buttons-container {
+  position: absolute;
+  top: 16px; /* Ajusta la posición superior según sea necesario */
+  left: 0;
+  right: 0;
+  z-index: 1000; /* Asegura que los botones estén por encima del mapa */
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espaciado entre botones */
+}
+
+#map {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  z-index: 0;
+}
+
+
 ion-item {
   --inner-padding-end: 10px;
   --inner-padding-start: 10px;
 }
-
-
 
 ion-item {
   --padding-start: 16px;
