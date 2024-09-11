@@ -82,6 +82,17 @@ ion-chip{
   justify-content: space-between; /* Ajusta el espacio entre el avatar y el texto */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añadir sombra para mayor estilo */
 }
+.custom-chip-4 {
+  width: 100%;
+  padding: 16px;
+  border-radius: 16px;
+  background-color: #a0420c;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Ajusta el espacio entre el avatar y el texto */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añadir sombra para mayor estilo */
+}
 
 .custom-avatar {
   width: 80px; /* Aumenta el tamaño del avatar */

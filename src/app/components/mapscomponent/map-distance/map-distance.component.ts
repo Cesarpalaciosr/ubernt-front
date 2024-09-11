@@ -56,6 +56,14 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
         console.log('Viaje finalizado');
         // Ocultar las burbujas cuando finalice el viaje
         this.showBubbles = false;
+        this.map.removeLayer(this.startMarker);
+        this.map.removeLayer(this.endMarker);
+        this.routeLayer?.clearLayers();
+        this.startMarker = undefined!;
+        this.endMarker = undefined!;
+        this.startLocation = '';
+        this.endLocation = '';
+        this.distance = '';
       });
     this.socket.on("trip_accepted", (data: any) => {
       console.log('Viaje aceptado');
