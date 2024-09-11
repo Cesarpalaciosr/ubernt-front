@@ -1,8 +1,26 @@
 .bubble-button {
-    border-radius: 50px;
+
     position: fixed;
     top: 50%; /* Mitad de la pantalla verticalmente */
     right: 0; /* En el borde derecho */
     transform: translateY(-50%); /* Para centrar el botón verticalmente */
     z-index: 1000; /* Asegura que esté encima de los demás elementos */
-  }
+    --background: linear-gradient(45deg, #550DA1, #661491); /* Gradiente */
+    --color: white; /* Color del ícono */
+    --ripple-color: #661491; /* Color del ripple (efecto de clic) */
+  
+  /* Añadir sombras para mejor visualización */
+
+  /* Cambiar el tamaño del botón */
+  width: 60px;
+  height: 60px;
+  
+  /* Para que el ícono esté centrado */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bubbles {
+  font-size: 24px; /* Tamaño del ícono */
+}

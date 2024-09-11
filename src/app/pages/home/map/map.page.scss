@@ -30,9 +30,7 @@ ion-content {
   --padding-bottom: 0px; /* Elimina cualquier padding en la parte inferior */
   --offset-bottom: 0px;
   height: 100vh; /* Asegura que el contenido ocupe toda la pantalla */
-  .scroll {
-    height: 100%; /* Asegura que el scroll ocupe toda la altura */
-  }
+--overflow: hidden;
 }
 
 app-map-distance {
