@@ -4,13 +4,43 @@
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true">
-<ion-button>
-  <ion-title class="centered-title">
-
-    <ion-icon class="bubbles" name="chatbubbles-outline"></ion-icon>
-  </ion-title>
-</ion-button>
-
+<div id="chips-container">
+  <ion-chip class="custom-chip-2" >
+  
+    <div class="labels-container" >
+      <ion-label class="primary-label" >Haz llegado a tu destino</ion-label>
+    </div>
+    <ion-icon name="chevron-forward-outline" slot="end" class="chevron-icon"></ion-icon>
+  </ion-chip>
+  <!-- Repite otros chips aquí -->
+</div>
+<div id="chips-container">
+  <ion-chip class="custom-chip-3">
+  
+    <div class="labels-container">
+      <ion-label class="primary-label">Ya estas camino a tu destino</ion-label>
+    </div>
+    <ion-icon name="chevron-forward-outline" slot="end" class="chevron-icon"></ion-icon>
+  </ion-chip>
+  <!-- Repite otros chips aquí -->
+</div>
+<div id="chips-container">
+  <ion-chip class="custom-chip">
+    <ion-avatar class="custom-avatar">
+      <img alt="Silhouette of a person's head" src="https://firebasestorage.googleapis.com/v0/b/ubernt-99b85.appspot.com/o/profilepicture%2F1726036043285_9377.jpg?alt=media&token=c5ad17af-e343-477d-92dc-d5f8f09e555a" />
+    </ion-avatar>
+    <div class="labels-container">
+      <ion-label class="primary-label">El Driver: Cesar Palacios</ion-label>
+      <ion-label class="primary-label">En camino</ion-label>
+      <ion-label class="secondary-label">tlf: 04143636908 </ion-label>
+      <ion-label class="tertiary-label">CI: 27360537</ion-label>
+      <ion-label class="tertiary-label">Carrera: Ingenieria en Computacion</ion-label>
+      <ion-label class="tertiary-label">Impala - ZC123AB</ion-label>
+    </div>
+    <ion-icon name="chevron-forward-outline" slot="end" class="chevron-icon"></ion-icon>
+  </ion-chip>
+  <!-- Repite otros chips aquí -->
+</div>
   <div id="container">
   </div>
 
