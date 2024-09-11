@@ -51,6 +51,12 @@ export class MapDistanceComponent implements OnInit, AfterViewInit {
     private socket: TripService,
     private authInterceptor: AuthInterceptor
   ) {
+       // Evento cuando se finaliza el viaje
+       this.socket.on("finish_trip", () => {
+        console.log('Viaje finalizado');
+        // Ocultar las burbujas cuando finalice el viaje
+        this.showBubbles = false;
+      });
     this.socket.on("trip_accepted", (data: any) => {
       console.log('Viaje aceptado');
       console.log(data);
