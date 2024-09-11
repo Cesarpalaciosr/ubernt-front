@@ -22,9 +22,20 @@
 <ion-content>
   <!-- Contenedor para los botones de navegación -->
   <div class="buttons-container">
-    <ion-button expand="full" (click)="startNavigation()">Start Navigation</ion-button>
-    <ion-button expand="full" (click)="startPassengerNavigation()">Start Navigation Passenger</ion-button>
-    <ion-button expand="full" (click)="finishRide()">Finish Ride</ion-button>
+    <!-- Botón Start Navigation -->
+    <ion-button *ngIf="showStartNavigationButton" expand="full" (click)="hideButtonStartNavigation()">
+      Start Navigation
+    </ion-button>
+
+    <!-- Botón Start Navigation Passenger -->
+    <ion-button *ngIf="showStartPassengerNavigationButton" expand="full" (click)="hideButtonStartPassengerNavigation()">
+      Start Navigation Passenger
+    </ion-button>
+
+    <!-- Botón Finish Ride -->
+    <ion-button *ngIf="showEndRideButton" expand="full" (click)="hideButtonEndRide()">
+      Finish Ride
+    </ion-button>
   </div>
 
   <div id="map" style="height: 100%" (click)="onMapClick()"></div>
