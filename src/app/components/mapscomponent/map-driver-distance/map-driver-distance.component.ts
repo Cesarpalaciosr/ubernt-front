@@ -393,7 +393,9 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
   public finishRide(): void {
 
-    // this.socket.emit('finish')
+    this.socket.emit('finish_trip', () => {
+      this.showBubbles = false;
+    });
     // Borra todas las rutas y marcadores existentes
     this.routeLayer.clearLayers();
     this.fuchsiaRouteLayer.clearLayers();
