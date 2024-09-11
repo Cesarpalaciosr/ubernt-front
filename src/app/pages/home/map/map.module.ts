@@ -14,6 +14,7 @@ import { MapDriverDistanceComponent } from 'src/app/components/mapscomponent/map
 import { RendermapComponent } from 'src/app/components/mapscomponent/rendermap/rendermap.component';
 import { AcceptTripModalComponent } from 'src/app/components/modals/accept-trip-modal/accept-trip-modal.component';
 import { DriverChipComponent } from 'src/app/components/driver-chip/driver-chip.component';
+import { BubblesComponent } from 'src/app/components/buttons/bubbles/bubbles.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -30,6 +31,7 @@ import { DriverChipComponent } from 'src/app/components/driver-chip/driver-chip.
     DriverChipComponent,
     AcceptTripModalComponent,
     ToggleSwitchComponent,
+    BubblesComponent,
     MapDriverDistanceComponent,
     RendermapComponent
   ],

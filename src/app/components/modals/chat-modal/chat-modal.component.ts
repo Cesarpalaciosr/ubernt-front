@@ -15,6 +15,7 @@ import { Preferences } from '@capacitor/preferences';
 })
 
 export class ChatModalComponent implements OnInit, OnDestroy {
+  @Input() top: any;
   @Input() user!: any;
   @Input() participants!: string[];
   @Input() roomId!: string;
