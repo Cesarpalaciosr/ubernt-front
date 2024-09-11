@@ -27,7 +27,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   public START_LOCATION = { lat: 10.649495, lng: -71.596806 }; // Universidad Rafael Urdaneta
   public END_LOCATION = { lat: 10.683081, lng: -71.607131 }; // Universidad Rafael Belloso Chacín
 
-  public showStartNavigationButton = true;
+  public showStartNavigationButton = false;
   public showStartPassengerNavigationButton = false;
   public showEndTripButton = false;
   public showEndRideButton = false;
@@ -108,7 +108,12 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
         console.log('Tu estado es ahora inactivo');
       }
     });
-
+      // Evento cuando se finaliza el viaje
+      this.socket.on("finish_trip", () => {
+        console.log('Viaje finalizado');
+        // Ocultar las burbujas cuando finalice el viaje
+        this.showBubbles = false;
+      });
     //Logica del socket
     this.socket.on('trip_request', async (data: any) => {
       console.log('Solicitud de viaje recibida:', data);
@@ -130,6 +135,7 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
       // Si el viaje fue aceptado
       if (result?.accepted) {
+        this.showStartNavigationButton = true;
         console.log('El viaje fue aceptado. soy el if');
         this.START_LOCATION = {lat: data.data.startLoctoback.lat, lng: data.data.startLoctoback.lng }
         this.END_LOCATION = {lat: data.data.endLoctoback.lat, lng: data.data.endLoctoback.lng }
@@ -360,6 +366,37 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     this.drawRoute(start, end, options, this.routeLayer);
   }
 
+
+
+  hideButtonStartNavigation(){
+    this.showStartPassengerNavigationButton = true
+    this.showStartNavigationButton = false
+    this.showEndRideButton = false
+    this.startNavigation()
+  }
+  
+  hideButtonStartPassengerNavigation(){
+    this.showEndRideButton = true
+    this.showStartPassengerNavigationButton = false
+    this.showStartNavigationButton = false
+    this.startPassengerNavigation()
+  }
+
+  hideButtonEndRide(){
+    this.showEndRideButton = false
+    this.showStartPassengerNavigationButton = false
+    this.showStartNavigationButton = false
+    this.finishRide()
+  }
+
+
+
+
+
+
+
+
+
   public startNavigation(): void {
     if (!this.firstNavigationCompleted) {
       const currentLocation = this.currentLocationMarker.getLatLng();
@@ -393,12 +430,11 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
 
   public finishRide(): void {
 
-    this.socket.emit('finish_trip', () => {
-      this.showBubbles = false;
-    });
+    this.socket.emit('finish_trip', null)
     // Borra todas las rutas y marcadores existentes
     this.routeLayer.clearLayers();
     this.fuchsiaRouteLayer.clearLayers();
+    
 
     if (this.startMarker) {
       this.map.removeLayer(this.startMarker);
@@ -409,12 +445,13 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
     if (this.currentLocationMarker) {
       this.map.removeLayer(this.currentLocationMarker);
     }
+    setTimeout(() => this.locateDriver(), 2000);
 
     // Oculta los botones relacionados con la navegación
-    this.showStartNavigationButton = true;
-    this.showStartPassengerNavigationButton = false;
-    this.showEndTripButton = false;
-    this.showEndRideButton = false;
+    // this.showStartNavigationButton = true;
+    // this.showStartPassengerNavigationButton = false;
+    // this.showEndTripButton = false;
+    // this.showEndRideButton = false;
 
     // Lee la ubicación actual pero sin establecer ninguna ruta
     this.locateDriver(false);
@@ -475,17 +512,20 @@ export class MapDriverDistanceComponent implements OnInit, AfterViewInit, OnDest
   }
 
   private handleArrivalAtStartLocation(): void {
-    this.showStartNavigationButton = false;
-    this.showStartPassengerNavigationButton = true;
+    // this.showStartNavigationButton = false;
+    // this.showStartPassengerNavigationButton = true;
     this.fuchsiaRouteLayer.clearLayers(); // Borra la ruta fucsia al llegar al punto de inicio
-    this.showEndRideButton = true; // Muestra el botón End Ride
+    // this.showEndRideButton = true; // Muestra el botón End Ride
   }
 
   private handleArrivalAtEndLocation(): void {
-    this.showStartPassengerNavigationButton = false;
-    this.showEndTripButton = true;
+    // this.showStartPassengerNavigationButton = false;
+    // this.showEndTripButton = true;
   }
-
+onMapClick() {
+  // Asegúrate de que este método no oculte ni modifique los botones
+  console.log('Mapa clicado');
+}
   onStatusChange(status: boolean): void {
     console.log('Switch status:', status ? 'ON' : 'OFF');
     if (status == true) {
