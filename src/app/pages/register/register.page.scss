@@ -1,84 +1,122 @@
 .register-title {
-    position: absolute;
-    top: 8%;  /* Ajusta la distancia desde la parte superior según tus necesidades */
+    position: relative; 
+    top: 10%; 
     left: 50%;
-    transform: translateX(-50%);  /* Centra el texto horizontalmente */
-    color: #fff;  /* Color de las letras en blanco */
-    font-size: 3rem;  /* Tamaño de la fuente grande */
-    font-weight: bold;  /* Texto en negrita */
-    text-align: center;  /* Alinea el texto en el centro */
-    z-index: 2;  /* Asegura que el texto esté por encima de otros elementos */
-    pointer-events: none;  /* Evita que el texto interfiera con la interacción de otros elementos */
+    transform: translateX(-50%);
+    color: #fff; /* Siempre en blanco */
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    z-index: 2;
+    pointer-events: none;
 }
 
-a{
+a {
     text-decoration: none;
     color: #9B00EE;
-
+    z-index: -10;
 }
 
 ion-content {
     --background: linear-gradient(to bottom, rgb(30, 14, 72), rgb(18, 8, 43));
     --overflow: hidden;
     display: flex;
-    flex-direction: column;  /* Asegura que el contenido se disponga en columna */
-    justify-content: center;  /* Centra el contenido verticalmente */
-    align-items: center;      /* Centra el contenido horizontalmente */
-    height: 100vh;            /* Asegura que ocupe toda la altura de la pantalla */
-    padding: 0;              /* Asegura que no haya padding en el contenido */
-    overflow: hidden;       /* Oculta cualquier contenido que se desborde */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    padding: 0;
+    overflow-y: auto; 
+    scroll-behavior: smooth; 
 }
 
 .ion-center {
-    display: flex;             /* Asegura que este contenedor también use flexbox */
+    display: flex;
     flex-direction: column;
-    align-items: center;      /* Centra horizontalmente los elementos hijos */
-    justify-content: center;  /* Centra verticalmente los elementos hijos */
-    width: 100%;              /* Hacer que ocupe todo el ancho del contenedor */
-    max-width: 90vw;         /* Limita el ancho máximo a 90% del viewport */
-    height: 100vh;           /* Asegura que ocupe el 100% de la altura del viewport */
-    padding: 16px;           /* Añadir padding para espaciado */
-    box-sizing: border-box;  /* Asegura que el padding no afecte al ancho del contenedor */
-    z-index: 1;             /* Asegura que el contenido esté sobre la ola */
-    position: absolute;     /* Asegura que el contenedor esté posicionado absolutamente */
-    top: 50%;               /* Mueve el contenedor al 50% desde la parte superior */
-    left: 50%;              /* Mueve el contenedor al 50% desde el lado izquierdo */
-    transform: translate(-50%, -50%); /* Ajusta el contenedor para que esté centrado en ambas direcciones */
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 90vw;
+    min-height: 100vh;
+    padding: 16px;
+    box-sizing: border-box;
+    z-index: 1;
+    position: relative;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-top: 70px;
 }
 
+/* Scroll solo en pantallas pequeñas */
 ion-card {
     width: 100%;
     max-width: 100%;
-    box-sizing: border-box; /* Asegura que el padding no afecte al ancho del contenedor */
+    height: auto;
+    box-sizing: border-box;
     border-radius: 12px;
-    background: rgba(255, 255, 255, 0); /* Fondo más claro para mejorar la legibilidad */
+    background: transparent; /* Fondo transparente */
+    overflow-y: visible; /* No scroll por defecto */
+    padding: 16px;
 }
 
 ion-card-content {
     padding: 2%;
-    box-sizing: border-box; /* Asegura que el padding no afecte al ancho del contenido */
+    box-sizing: border-box;
 }
 
 ion-item {
     margin-bottom: 16px;
     border-radius: 30px;
-    width: 100%;  /* Extiende el ancho del input al 100% del contenedor */
-    max-width: 80vw; /* Limita el ancho máximo a 80% del viewport */
-    min-width: 200px; /* Reducir el ancho mínimo */
-    box-sizing: border-box; /* Asegura que el padding no afecte al ancho del contenedor */
+    width: 100%;
+    max-width: 80vw;
+    min-width: 200px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
 }
 
 ion-input {
-    --padding-start: 12px; /* Asegura que el padding esté a la izquierda */
-    --padding-end: 12px;   /* Asegura que el padding esté a la derecha */
-    --padding-top: 12px;   /* Asegura que el padding esté arriba */
-    --padding-bottom: 12px; /* Asegura que el padding esté abajo */
+    --padding-start: 12px;
+    --padding-end: 12px;
+    --padding-top: 12px;
+    --padding-bottom: 12px;
+}
+
+/* ion-select y opciones en fondo negro con texto blanco */
+ion-select {
+    --background: black;
+    --color: white;
+    --placeholder-color: rgba(255, 255, 255, 0.5); /* Placeholder en blanco semitransparente */
+}
+
+ion-select-popover {
+    --background: black;
+    --color: white;
+}
+
+ion-select-option {
+    --background: black;
+    --color: white;
+}
+
+ion-alert {
+    --background: black;
+    --color: white;
+}
+
+ion-alert .alert-radio-label.sc-ion-alert-md,
+ion-alert .alert-button.sc-ion-alert-md {
+    color: white;
+}
+
+ion-alert .alert-radio-icon.sc-ion-alert-md {
+    --color-checked: white;
 }
 
 ion-button.custom-button {
-    width: 100%;  /* Aumenta el ancho del botón */
-    max-width: 80vw; /* Limita el ancho máximo a 80% del viewport */
-    --background: linear-gradient(to bottom, #7C00FF, #9B00EE);
+    width: 100%;
+    max-width: 80vw;
+    --background: linear-gradient(to bottom, #7C00FF, #9B00EE); /* Botón de registrar con gradiente morado original */
     --border-radius: 50px;
     --padding: 1.5rem 3rem;
     --color: #fff;
@@ -86,46 +124,29 @@ ion-button.custom-button {
     --font-weight: bold;
     --text-align: center;
     --box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-    min-width: 250px;  /* Reducir el ancho mínimo */
+    min-width: 250px;
     height: 60px;
     border: none;
-    display: flex;         /* Asegura que el contenido del botón esté centrado */
-    align-items: center;  /* Centra el contenido verticalmente */
-    justify-content: center; /* Centra el contenido horizontalmente */
-    text-align: center;   /* Asegura que el texto dentro del botón esté centrado */
-    z-index: 1;          /* Asegura que el botón esté sobre la ola */
-    box-sizing: border-box; /* Asegura que el padding no afecte al ancho del botón */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    box-sizing: border-box;
 }
 
-ion-button.custom-button:hover {
-    --background: linear-gradient(to bottom, #6b00e6, #8b00d9);
-    --box-shadow: 0px 6px 14px rgba(0, 0, 0, 0.3);
-}
-
-ion-button.custom-button:active {
-    --background: linear-gradient(to bottom, #5800b8, #7200a0);
-    --box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.4);
-}
-
-ion-button.custom-button:disabled {
-    --background: linear-gradient(to bottom, #d1c6e0, #b4a5d0);
-    --color: #aaa;
-    --box-shadow: none;
-}
-
+/* Animación de las olas */
 .waves {
-    position: absolute;  /* Posiciona la ola en relación al contenedor padre */
-    top: 0;  /* Alinea la ola en la parte superior */
-    left: 0;  /* Alinea a la izquierda */
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 15vh;  /* Altura de las olas */
+    height: 15vh;
     min-height: 100px;
     max-height: 150px;
     transform: rotate(180deg) scale(2, 5);
-    z-index: 0;  /* Asegura que las olas estén detrás de otros elementos */
+    z-index: 0;
 }
 
-/* Animation */
 .parallax > use {
     animation: move-forever 25s cubic-bezier(.55, .5, .45, .5) infinite;
 }
@@ -160,17 +181,19 @@ ion-button.custom-button:disabled {
 }
 
 /* Media Queries */
-
-/* Para pantallas más grandes (tabletas y computadoras de escritorio) */
 @media (min-width: 1025px) {
     .waves {
-        height: 15vh; /* Altura de las olas */
+        height: 15vh;
         min-height: 100px;
         max-height: 150px;
         transform: rotate(180deg) scale(2, 5);
     }
     .ion-center {
-        max-width: 50vw;  /* Ajustar el ancho máximo para pantallas grandes */
+        max-width: 50vw;
+    }
+    ion-card {
+        overflow-y: visible; /* No scroll en pantallas grandes */
+        max-height: none;
     }
     ion-button.custom-button {
         --padding: 1.5rem 3rem;
@@ -182,49 +205,53 @@ ion-button.custom-button:disabled {
     }
 }
 
-/* Para pantallas medianas (tabletas en modo horizontal y pantallas pequeñas) */
 @media (max-width: 1024px) {
     .waves {
-        height: 12vh; /* Ajustar la altura de las olas para pantallas medianas */
+        height: 12vh;
         min-height: 80px;
         max-height: 120px;
-        transform: rotate(180deg) scale(2, 4); /* Ajustar la escala para pantallas medianas */
+        transform: rotate(180deg) scale(2, 4);
     }
     .ion-center {
-        max-width: 60vw; /* Ajustar el ancho máximo para pantallas medianas */
+        max-width: 60vw;
     }
     ion-button.custom-button {
-        --padding: 1rem 2rem;
+        --padding: 10px 20px;
         --font-size: 1rem;
-        min-width: 200px;  /* Asegurando que los botones sean más pequeños en pantallas medianas */
+        min-width: 200px;
     }
     ion-item {
-        max-width: 80vw; /* Aumentar el ancho máximo de los inputs en pantallas medianas */
+        max-width: 80vw;
     }
 }
 
-/* Para pantallas pequeñas (tabletas en modo vertical y teléfonos) */
 @media (max-width: 768px) {
     .waves {
-        height: 10vh; /* Ajustar la altura de las olas para pantallas pequeñas */
+        height: 10vh;
         min-height: 60px;
         max-height: 100px;
-        transform: rotate(180deg) scale(2, 3); /* Ajustar la escala para pantallas pequeñas */
+        transform: rotate(180deg) scale(2, 3);
+        z-index: -10;
     }
     .ion-center {
-        max-width: 70vw; /* Ajustar el ancho máximo para pantallas pequeñas */
+        max-width: 70vw;
+    }
+    ion-card {
+        max-height: 80vh; /* Limita la altura en pantallas pequeñas */
+        overflow-y: auto; /* Habilita el scroll solo en pantallas pequeñas */
     }
     ion-button.custom-button {
         --padding: 0.75rem 1.5rem;
         --font-size: 0.9rem;
-        min-width: 150px;  /* Asegurando que los botones sean aún más pequeños en pantallas muy pequeñas */
+        min-width: 150px;
     }
     ion-item {
-        max-width: 90vw; /* Aumentar el ancho máximo de los inputs en pantallas pequeñas */
+        max-width: 90vw;
     }
 }
 
-/* Para pantallas muy pequeñas (teléfonos en modo vertical) */
 @media (max-width: 480px) {
     .waves {
-        height: 8vh; }}
+        height: 8vh;
+    }
+}

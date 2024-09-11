@@ -1,16 +1,9 @@
 <ion-content>
+  <div class="register-title">Registro</div>
+
   <div>
-    <ion-progress-bar
-      type="indeterminate"
-      style="display: none"
-    ></ion-progress-bar>
-  </div>
-  <div class="register-title">Register</div>
- 
-  <!-- Contenedor de la ola -->
-  <div *ngIf="!isLoading">
     <svg class="waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-         viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
+          viewBox="0 24 150 28" preserveAspectRatio="none" shape-rendering="auto">
       <defs>
         <path id="gentle-wave" d="M-160 44c30 0 58-18 88-18s58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z" />
         <linearGradient id="wave-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -26,72 +19,86 @@
       </g>
     </svg>
   </div>
-  <div *ngIf="!isLoading">
-    <ion-backdrop [visible]="false" style="display: none"></ion-backdrop>
-  </div>
-  <!--backdrop-->
-  <div *ngIf="isLoading">
-    <ion-backdrop [visible]="true"></ion-backdrop>
-  </div>
-  <!-- Contenedor del formulario de inicio de sesión -->
+
   <div class="ion-center">
     <ion-card shape="round">
       <ion-card-content>
         <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
-          <ion-item>
+          
+          <!-- Campo 1: Nombre completo -->
+          <ion-item 
+            [ngClass]="{ 'minimized': expandedField !== 'fullName', 'expanded': expandedField === 'fullName' }" 
+            (click)="toggleExpand('fullName')"
+          >
             <ion-input
-            label="Nombre completo"
-            labelPlacement="floating"
+              label="Nombre completo"
+              labelPlacement="floating"
               required
               type="text"
               name="UserName"
-              errorText="UserName is required"
               [(ngModel)]="newUser.fullName"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
-          
-          <ion-item>
+
+          <!-- Campo 2: Nombre de usuario -->
+          <ion-item 
+            [ngClass]="{ 'minimized': expandedField !== 'username', 'expanded': expandedField === 'username' }" 
+            (click)="toggleExpand('username')"
+          >
             <ion-input
-            label="Nombre de usuario"
-            labelPlacement="floating"
+              label="Nombre de usuario"
+              labelPlacement="floating"
               required
               type="text"
-              name="Full Name"
-              errorText="username es requerido"
+              name="FullName"
               [(ngModel)]="newUser.username"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
 
-          <ion-item>
+          <!-- Campo 3: Cédula -->
+          <ion-item 
+            [ngClass]="{ 'minimized': expandedField !== 'ci', 'expanded': expandedField === 'ci' }" 
+            (click)="toggleExpand('ci')"
+          >
             <ion-input
-            label="Cedula"
-            labelPlacement="floating"
+              label="Cédula"
+              labelPlacement="floating"
               required
               type="text"
               name="CI"
-              errorText="CI is required"
               [(ngModel)]="newUser.ci"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
 
-          <ion-item>
+          <!-- Campo 4: Email -->
+          <ion-item 
+            [ngClass]="{ 'minimized': expandedField !== 'email', 'expanded': expandedField === 'email' }" 
+            (click)="toggleExpand('email')"
+          >
             <ion-input
-            label="Email"
-            labelPlacement="floating"
+              label="Email"
+              labelPlacement="floating"
               required
-              type="text"
+              type="email"
               name="Email"
-              errorText="Email is required / Invalid email"
               [(ngModel)]="newUser.email"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
+
+          <!-- Campo 5: Selección de carrera -->
           <ion-item>
             <ion-label>Carrera</ion-label>
-            <ion-select [(ngModel)]="newUser.career" name="career" placeholder="Selecciona una carrera" required>
+            <ion-select
+              [(ngModel)]="newUser.career"
+              name="career"
+              placeholder="Selecciona una carrera"
+              interface="popover"
+           
+              required>
               <ion-select-option value="Psicologia">Psicología</ion-select-option>
               <ion-select-option value="Administracion de Empresas">Administración de Empresas</ion-select-option>
               <ion-select-option value="Ciencias Politicas">Ciencias Políticas</ion-select-option>
@@ -108,51 +115,58 @@
               <ion-select-option value="Ingenieria Civil">Ingeniería Civil</ion-select-option>
               <ion-select-option value="Diseño de Espacios e Interiorismo">Diseño de Espacios e Interiorismo</ion-select-option>
               <ion-select-option value="Ingenieria de Produccion Animal">Ingeniería de Producción Animal</ion-select-option>
+
             </ion-select>
           </ion-item>
-          <ion-item>
-            <!-- <ion-select [(ngModel)]="selectedOption">
-              <ion-select-option color="red" *ngFor="let option of options" [value]="option">{{ option }}</ion-select-option>
-            </ion-select> -->
+          
+
+          <!-- Campo 6: Teléfono -->
+          <ion-item 
+            [ngClass]="{ 'minimized': expandedField !== 'phoneNumber', 'expanded': expandedField === 'phoneNumber' }" 
+            (click)="toggleExpand('phoneNumber')"
+          >
             <ion-input
-            label="Phone"
-            labelPlacement="floating"
+              label="Teléfono"
+              labelPlacement="floating"
               required
               type="text"
-              name="phone"
-              errorText="Phone is required / Invalid phone"
+              name="Phone"
               [(ngModel)]="newUser.phoneNumber"
               [clearOnEdit]="true"
             ></ion-input>
           </ion-item>
 
-
-          <ion-item>
+          <!-- Campo 7: Contraseña -->
+          <ion-item 
+            [ngClass]="{ 'minimized': expandedField !== 'password', 'expanded': expandedField === 'password' }" 
+            (click)="toggleExpand('password')"
+          >
             <ion-input
-            id="password_input"
-            label="contraseña"
-            labelPlacement="floating"
+              id="password_input"
+              label="Contraseña"
+              labelPlacement="floating"
               required
               type="password"
               name="password"
               minlength="8"
               maxlength="16"
-              errorText="Password is required"
               [(ngModel)]="newUser.password"
             ></ion-input>
             <ion-icon
-          name="eye"
-          slot="end"
-          color="blue"
-          id="show_password"
-          (click)="showPassword('show_password' , 'password_input')"
-        ></ion-icon>
+              name="eye"
+              slot="end"
+              color="blue"
+              id="show_password"
+              (click)="showPassword('show_password', 'password_input')"
+            ></ion-icon>
           </ion-item>
+
+       <!-- Campo 8: Confirmar Contraseña -->
           <ion-item>
             <ion-input
             required
             id="password_input2"
-            label="contraseña"
+            label="Confirmar contraseña"
             labelPlacement="floating"
             type="password"
             name="password"
@@ -170,16 +184,18 @@
         ></ion-icon>
           </ion-item>
 
-          <ion-button class="custom-button" type="submit"
-            expand="full"
+          <!-- Botón de registro -->
+          <ion-button
+            class="custom-button"
             type="submit"
+            expand="full"
             [disabled]="!registerForm.valid"
             shape="round"
-            >Register</ion-button
-          >
+          >Registrar</ion-button>
         </form>
+
         <ion-col>
-          <p>Ya tienes cuenta? <a [routerLink]="['/login']"> Ingresa aqui</a></p>
+          <p>¿Ya tienes cuenta? <a [routerLink]="['/login']">Ingresa aquí</a></p>
         </ion-col>
       </ion-card-content>
     </ion-card>

@@ -5,7 +5,6 @@ import { AlertController } from '@ionic/angular';
 import { Location } from '@angular/common';
 import { newUser, ErrorInterface } from 'src/app/interfaces/index';
 import { NavController } from '@ionic/angular';
-import { AuthInterceptor } from 'src/app/services/auth.interceptor';
 import { Preferences } from '@capacitor/preferences';
 import { environment } from 'src/environments/environment';
 
@@ -15,12 +14,11 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  public TOKEN:string = environment.token;
-  public URL: string = environment.localURL
+  public TOKEN: string = environment.token;
+  public URL: string = environment.localURL;
   public isLoading: boolean = false;
-  // selectedCareer: string;
 
-  newUser : newUser = {
+  newUser: newUser = {
     fullName: '',
     ci: '',
     username: '',
@@ -29,73 +27,65 @@ export class RegisterPage implements OnInit {
     career: '',
     repeat_password: '',
     phoneNumber: '',
-  }
-  
-  username: string = '';
-  password: string = '';
-  email: string = '';
-  name: string = '';
-  bios: string = '';
-  errorMessage: string = '';
-  // options = ['Opción 1', 'Opción 2', 'Opción 3'];
-  // selectedOption: string = '';
+  };
+
+  expandedField: keyof newUser | null = null; // Solo un campo puede estar expandido a la vez
 
   constructor(
     private router: Router,
     private http: HttpClient,
     private alertController: AlertController,
     private location: Location,
-    private navigation: NavController,
-    // private authInterceptor: AuthInterceptor
+    private navigation: NavController
   ) {}
 
   ngOnInit() {
     this.getToken();
   }
 
-  // BACK+FRONT
+  // Alternar la expansión del campo seleccionado y minimizar el resto
+  toggleExpand(field: keyof newUser) {
+    // Si el campo que se ha hecho clic ya está expandido, lo minimizamos
+    this.expandedField = this.expandedField === field ? null : field;
+  }
+
+  // Método de envío del formulario (back y front)
   public onSubmit() {
     this.isLoading = true;
-    console.log(this.newUser);
-    console.log(this.newUser.career);
-    try{
-      this.http.post(`${this.URL}/auth/signup`, this.newUser).subscribe(async (res:any)=>{
-        this.alertController
-        .create({
-          header: 'Success',
-          message: 'User created successfully, pls check your email',
-          buttons: ['OK'],
-        })
-        .then((alert) => alert.present());
-        this.isLoading = false;
-        this.navigation.navigateForward('/login');
-      },
-      (error: any) => {
-        console.log(error);
-        const errorsMessages = error.error.errors;
-        const newErrors: Array<String> = [];
-        console.log(errorsMessages);
-        errorsMessages.forEach((element: ErrorInterface) => {
-          newErrors.push(element.msg);
-        });
-        console.log(newErrors);
-        this.alertController
-          .create({
-            header: 'you have the following errors',
-            message: newErrors.join(', '),
+    try {
+      this.http.post(`${this.URL}/auth/signup`, this.newUser).subscribe(
+        async (res: any) => {
+          const alert = await this.alertController.create({
+            header: 'Success',
+            message: 'User created successfully, please check your email',
             buttons: ['OK'],
-          })
-          .then((alert) => {
-            alert.present();
           });
-      this.isLoading = false;
-      }
-      )
-    } catch(error){
-      console.log("errores : " , error)
+          await alert.present();
+          this.isLoading = false;
+          this.navigation.navigateForward('/login');
+        },
+        (error: any) => {
+          const errorsMessages = error.error.errors;
+          const newErrors: string[] = [];
+          errorsMessages.forEach((element: ErrorInterface) => {
+            newErrors.push(element.msg);
+          });
+          this.alertController
+            .create({
+              header: 'You have the following errors',
+              message: newErrors.join(', '),
+              buttons: ['OK'],
+            })
+            .then((alert) => alert.present());
+          this.isLoading = false;
+        }
+      );
+    } catch (error) {
+      console.log('Errors: ', error);
     }
-  
   }
+
+  // Obtener el token almacenado
   async getToken() {
     const token = await Preferences.get({ key: this.TOKEN });
     if (token.value) {
@@ -103,10 +93,11 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  public showPassword(buttonId:string, inputId:string) {
+  // Mostrar u ocultar contraseña
+  public showPassword(buttonId: string, inputId: string) {
     const input = document.getElementById(inputId) as HTMLInputElement;
     const button = document.getElementById(buttonId) as HTMLInputElement;
-    if (input.type == 'password') {
+    if (input.type === 'password') {
       input.type = 'text';
       button.name = 'eye-off';
     } else {

@@ -19,7 +19,7 @@ import { ChatService } from './services/socket.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({ mode: 'md' }), // Fuerza el uso del modo "md" en toda la app
     AppRoutingModule,
     HttpClientModule,
     FormsModule,

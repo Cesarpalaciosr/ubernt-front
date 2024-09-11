@@ -37,12 +37,18 @@ html, body, ion-app, ion-content {
 :root {
   --ion-background-color: #ffffff;
   --ion-text-color: #461572;
+  --ion-select-background-color: #fff; /* Fondo blanco para select en tema claro */
+  --ion-select-text-color: #9B00EE; /* Texto morado para select en tema claro */
+  --ion-select-interface-background: #ffffff;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --ion-background-color: #000000;
     --ion-text-color: #ffffff;
+    --ion-select-background-color: #000; /* Fondo negro para select en tema oscuro */
+    --ion-select-text-color: #ffffff; /* Texto blanco para select en tema oscuro */
+    --ion-select-interface-background: #333333; /* Fondo más claro para las opciones en tema oscuro */
   }
 }
 
@@ -51,36 +57,39 @@ ion-content {
   --color: var(--ion-text-color);
 }
 
-.my-custom-class {
-
-  --width: fit-content;
-  --min-width: 350px;
-  --max-width: 450px;
-  --height: fit-content;
-  --border-radius: 6px;
-  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
-
-  // max-width: 500px;
-  // max-height: 500px;
-  // margin: 10px;
-  // top: 0;
-  // right: 0;
-  // bottom: 0;
-  // left: 0;
-  // position: absolute;
-  // border-radius: 10px;
-  // overflow: auto;
-  // background-color: transparent;
+/* Estilos para ion-select con ajuste para tema claro y oscuro */
+ion-select {
+  --background: var(--ion-select-background-color);
+  --color: var(--ion-select-text-color);
 }
 
+ion-select::part(placeholder) {
+  color: var(--ion-select-text-color); /* Ajustar color del placeholder */
+}
+
+ion-select .select-interface-options {
+  --background: var(--ion-select-interface-background);
+  --color: var(--ion-select-text-color);
+}
+
+ion-select-option {
+  --background: var(--ion-select-interface-background);
+  --color: var(--ion-select-text-color);
+}
+
+ion-select .alert-wrapper {
+  --background: var(--ion-select-interface-background); /* Asegurar fondo del alert */
+  --color: var(--ion-select-text-color); /* Color de texto para el alert */
+}
+
+/* Estilos para modal */
 ion-modal {
-  --background: transparent; /* Gradiente de 50% morado y 50% transparente */
+  --background: linear-gradient(to bottom, rgba(128, 0, 128, 0.7), rgba(128, 0, 128, 0)); /* Gradiente de 50% morado y 50% transparente */
   --backdrop-opacity: 0 !important; /* Hace el backdrop completamente transparente */
   --box-shadow: none !important; /* Elimina cualquier sombra por defecto */
 }
 
-.modal-content-class{
-  
+.my-custom-class {
   --width: fit-content;
   --min-width: 350px;
   --max-width: 450px;
@@ -89,3 +98,72 @@ ion-modal {
   --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
 }
 
+.modal-content-class {
+  --width: fit-content;
+  --min-width: 350px;
+  --max-width: 450px;
+  --height: fit-content;
+  --border-radius: 6px;
+  --box-shadow: 0 28px 48px rgba(0, 0, 0, 0.4);
+}
+
+/* Estilos específicos de modal con gradiente transparente a morado */
+ion-modal.modal-content-class {
+  --background: linear-gradient(to bottom, rgba(128, 0, 128, 0.7), rgba(128, 0, 128, 0));
+  --backdrop-opacity: 0;
+  --box-shadow: none;
+}
+
+/* Estilo general para ion-select en tema claro */
+ion-select {
+  --background: #fff;
+  --color: #9B00EE; /* Texto morado en tema claro */
+  --placeholder-color: #9B00EE; /* Color del placeholder */
+}
+
+/* Estilo general para ion-select en tema oscuro */
+@media (prefers-color-scheme: dark) {
+  ion-select {
+    --background: #000 !important; /* Fondo negro */
+    --color: #fff !important; /* Texto blanco */
+    --placeholder-color: #fff !important; /* Placeholder blanco */
+  }
+
+  /* Asegurarse de que las opciones internas también cambien de color */
+  ion-select::part(text) {
+    color: #fff !important; /* Texto blanco dentro del select */
+  }
+}
+
+/* Estilo de las interfaces desplegables (action sheet en Android) */
+ion-action-sheet {
+  --background: #fff; /* Fondo blanco para las opciones en tema claro */
+  --color: #9B00EE; /* Texto morado para las opciones en tema claro */
+}
+
+/* Estilo de las interfaces desplegables en tema oscuro */
+@media (prefers-color-scheme: dark) {
+  ion-action-sheet {
+    --background: #000 !important; /* Fondo negro */
+    --color: #fff !important; /* Texto blanco */
+  }
+
+  ion-action-sheet .action-sheet-button {
+    --background: #000 !important; /* Fondo negro para las opciones */
+    --color: #fff !important; /* Texto blanco */
+  }
+}
+
+/* Asegurarse de que las opciones individuales en el action sheet también se estilicen */
+ion-select-option {
+  --background: #fff; /* Fondo blanco por defecto */
+  --color: #9B00EE; /* Texto morado por defecto */
+}
+
+/* Estilo de ion-select-option en tema oscuro */
+@media (prefers-color-scheme: dark) {
+  ion-select-option {
+    --background: #000 !important; /* Fondo negro para las opciones */
+    --color: #fff !important; /* Texto blanco para las opciones */
+  }
+}
