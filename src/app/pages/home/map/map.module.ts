@@ -15,11 +15,13 @@ import { RendermapComponent } from 'src/app/components/mapscomponent/rendermap/r
 import { AcceptTripModalComponent } from 'src/app/components/modals/accept-trip-modal/accept-trip-modal.component';
 import { DriverChipComponent } from 'src/app/components/driver-chip/driver-chip.component';
 import { BubblesComponent } from 'src/app/components/buttons/bubbles/bubbles.component';
+import { SharedModule } from 'src/app/shared/shared/shared.module';
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     MapPageRoutingModule,
   ],
   declarations: [
